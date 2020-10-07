@@ -1,0 +1,6 @@
+framework module Pods_Cinematch {
+  umbrella header "Pods-Cinematch-umbrella.h"
+
+  export *
+  module * { export * }
+}
