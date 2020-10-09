@@ -17,6 +17,15 @@
 		4306D46D252E1FE3004FDB48 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4306D46B252E1FE3004FDB48 /* LaunchScreen.storyboard */; };
 		436171C32530BD360045BC67 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436171C22530BD360045BC67 /* LoginViewController.swift */; };
 		436171C62530BD420045BC67 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436171C52530BD420045BC67 /* SignUpViewController.swift */; };
+		436171C92530C1FB0045BC67 /* SwipeScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436171C82530C1FB0045BC67 /* SwipeScreenViewController.swift */; };
+		436171CC2530C2540045BC67 /* MovieDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436171CB2530C2540045BC67 /* MovieDetailViewController.swift */; };
+		436171CF2530C2980045BC67 /* SendToFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436171CE2530C2980045BC67 /* SendToFriendsViewController.swift */; };
+		436171D22530C4540045BC67 /* WatchlistListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436171D12530C4540045BC67 /* WatchlistListViewController.swift */; };
+		436171D52530C4F10045BC67 /* FriendsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436171D42530C4F10045BC67 /* FriendsListViewController.swift */; };
+		436171D82530C5460045BC67 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436171D72530C5460045BC67 /* ProfileViewController.swift */; };
+		436171DB2530C7200045BC67 /* WatchlistGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436171DA2530C7200045BC67 /* WatchlistGridViewController.swift */; };
+		436171DE2530C7850045BC67 /* FriendProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436171DD2530C7850045BC67 /* FriendProfileViewController.swift */; };
+		436171E12530C7B90045BC67 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436171E02530C7B90045BC67 /* SettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +41,15 @@
 		4306D46E252E1FE3004FDB48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		436171C22530BD360045BC67 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		436171C52530BD420045BC67 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		436171C82530C1FB0045BC67 /* SwipeScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeScreenViewController.swift; sourceTree = "<group>"; };
+		436171CB2530C2540045BC67 /* MovieDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewController.swift; sourceTree = "<group>"; };
+		436171CE2530C2980045BC67 /* SendToFriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendToFriendsViewController.swift; sourceTree = "<group>"; };
+		436171D12530C4540045BC67 /* WatchlistListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistListViewController.swift; sourceTree = "<group>"; };
+		436171D42530C4F10045BC67 /* FriendsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsListViewController.swift; sourceTree = "<group>"; };
+		436171D72530C5460045BC67 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		436171DA2530C7200045BC67 /* WatchlistGridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistGridViewController.swift; sourceTree = "<group>"; };
+		436171DD2530C7850045BC67 /* FriendProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendProfileViewController.swift; sourceTree = "<group>"; };
+		436171E02530C7B90045BC67 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		98631D34E41EB107B92BAB1F /* Pods-Cinematch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cinematch.release.xcconfig"; path = "Target Support Files/Pods-Cinematch/Pods-Cinematch.release.xcconfig"; sourceTree = "<group>"; };
 		A55289D272D7335B754B25B1 /* Pods-Cinematch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cinematch.debug.xcconfig"; path = "Target Support Files/Pods-Cinematch/Pods-Cinematch.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -73,6 +91,15 @@
 				4306D45F252E1FE0004FDB48 /* SceneDelegate.swift */,
 				4306D461252E1FE0004FDB48 /* ViewController.swift */,
 				4306D463252E1FE0004FDB48 /* Main.storyboard */,
+				436171E02530C7B90045BC67 /* SettingsViewController.swift */,
+				436171DD2530C7850045BC67 /* FriendProfileViewController.swift */,
+				436171DA2530C7200045BC67 /* WatchlistGridViewController.swift */,
+				436171D72530C5460045BC67 /* ProfileViewController.swift */,
+				436171D42530C4F10045BC67 /* FriendsListViewController.swift */,
+				436171D12530C4540045BC67 /* WatchlistListViewController.swift */,
+				436171CE2530C2980045BC67 /* SendToFriendsViewController.swift */,
+				436171CB2530C2540045BC67 /* MovieDetailViewController.swift */,
+				436171C82530C1FB0045BC67 /* SwipeScreenViewController.swift */,
 				436171C22530BD360045BC67 /* LoginViewController.swift */,
 				436171C52530BD420045BC67 /* SignUpViewController.swift */,
 				4306D469252E1FE3004FDB48 /* Assets.xcassets */,
@@ -215,11 +242,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				436171C62530BD420045BC67 /* SignUpViewController.swift in Sources */,
+				436171DB2530C7200045BC67 /* WatchlistGridViewController.swift in Sources */,
+				436171DE2530C7850045BC67 /* FriendProfileViewController.swift in Sources */,
 				4306D462252E1FE0004FDB48 /* ViewController.swift in Sources */,
 				4306D45E252E1FE0004FDB48 /* AppDelegate.swift in Sources */,
+				436171D52530C4F10045BC67 /* FriendsListViewController.swift in Sources */,
 				4306D468252E1FE0004FDB48 /* Cinematch.xcdatamodeld in Sources */,
+				436171CC2530C2540045BC67 /* MovieDetailViewController.swift in Sources */,
+				436171E12530C7B90045BC67 /* SettingsViewController.swift in Sources */,
+				436171D82530C5460045BC67 /* ProfileViewController.swift in Sources */,
 				436171C32530BD360045BC67 /* LoginViewController.swift in Sources */,
+				436171D22530C4540045BC67 /* WatchlistListViewController.swift in Sources */,
+				436171CF2530C2980045BC67 /* SendToFriendsViewController.swift in Sources */,
 				4306D460252E1FE0004FDB48 /* SceneDelegate.swift in Sources */,
+				436171C92530C1FB0045BC67 /* SwipeScreenViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
