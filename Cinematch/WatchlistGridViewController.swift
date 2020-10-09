@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import TMDBSwift
 class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 1
