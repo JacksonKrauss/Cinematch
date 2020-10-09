@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>847609813676-gont33qkrkm6n22c49j9pj892vld2c98.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.847609813676-gont33qkrkm6n22c49j9pj892vld2c98</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB7_a20ExH-yehGSde-1GZDfjajN0L3dyE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>847609813676</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.jackson.Cinematch</string>
+	<key>PROJECT_ID</key>
+	<string>cinematch-b53a1</string>
+	<key>STORAGE_BUCKET</key>
+	<string>cinematch-b53a1.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:847609813676:ios:90b9e325ae1d20099c1d09</string>
+	<key>DATABASE_URL</key>
+	<string>https://cinematch-b53a1.firebaseio.com</string>
+</dict>
+</plist>
