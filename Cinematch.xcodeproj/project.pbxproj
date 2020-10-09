@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		202287C3D9CFC4D6A8558EAC /* Pods_Cinematch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 029FD34A4D85371AC8778AA9 /* Pods_Cinematch.framework */; };
+		273663FB2530C76A00C3598D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 273663FA2530C76A00C3598D /* GoogleService-Info.plist */; };
 		4306D45E252E1FE0004FDB48 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4306D45D252E1FE0004FDB48 /* AppDelegate.swift */; };
 		4306D460252E1FE0004FDB48 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4306D45F252E1FE0004FDB48 /* SceneDelegate.swift */; };
 		4306D462252E1FE0004FDB48 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4306D461252E1FE0004FDB48 /* ViewController.swift */; };
@@ -21,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		029FD34A4D85371AC8778AA9 /* Pods_Cinematch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cinematch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		273663FA2530C76A00C3598D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4306D45A252E1FE0004FDB48 /* Cinematch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cinematch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4306D45D252E1FE0004FDB48 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4306D45F252E1FE0004FDB48 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 				4306D469252E1FE3004FDB48 /* Assets.xcassets */,
 				4306D46B252E1FE3004FDB48 /* LaunchScreen.storyboard */,
 				4306D46E252E1FE3004FDB48 /* Info.plist */,
+				273663FA2530C76A00C3598D /* GoogleService-Info.plist */,
 				4306D466252E1FE0004FDB48 /* Cinematch.xcdatamodeld */,
 			);
 			path = Cinematch;
@@ -160,6 +163,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4306D46D252E1FE3004FDB48 /* LaunchScreen.storyboard in Resources */,
+				273663FB2530C76A00C3598D /* GoogleService-Info.plist in Resources */,
 				4306D46A252E1FE3004FDB48 /* Assets.xcassets in Resources */,
 				4306D465252E1FE0004FDB48 /* Main.storyboard in Resources */,
 			);
