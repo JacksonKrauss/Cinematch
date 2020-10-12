@@ -8,7 +8,11 @@
 import UIKit
 
 class FriendProfileViewController: UIViewController {
-
+    @IBOutlet weak var usernameTextLabel: UILabel!
+    @IBOutlet weak var fullNameTextLabel: UILabel!
+    @IBOutlet weak var bioTextLabel: UILabel!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -26,4 +30,6 @@ class FriendProfileViewController: UIViewController {
     }
     */
 
+    @IBAction func changeFriendStatus(_ sender: Any) {
+    }
 }
