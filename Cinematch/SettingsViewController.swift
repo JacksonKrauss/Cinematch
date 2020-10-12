@@ -9,10 +9,33 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
+    @IBOutlet weak var nameTextField: UITextField!
+    
+    @IBOutlet weak var usernameTextField: UITextField!
+    
+    @IBOutlet weak var bioTextField: UITextField!
+    
+    @IBOutlet weak var emailTextField: UITextField!
+    
+    @IBOutlet weak var privacySegControl: UISegmentedControl!
+    
+    @IBOutlet weak var appearanceSegControl: UISegmentedControl!
+    
+    @IBOutlet weak var profileImage: UIImageView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+    }
+    
+    @IBAction func editImagePressed(_ sender: Any) {
+        print("Editing Image")
+    }
+    
+    @IBAction func logoutPressed(_ sender: Any) {
+        print("Logging Out")
     }
     
 
