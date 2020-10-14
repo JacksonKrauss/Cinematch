@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PoF-ex-XRM">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
@@ -292,7 +292,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="W7g-eO-cMP">
-                                <rect key="frame" x="20" y="142" width="374" height="720"/>
+                                <rect key="frame" x="20" y="143" width="374" height="719"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ADy-Ng-aPn">
                                     <size key="itemSize" width="147" height="188"/>
@@ -317,16 +317,21 @@
                                     <outlet property="delegate" destination="PoF-ex-XRM" id="axa-sE-XRN"/>
                                 </connections>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CEY-v9-9dz">
-                                <rect key="frame" x="310" y="105" width="46" height="29"/>
-                                <state key="normal" title="Button"/>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tl5-d6-eNW">
-                                <rect key="frame" x="364" y="104.5" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="rod-zV-1Gu">
+                                <rect key="frame" x="310" y="106" width="100" height="29"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CEY-v9-9dz">
+                                        <rect key="frame" x="0.0" y="0.0" width="46" height="29"/>
+                                        <state key="normal" title="Button"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tl5-d6-eNW">
+                                        <rect key="frame" x="54" y="0.0" width="46" height="29"/>
+                                        <state key="normal" title="Button"/>
+                                    </button>
+                                </subviews>
+                            </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Watchlist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jcJ-ei-7op">
-                                <rect key="frame" x="20" y="109" width="71" height="21"/>
+                                <rect key="frame" x="20" y="110" width="70.5" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="S59-c9-ers"/>
                                 </constraints>
@@ -345,21 +350,18 @@
                         <viewLayoutGuide key="safeArea" id="mWt-gR-ehp"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="CEY-v9-9dz" firstAttribute="top" secondItem="n8i-8K-DE7" secondAttribute="bottom" constant="17" id="2YE-IY-MmT"/>
-                            <constraint firstItem="CEY-v9-9dz" firstAttribute="centerY" secondItem="jcJ-ei-7op" secondAttribute="centerY" id="3BO-51-2eR"/>
-                            <constraint firstItem="W7g-eO-cMP" firstAttribute="top" secondItem="CEY-v9-9dz" secondAttribute="bottom" constant="8" id="CN9-IW-fxp"/>
+                            <constraint firstItem="mWt-gR-ehp" firstAttribute="trailing" secondItem="rod-zV-1Gu" secondAttribute="trailing" constant="4" id="1D8-10-i59"/>
+                            <constraint firstItem="W7g-eO-cMP" firstAttribute="top" secondItem="rod-zV-1Gu" secondAttribute="bottom" constant="8" symbolic="YES" id="C2F-Oi-GpY"/>
                             <constraint firstItem="W7g-eO-cMP" firstAttribute="bottom" secondItem="mWt-gR-ehp" secondAttribute="bottom" id="E1r-mF-T50"/>
                             <constraint firstItem="n8i-8K-DE7" firstAttribute="centerX" secondItem="C3m-J4-jor" secondAttribute="centerX" id="FXe-Qz-1b9"/>
+                            <constraint firstItem="jcJ-ei-7op" firstAttribute="top" secondItem="n8i-8K-DE7" secondAttribute="bottom" constant="22" id="H6e-n1-M8P"/>
                             <constraint firstItem="jcJ-ei-7op" firstAttribute="leading" secondItem="W7g-eO-cMP" secondAttribute="leading" id="HG1-mb-3QV"/>
-                            <constraint firstItem="CEY-v9-9dz" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jcJ-ei-7op" secondAttribute="trailing" constant="8" symbolic="YES" id="Jub-il-fcH"/>
                             <constraint firstItem="n8i-8K-DE7" firstAttribute="centerX" secondItem="W7g-eO-cMP" secondAttribute="centerX" id="L37-Q0-Ypw"/>
-                            <constraint firstAttribute="trailing" secondItem="CEY-v9-9dz" secondAttribute="trailing" constant="58" id="NwX-hU-mf8"/>
                             <constraint firstItem="n8i-8K-DE7" firstAttribute="top" secondItem="mWt-gR-ehp" secondAttribute="top" id="P03-mK-SvN"/>
                             <constraint firstItem="n8i-8K-DE7" firstAttribute="leading" secondItem="mWt-gR-ehp" secondAttribute="leading" id="P0h-Wt-rpo"/>
-                            <constraint firstItem="mWt-gR-ehp" firstAttribute="trailing" secondItem="tl5-d6-eNW" secondAttribute="trailing" constant="4" id="QUc-Rh-mPd"/>
-                            <constraint firstItem="CEY-v9-9dz" firstAttribute="baseline" secondItem="tl5-d6-eNW" secondAttribute="baseline" id="Sij-ws-DOi"/>
+                            <constraint firstItem="jcJ-ei-7op" firstAttribute="centerY" secondItem="rod-zV-1Gu" secondAttribute="centerY" id="Q38-3e-Xyf"/>
                             <constraint firstItem="jcJ-ei-7op" firstAttribute="leading" secondItem="C3m-J4-jor" secondAttribute="leadingMargin" id="chf-Rc-uvD"/>
-                            <constraint firstItem="tl5-d6-eNW" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="CEY-v9-9dz" secondAttribute="trailing" symbolic="YES" id="qkd-YQ-x9H"/>
+                            <constraint firstItem="rod-zV-1Gu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jcJ-ei-7op" secondAttribute="trailing" constant="8" symbolic="YES" id="nbG-Ju-tAE"/>
                             <constraint firstItem="W7g-eO-cMP" firstAttribute="top" secondItem="jcJ-ei-7op" secondAttribute="bottom" constant="12" id="rUH-bN-9rg"/>
                         </constraints>
                     </view>
