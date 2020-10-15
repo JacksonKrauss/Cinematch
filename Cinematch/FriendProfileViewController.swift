@@ -11,6 +11,7 @@ class FriendProfileViewController: UIViewController {
     @IBOutlet weak var usernameTextLabel: UILabel!
     @IBOutlet weak var fullNameTextLabel: UILabel!
     @IBOutlet weak var bioTextLabel: UILabel!
+    @IBOutlet weak var collectionView: UICollectionView!
     
     
     override func viewDidLoad() {

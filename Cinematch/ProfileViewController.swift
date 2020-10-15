@@ -13,6 +13,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var bioTextLabel: UILabel!
     @IBOutlet weak var movieViewSegCtrl: UISegmentedControl!
     // ask about making a consistent class for pfp
+    @IBOutlet weak var collectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
