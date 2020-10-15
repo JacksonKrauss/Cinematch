@@ -1283,7 +1283,8 @@
         </systemColor>
         <systemColor name="tertiaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
-        <image name="arrow.left" catalog="system" width="128" height="98"/>
+        </systemColor>
+            <image name="arrow.left" catalog="system" width="128" height="98"/>
         <image name="arrow.right" catalog="system" width="128" height="98"/>
         <image name="arrow.up" catalog="system" width="120" height="128"/>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="121"/>
