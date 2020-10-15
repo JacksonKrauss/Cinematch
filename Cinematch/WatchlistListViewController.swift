@@ -9,13 +9,23 @@ import UIKit
 
 class WatchlistListViewController: UIViewController {
 
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
     
-
+    @IBAction func switchToList(_ sender: Any) {
+        print("switched to list")
+        //segue
+    }
+    
+    @IBAction func switchToGrid(_ sender: Any) {
+        print("switched to grid")
+        //segue
+    }
     /*
     // MARK: - Navigation
 
