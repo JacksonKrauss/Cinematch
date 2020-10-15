@@ -27,6 +27,7 @@
 		436171DB2530C7200045BC67 /* WatchlistGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436171DA2530C7200045BC67 /* WatchlistGridViewController.swift */; };
 		436171DE2530C7850045BC67 /* FriendProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436171DD2530C7850045BC67 /* FriendProfileViewController.swift */; };
 		436171E12530C7B90045BC67 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436171E02530C7B90045BC67 /* SettingsViewController.swift */; };
+		F1DBCF41253430EF00B1570B /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DBCF40253430EF00B1570B /* ProfileTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		436171E02530C7B90045BC67 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		98631D34E41EB107B92BAB1F /* Pods-Cinematch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cinematch.release.xcconfig"; path = "Target Support Files/Pods-Cinematch/Pods-Cinematch.release.xcconfig"; sourceTree = "<group>"; };
 		A55289D272D7335B754B25B1 /* Pods-Cinematch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cinematch.debug.xcconfig"; path = "Target Support Files/Pods-Cinematch/Pods-Cinematch.debug.xcconfig"; sourceTree = "<group>"; };
+		F1DBCF40253430EF00B1570B /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 				4306D45F252E1FE0004FDB48 /* SceneDelegate.swift */,
 				4306D461252E1FE0004FDB48 /* ViewController.swift */,
 				4306D463252E1FE0004FDB48 /* Main.storyboard */,
+				F1DBCF40253430EF00B1570B /* ProfileTableViewCell.swift */,
 				436171E02530C7B90045BC67 /* SettingsViewController.swift */,
 				436171DD2530C7850045BC67 /* FriendProfileViewController.swift */,
 				436171DA2530C7200045BC67 /* WatchlistGridViewController.swift */,
@@ -254,6 +257,7 @@
 				4306D468252E1FE0004FDB48 /* Cinematch.xcdatamodeld in Sources */,
 				436171CC2530C2540045BC67 /* MovieDetailViewController.swift in Sources */,
 				436171E12530C7B90045BC67 /* SettingsViewController.swift in Sources */,
+				F1DBCF41253430EF00B1570B /* ProfileTableViewCell.swift in Sources */,
 				436171D82530C5460045BC67 /* ProfileViewController.swift in Sources */,
 				436171C32530BD360045BC67 /* LoginViewController.swift in Sources */,
 				436171D22530C4540045BC67 /* WatchlistListViewController.swift in Sources */,

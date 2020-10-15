@@ -8,7 +8,12 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
-
+    @IBOutlet weak var usernameTextLabel: UILabel!
+    @IBOutlet weak var fullNameTextLabel: UILabel!
+    @IBOutlet weak var bioTextLabel: UILabel!
+    @IBOutlet weak var movieViewSegCtrl: UISegmentedControl!
+    // ask about making a consistent class for pfp
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -25,5 +30,7 @@ class ProfileViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+    @IBAction func movieViewSelected(_ sender: Any) {
+    }
+    
 }
