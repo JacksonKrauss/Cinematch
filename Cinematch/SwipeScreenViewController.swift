@@ -9,15 +9,21 @@ import UIKit
 import Koloda
 import TMDBSwift
 class SwipeScreenViewController: UIViewController {
-    
     @IBOutlet weak var friendLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var kolodaView: KolodaView!
+    var user: User?
+    fileprivate var movies: [Movie] = {
+        var array: [Movie] = SampleMovies.getMovies()
+        return array
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
         kolodaView.dataSource = self
         kolodaView.delegate = self
+        TMDBConfig.apikey = "da04189f6c8bb1116ff3c217c908b776"
+        user = User()
         // Do any additional setup after loading the view.
     }
     
@@ -44,7 +50,7 @@ extension SwipeScreenViewController: KolodaViewDelegate {
 extension SwipeScreenViewController: KolodaViewDataSource {
     
     func kolodaNumberOfCards(_ koloda:KolodaView) -> Int {
-        return 100
+        return 1
     }
     
     func kolodaSpeedThatCardShouldDrag(_ koloda: KolodaView) -> DragSpeed {
@@ -53,17 +59,34 @@ extension SwipeScreenViewController: KolodaViewDataSource {
     func koloda(_ koloda: KolodaView, allowedDirectionsForIndex index: Int) -> [SwipeResultDirection] {
         return [SwipeResultDirection.left,SwipeResultDirection.right,SwipeResultDirection.up]
     }
-    
     func koloda(_ koloda: KolodaView, viewForCardAt index: Int) -> UIView {
         print("loading")
         let image = UIImageView()
-        image.load(url: URL(string: "https://image.tmdb.org/t/p/original/sy6DvAu72kjoseZEjocnm2ZZ09i.jpg")!)
+        image.load(url: URL(string: "https://image.tmdb.org/t/p/original" + movies[index].poster!)!)
         print("loaded")
+        self.descriptionLabel.text = movies[index].release
+        self.titleLabel.text = movies[index].title
+        self.friendLabel.text = movies[index].friends![0].name! + " liked this movie!xw"
         return image
     }
     
     func koloda(_ koloda: KolodaView, viewForCardOverlayAt index: Int) -> OverlayView? {
         return OverlayView()
+    }
+    func koloda(_ koloda: KolodaView, didSwipeCardAt index: Int, in direction: SwipeResultDirection) {
+        if(direction == .right){
+            user?.liked.append(movies[index])
+            movies[index].opinion = .like
+        }
+        else if(direction == .left){
+            user?.disliked.append(movies[index])
+            movies[index].opinion = .dislike
+        }
+        else if(direction == .up){
+            user?.watchlist.append(movies[index])
+            movies[index].opinion = .watchlist
+        }
+        user?.history.append(movies[index])
     }
 }
 extension UIImageView {

@@ -19,11 +19,6 @@ enum VisualMode {
     case light
 }
 
-// NOTE: Delete below class on merge
-struct Movie {
-    
-}
-
 struct User {
     var name:String?
     var username:String?
