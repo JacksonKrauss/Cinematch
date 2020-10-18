@@ -176,7 +176,7 @@
             <objects>
                 <viewController id="moC-AU-uiy" customClass="MovieDetailViewController" customModule="Cinematch" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="PvW-br-uME">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ha4-dO-pCd">
@@ -189,12 +189,25 @@
                                         <rightBarButtonItems>
                                             <barButtonItem systemItem="action" id="Q0A-Ef-Ft2">
                                                 <connections>
+                                                    <action selector="shareButton:" destination="moC-AU-uiy" id="XwR-Bi-A8a"/>
                                                     <segue destination="b3o-dr-1Rw" kind="show" id="Qu8-dP-RPt"/>
                                                 </connections>
                                             </barButtonItem>
-                                            <barButtonItem title="Item" systemItem="add" id="1l0-qZ-jmq"/>
-                                            <barButtonItem title="Down" id="Rly-6v-u9o"/>
-                                            <barButtonItem title="Up" id="ESK-25-m7Z"/>
+                                            <barButtonItem title="Item" systemItem="add" id="1l0-qZ-jmq">
+                                                <connections>
+                                                    <action selector="addButton:" destination="moC-AU-uiy" id="VSU-vj-JXB"/>
+                                                </connections>
+                                            </barButtonItem>
+                                            <barButtonItem title="Down" id="Rly-6v-u9o">
+                                                <connections>
+                                                    <action selector="downButton:" destination="moC-AU-uiy" id="DU8-ur-ypm"/>
+                                                </connections>
+                                            </barButtonItem>
+                                            <barButtonItem title="Up" id="ESK-25-m7Z">
+                                                <connections>
+                                                    <action selector="likeButton:" destination="moC-AU-uiy" id="zWJ-Ru-zVp"/>
+                                                </connections>
+                                            </barButtonItem>
                                         </rightBarButtonItems>
                                     </navigationItem>
                                 </items>
@@ -294,6 +307,18 @@
                         <viewLayoutGuide key="safeArea" id="fna-lo-uRA"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="Dog-I9-nIc"/>
+                    <connections>
+                        <outlet property="actor1Label" destination="IIL-hI-nSB" id="yaX-kw-IyI"/>
+                        <outlet property="actor2Label" destination="ojd-Dk-4pb" id="c8P-JX-J5S"/>
+                        <outlet property="actor3Label" destination="IrL-r4-xMU" id="XQb-fa-Hfy"/>
+                        <outlet property="descriptionLabel" destination="Ypo-NR-X1o" id="k7j-HO-M7j"/>
+                        <outlet property="friendsLabel" destination="qxg-8v-bmO" id="csc-oF-bfb"/>
+                        <outlet property="posterView" destination="btG-fd-u0s" id="dLM-WM-533"/>
+                        <outlet property="ratingLabel" destination="HFZ-Wr-a10" id="rVe-ua-fCf"/>
+                        <outlet property="releaseLabel" destination="SXX-QC-b89" id="kc1-n4-rv6"/>
+                        <outlet property="titleLabel" destination="adc-O5-TBI" id="Zq1-0d-CZK"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5ED-fv-bMx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -512,6 +537,7 @@
                         <outlet property="friendLabel" destination="gTC-qc-iFp" id="1ww-qO-Xat"/>
                         <outlet property="kolodaView" destination="VsF-67-A7x" id="VX8-0p-4V3"/>
                         <outlet property="titleLabel" destination="S8t-hw-JnZ" id="L0B-Sg-3lI"/>
+                        <segue destination="moC-AU-uiy" kind="show" identifier="detailSegue" id="yGY-WE-pLS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yCT-ZP-3t8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

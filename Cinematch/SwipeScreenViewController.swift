@@ -8,12 +8,32 @@
 import UIKit
 import Koloda
 import TMDBSwift
-class SwipeScreenViewController: UIViewController {
+class SwipeScreenViewController: UIViewController,SwipeDelegate {
+    func buttonTapped(direction: SwipeResultDirection, index:Int) {
+        clearMovie(movie: movies[index])
+        if(index==kolodaView.currentCardIndex){
+            self.kolodaView.swipe(direction)
+            print("lol")
+        }
+        else if(direction == .right){
+            CURRENT_USER.liked.append(movies[index])
+            movies[index].opinion = .like
+        }
+        else if(direction == .left){
+            CURRENT_USER.disliked.append(movies[index])
+            movies[index].opinion = .dislike
+        }
+        else if(direction == .up){
+            CURRENT_USER.watchlist.append(movies[index])
+            movies[index].opinion = .watchlist
+        }
+        
+    }
+    
     @IBOutlet weak var friendLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var kolodaView: KolodaView!
-    var user: User?
     fileprivate var movies: [Movie] = {
         var array: [Movie] = SampleMovies.getMovies()
         return array
@@ -23,7 +43,6 @@ class SwipeScreenViewController: UIViewController {
         kolodaView.dataSource = self
         kolodaView.delegate = self
         TMDBConfig.apikey = "da04189f6c8bb1116ff3c217c908b776"
-        user = User()
         //workaround because it didnt show label of first movie
         self.descriptionLabel.text = movies[0].release
         self.titleLabel.text = movies[0].title
@@ -32,7 +51,19 @@ class SwipeScreenViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("yo")
+        if(segue.identifier == "detailSegue"){
+            let index:Int = sender as! Int
+            if let detailViewController = segue.destination as? MovieDetailViewController{
+                detailViewController.delegate = self
+                detailViewController.movie = movies[index]
+                detailViewController.currentIndex = index
+            }
+        }
+    }
+    func clearMovie(movie: Movie){
+        CURRENT_USER.liked.remove(object: movie)
+        CURRENT_USER.disliked.remove(object: movie)
+        CURRENT_USER.watchlist.remove(object: movie)
     }
     
     
@@ -52,7 +83,7 @@ extension SwipeScreenViewController: KolodaViewDelegate {
     }
     
     func koloda(_ koloda: KolodaView, didSelectCardAt index: Int) {
-        print("tapped")
+        performSegue(withIdentifier: "detailSegue", sender: index)
     }
 }
 extension SwipeScreenViewController: KolodaViewDataSource {
@@ -87,18 +118,18 @@ extension SwipeScreenViewController: KolodaViewDataSource {
     }
     func koloda(_ koloda: KolodaView, didSwipeCardAt index: Int, in direction: SwipeResultDirection) {
         if(direction == .right){
-            user?.liked.append(movies[index])
+            CURRENT_USER.liked.append(movies[index])
             movies[index].opinion = .like
         }
         else if(direction == .left){
-            user?.disliked.append(movies[index])
+            CURRENT_USER.disliked.append(movies[index])
             movies[index].opinion = .dislike
         }
         else if(direction == .up){
-            user?.watchlist.append(movies[index])
+            CURRENT_USER.watchlist.append(movies[index])
             movies[index].opinion = .watchlist
         }
-        user?.history.append(movies[index])
+        CURRENT_USER.history.append(movies[index])
         if(index == movies.endIndex-1){
             self.descriptionLabel.text = ""
             self.titleLabel.text = ""

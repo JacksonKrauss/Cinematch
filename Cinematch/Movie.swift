@@ -8,12 +8,24 @@
 import Foundation
 import UIKit
 import TMDBSwift
+
+extension Array where Element: Equatable {
+ mutating func remove(object: Element) {
+     guard let index = firstIndex(of: object) else {return}
+     remove(at: index)
+ }
+
+}
 enum Opinion {
     case like
     case dislike
     case watchlist
 }
-class Movie{
+class Movie:Equatable{
+    static func == (lhs: Movie, rhs: Movie) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     var poster: String?
     var title: String?
     var description: String?
