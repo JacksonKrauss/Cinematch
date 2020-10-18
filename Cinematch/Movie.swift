@@ -23,6 +23,7 @@ class Movie{
     var id: Int?
     var opinion: Opinion?
     var friends: [User]?
+    var duration:String?
     func setVars(id:Int){
         print("Starting vars")
         self.id = id
@@ -59,8 +60,20 @@ class SampleMovies{
         blackPanther.rating = "3.7"
         blackPanther.release = "2018"
         blackPanther.actors = ["Chadwick Boseman","Michael B. Jordan","Lupita Nyong'o","Danai Gurira"]
+        blackPanther.duration = "2h 15m"
         blackPanther.friends = [otherUser1, otherUser2]
         movieList.append(blackPanther)
+        let mulan = Movie()
+        mulan.description = "When the Emperor of China issues a decree that one man per family must serve in the Imperial Chinese Army to defend the country from Huns, Hua Mulan, the eldest daughter of an honored warrior, steps in to take the place of her ailing father. She is spirited, determined and quick on her feet. Disguised as a man by the name of Hua Jun, she is tested every step of the way and must harness her innermost strength and embrace her true potential."
+        mulan.title = "Mulan"
+        mulan.id = 337401
+        mulan.poster = "/aKx1ARwG55zZ0GpRvU2WrGrCG9o.jpg"
+        mulan.rating = "3.7"
+        mulan.release = "2020"
+        mulan.actors = ["Liu Yifei","Jet Li","Tzi Ma","Donnie Yen"]
+        mulan.duration = "1h 55m"
+        mulan.friends = [otherUser3]
+        movieList.append(mulan)
         return movieList
     }
     

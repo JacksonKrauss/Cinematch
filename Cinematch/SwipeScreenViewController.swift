@@ -24,7 +24,15 @@ class SwipeScreenViewController: UIViewController {
         kolodaView.delegate = self
         TMDBConfig.apikey = "da04189f6c8bb1116ff3c217c908b776"
         user = User()
+        //workaround because it didnt show label of first movie
+        self.descriptionLabel.text = movies[0].release
+        self.titleLabel.text = movies[0].title
+        //add check for empty
+        self.friendLabel.text = movies[0].friends![0].name! + " liked this movie!"
         // Do any additional setup after loading the view.
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("yo")
     }
     
     
@@ -50,7 +58,8 @@ extension SwipeScreenViewController: KolodaViewDelegate {
 extension SwipeScreenViewController: KolodaViewDataSource {
     
     func kolodaNumberOfCards(_ koloda:KolodaView) -> Int {
-        return 1
+        //workaround for first movie not showing
+        return movies.count
     }
     
     func kolodaSpeedThatCardShouldDrag(_ koloda: KolodaView) -> DragSpeed {
@@ -64,10 +73,13 @@ extension SwipeScreenViewController: KolodaViewDataSource {
         let image = UIImageView()
         image.load(url: URL(string: "https://image.tmdb.org/t/p/original" + movies[index].poster!)!)
         print("loaded")
+        return image
+    }
+    func koloda(_ koloda: KolodaView, didShowCardAt index: Int) {
         self.descriptionLabel.text = movies[index].release
         self.titleLabel.text = movies[index].title
-        self.friendLabel.text = movies[index].friends![0].name! + " liked this movie!xw"
-        return image
+        //add check for empty
+        self.friendLabel.text = movies[index].friends![0].name! + " liked this movie!"
     }
     
     func koloda(_ koloda: KolodaView, viewForCardOverlayAt index: Int) -> OverlayView? {
@@ -87,6 +99,11 @@ extension SwipeScreenViewController: KolodaViewDataSource {
             movies[index].opinion = .watchlist
         }
         user?.history.append(movies[index])
+        if(index == movies.endIndex-1){
+            self.descriptionLabel.text = ""
+            self.titleLabel.text = ""
+            self.friendLabel.text = ""
+        }
     }
 }
 extension UIImageView {
