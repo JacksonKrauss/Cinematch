@@ -150,6 +150,7 @@
                                     <color key="titleColor" name="AccentColor"/>
                                 </state>
                                 <connections>
+                                    <action selector="signUpDidPress:" destination="PTZ-ks-pJR" eventType="touchUpInside" id="15x-WO-DoL"/>
                                     <segue destination="OCb-ec-3HP" kind="show" id="oIz-3Q-YY7"/>
                                 </connections>
                             </button>
@@ -436,6 +437,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Login"/>
                                 <connections>
+                                    <action selector="loginDidPress:" destination="HMS-ms-FN5" eventType="touchUpInside" id="VUO-Ys-1kD"/>
                                     <segue destination="OCb-ec-3HP" kind="showDetail" id="Tcm-uA-bJe"/>
                                 </connections>
                             </button>
@@ -1354,7 +1356,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="RCU-C9-hhH"/>
+        <segue reference="Xdh-iM-jPJ"/>
         <segue reference="b2g-nQ-9BZ"/>
         <segue reference="tvr-EH-i1H"/>
         <segue reference="oIz-3Q-YY7"/>
