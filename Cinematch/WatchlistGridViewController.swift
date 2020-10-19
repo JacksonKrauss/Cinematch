@@ -67,6 +67,7 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.delegate = self
+        collectionView.dataSource = self
         searchBar.delegate = self
         filteredMovies = CURRENT_USER.watchlist
     }

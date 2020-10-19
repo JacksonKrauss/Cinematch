@@ -922,9 +922,14 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="150" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="teV-PQ-XnD">
                                 <rect key="frame" x="0.0" y="87.5" width="414" height="720.5"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <searchBar key="tableHeaderView" contentMode="redraw" id="6H1-6y-T6f">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </searchBar>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MovieCell" rowHeight="150" id="eSB-QK-S4o" customClass="WatchlistTableViewCell" customModule="Cinematch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="150"/>
+                                        <rect key="frame" x="0.0" y="72" width="414" height="150"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eSB-QK-S4o" id="EOc-vX-gYG">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="150"/>
@@ -1014,6 +1019,7 @@
                     <tabBarItem key="tabBarItem" title="Watchlist" id="4Bs-x9-Met"/>
                     <navigationItem key="navigationItem" id="0RB-OR-OEi"/>
                     <connections>
+                        <outlet property="searchBar" destination="6H1-6y-T6f" id="wfs-6Q-fuS"/>
                         <outlet property="tableView" destination="teV-PQ-XnD" id="SX2-D1-qDL"/>
                         <segue destination="moC-AU-uiy" kind="show" identifier="detailSegue" id="Czo-BE-JNp"/>
                     </connections>
@@ -1664,11 +1670,12 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="fPl-ww-XAw"/>
         <segue reference="RCU-C9-hhH"/>
         <segue reference="b2g-nQ-9BZ"/>
         <segue reference="tvr-EH-i1H"/>
         <segue reference="Tcm-uA-bJe"/>
-        <segue reference="hDE-lo-N0j"/>
+        <segue reference="Czo-BE-JNp"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="arrow.left" catalog="system" width="128" height="98"/>
