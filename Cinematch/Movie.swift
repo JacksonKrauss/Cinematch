@@ -60,6 +60,11 @@ class Movie:Equatable{
             }
         print("end vars")
     }
+    static func clearMovie(movie: Movie){
+        CURRENT_USER.liked.remove(object: movie)
+        CURRENT_USER.disliked.remove(object: movie)
+        CURRENT_USER.watchlist.remove(object: movie)
+    }
 }
 class SampleMovies{
     static func getMovies() -> [Movie]{

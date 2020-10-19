@@ -10,7 +10,7 @@ import Koloda
 import TMDBSwift
 class SwipeScreenViewController: UIViewController,SwipeDelegate {
     func buttonTapped(direction: SwipeResultDirection, index:Int) {
-        clearMovie(movie: movies[index])
+        Movie.clearMovie(movie: movies[index])
         if(index==kolodaView.currentCardIndex){
             self.kolodaView.swipe(direction)
             print("lol")
@@ -59,11 +59,6 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
                 detailViewController.currentIndex = index
             }
         }
-    }
-    func clearMovie(movie: Movie){
-        CURRENT_USER.liked.remove(object: movie)
-        CURRENT_USER.disliked.remove(object: movie)
-        CURRENT_USER.watchlist.remove(object: movie)
     }
     
     
