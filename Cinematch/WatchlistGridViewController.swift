@@ -28,6 +28,8 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
     }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
             searchBar.showsCancelButton = false
+            filteredMovies = CURRENT_USER.watchlist
+            collectionView.reloadData()
             searchBar.text = ""
             searchBar.resignFirstResponder()
     }

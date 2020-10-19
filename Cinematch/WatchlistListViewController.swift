@@ -27,6 +27,8 @@ class WatchlistListViewController: UIViewController, UITableViewDelegate,UITable
     }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
             searchBar.showsCancelButton = false
+            filteredMovies = CURRENT_USER.watchlist
+            tableView.reloadData()
             searchBar.text = ""
             searchBar.resignFirstResponder()
     }
