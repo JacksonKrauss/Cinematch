@@ -8,7 +8,21 @@
 import UIKit
 import TMDBSwift
 import Koloda
-class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, SwipeDelegate {
+class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, SwipeDelegate, UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        if((searchBar.text?.isEmpty) != nil){
+            filteredMovies = CURRENT_USER.watchlist
+        }
+        else{
+            filteredMovies = CURRENT_USER.watchlist.filter { (movie: Movie) -> Bool in
+                return movie.title!.lowercased().contains(searchBar.text!.lowercased())
+             }
+        }
+
+        collectionView.reloadData()
+    }
+    
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
         let movie = CURRENT_USER.watchlist[index]
         Movie.clearMovie(movie: CURRENT_USER.watchlist[index])
@@ -38,14 +52,26 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
     }
     
 
-    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var listButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionButton: UIButton!
+    var searchController:UISearchController!
+    var filteredMovies:[Movie]?
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.delegate = self
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.sizeToFit()
+        searchController.searchBar.placeholder = "Search Watchlist"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+        filteredMovies = CURRENT_USER.watchlist
         // Do any additional setup after loading the view.
+    }
+    var isSearchBarEmpty: Bool {
+        return searchController!.searchBar.text?.isEmpty ?? true
     }
     override func viewWillAppear(_ animated: Bool) {
         collectionView.reloadData()

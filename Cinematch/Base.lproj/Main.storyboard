@@ -838,6 +838,9 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="W7g-eO-cMP">
                                 <rect key="frame" x="20" y="99" width="374" height="709"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="709" id="TCK-Wh-zFE"/>
+                                </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="4" id="ADy-Ng-aPn">
                                     <size key="itemSize" width="115" height="150"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -895,13 +898,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="n8i-8K-DE7">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="GrH-8F-cHf"/>
-                                </constraints>
-                                <textInputTraits key="textInputTraits"/>
-                            </searchBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="mWt-gR-ehp"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -909,16 +905,12 @@
                             <constraint firstItem="mWt-gR-ehp" firstAttribute="trailing" secondItem="rod-zV-1Gu" secondAttribute="trailing" constant="4" id="1D8-10-i59"/>
                             <constraint firstItem="W7g-eO-cMP" firstAttribute="top" secondItem="rod-zV-1Gu" secondAttribute="bottom" constant="8" symbolic="YES" id="C2F-Oi-GpY"/>
                             <constraint firstItem="W7g-eO-cMP" firstAttribute="bottom" secondItem="mWt-gR-ehp" secondAttribute="bottom" id="E1r-mF-T50"/>
-                            <constraint firstItem="n8i-8K-DE7" firstAttribute="centerX" secondItem="C3m-J4-jor" secondAttribute="centerX" id="FXe-Qz-1b9"/>
-                            <constraint firstItem="jcJ-ei-7op" firstAttribute="top" secondItem="n8i-8K-DE7" secondAttribute="bottom" constant="22" id="H6e-n1-M8P"/>
                             <constraint firstItem="jcJ-ei-7op" firstAttribute="leading" secondItem="W7g-eO-cMP" secondAttribute="leading" id="HG1-mb-3QV"/>
-                            <constraint firstItem="n8i-8K-DE7" firstAttribute="centerX" secondItem="W7g-eO-cMP" secondAttribute="centerX" id="L37-Q0-Ypw"/>
-                            <constraint firstItem="n8i-8K-DE7" firstAttribute="top" secondItem="mWt-gR-ehp" secondAttribute="top" id="P03-mK-SvN"/>
-                            <constraint firstItem="n8i-8K-DE7" firstAttribute="leading" secondItem="mWt-gR-ehp" secondAttribute="leading" id="P0h-Wt-rpo"/>
                             <constraint firstItem="jcJ-ei-7op" firstAttribute="centerY" secondItem="rod-zV-1Gu" secondAttribute="centerY" id="Q38-3e-Xyf"/>
                             <constraint firstItem="jcJ-ei-7op" firstAttribute="leading" secondItem="C3m-J4-jor" secondAttribute="leadingMargin" id="chf-Rc-uvD"/>
                             <constraint firstItem="rod-zV-1Gu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jcJ-ei-7op" secondAttribute="trailing" constant="8" symbolic="YES" id="nbG-Ju-tAE"/>
                             <constraint firstItem="W7g-eO-cMP" firstAttribute="top" secondItem="jcJ-ei-7op" secondAttribute="bottom" constant="12" id="rUH-bN-9rg"/>
+                            <constraint firstItem="W7g-eO-cMP" firstAttribute="trailing" secondItem="C3m-J4-jor" secondAttribute="trailingMargin" id="w5F-Yq-jjT"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="gjt-YV-FqE"/>
@@ -926,7 +918,6 @@
                         <outlet property="collectionButton" destination="tl5-d6-eNW" id="B3g-Qh-0Y8"/>
                         <outlet property="collectionView" destination="W7g-eO-cMP" id="0Gr-qJ-50u"/>
                         <outlet property="listButton" destination="CEY-v9-9dz" id="g0d-BD-mZU"/>
-                        <outlet property="searchBar" destination="n8i-8K-DE7" id="Rdr-ZX-ZqM"/>
                         <segue destination="moC-AU-uiy" kind="show" identifier="detailSegue" id="hDE-lo-N0j"/>
                     </connections>
                 </viewController>
