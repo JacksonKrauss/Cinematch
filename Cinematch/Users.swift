@@ -19,7 +19,10 @@ enum VisualMode {
     case light
 }
 
-struct User {
+struct User: Equatable {
+    static func == (lhs: User, rhs: User) -> Bool {
+        return lhs.email == rhs.email
+    }
     var name:String?
     var username:String?
     var bio:String?
