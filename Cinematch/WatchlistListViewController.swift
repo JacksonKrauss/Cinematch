@@ -64,6 +64,9 @@ class WatchlistListViewController: UIViewController, UITableViewDelegate,UITable
 
         // Do any additional setup after loading the view.
     }
+    override func viewWillAppear(_ animated: Bool) {
+        tableView.reloadData()
+    }
     
     @IBAction func switchToList(_ sender: Any) {
         print("switched to list")
