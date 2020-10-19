@@ -1051,8 +1051,24 @@
                                 <color key="tintColor" red="0.98431372549999996" green="0.62745098040000002" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <state key="normal" title="Button" image="square.grid.3x3" catalog="system"/>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Watchlist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jcJ-ei-7op">
+                                <rect key="frame" x="30" y="30" width="92" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Ys7-wf-FrQ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="uDo-KO-7vg">
+                                <rect key="frame" x="0.0" y="60" width="414" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="vuy-P1-5h9"/>
+                                </constraints>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="W7g-eO-cMP">
-                                <rect key="frame" x="30" y="90" width="354" height="718"/>
+                                <rect key="frame" x="30" y="104" width="354" height="718"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="4" id="ADy-Ng-aPn">
                                     <size key="itemSize" width="115" height="150"/>
@@ -1095,28 +1111,22 @@
                                     <outlet property="delegate" destination="PoF-ex-XRM" id="axa-sE-XRN"/>
                                 </connections>
                             </collectionView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Watchlist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jcJ-ei-7op">
-                                <rect key="frame" x="30" y="30" width="92" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="Ys7-wf-FrQ"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="mWt-gR-ehp"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="jcJ-ei-7op" firstAttribute="leading" secondItem="mWt-gR-ehp" secondAttribute="leading" constant="30" id="5rj-h6-vWL"/>
                             <constraint firstItem="jcJ-ei-7op" firstAttribute="top" secondItem="mWt-gR-ehp" secondAttribute="top" constant="30" id="B8Y-Si-CRJ"/>
+                            <constraint firstItem="W7g-eO-cMP" firstAttribute="top" secondItem="uDo-KO-7vg" secondAttribute="bottom" id="BLc-iR-Bi8"/>
+                            <constraint firstItem="uDo-KO-7vg" firstAttribute="centerX" secondItem="W7g-eO-cMP" secondAttribute="centerX" id="BP0-jM-bim"/>
                             <constraint firstItem="mWt-gR-ehp" firstAttribute="trailing" secondItem="W7g-eO-cMP" secondAttribute="trailing" constant="30" id="DE5-jr-lW1"/>
-                            <constraint firstItem="W7g-eO-cMP" firstAttribute="bottom" secondItem="mWt-gR-ehp" secondAttribute="bottom" id="E1r-mF-T50"/>
+                            <constraint firstItem="W7g-eO-cMP" firstAttribute="bottom" secondItem="mWt-gR-ehp" secondAttribute="bottom" constant="14" id="E1r-mF-T50"/>
                             <constraint firstItem="tl5-d6-eNW" firstAttribute="leading" secondItem="CEY-v9-9dz" secondAttribute="trailing" constant="30" id="EHh-cG-EWm"/>
+                            <constraint firstItem="uDo-KO-7vg" firstAttribute="top" secondItem="CEY-v9-9dz" secondAttribute="bottom" id="EQJ-bG-k4N"/>
                             <constraint firstItem="jcJ-ei-7op" firstAttribute="leading" secondItem="W7g-eO-cMP" secondAttribute="leading" id="HG1-mb-3QV"/>
                             <constraint firstItem="mWt-gR-ehp" firstAttribute="trailing" secondItem="tl5-d6-eNW" secondAttribute="trailing" constant="30" id="Stb-6K-BSq"/>
+                            <constraint firstItem="uDo-KO-7vg" firstAttribute="leading" secondItem="mWt-gR-ehp" secondAttribute="leading" id="aLc-E7-4Vc"/>
                             <constraint firstItem="CEY-v9-9dz" firstAttribute="centerY" secondItem="jcJ-ei-7op" secondAttribute="centerY" id="lcI-XJ-Tuh"/>
-                            <constraint firstItem="W7g-eO-cMP" firstAttribute="top" secondItem="jcJ-ei-7op" secondAttribute="bottom" constant="30" id="rUH-bN-9rg"/>
                             <constraint firstItem="tl5-d6-eNW" firstAttribute="centerY" secondItem="jcJ-ei-7op" secondAttribute="centerY" id="zvD-bZ-wM5"/>
                         </constraints>
                     </view>
@@ -1125,6 +1135,7 @@
                         <outlet property="collectionButton" destination="tl5-d6-eNW" id="B3g-Qh-0Y8"/>
                         <outlet property="collectionView" destination="W7g-eO-cMP" id="0Gr-qJ-50u"/>
                         <outlet property="listButton" destination="CEY-v9-9dz" id="g0d-BD-mZU"/>
+                        <outlet property="searchBar" destination="uDo-KO-7vg" id="RYd-OF-tfa"/>
                         <segue destination="moC-AU-uiy" kind="show" identifier="detailSegue" id="hDE-lo-N0j"/>
                     </connections>
                 </viewController>
@@ -1657,7 +1668,7 @@
         <segue reference="b2g-nQ-9BZ"/>
         <segue reference="tvr-EH-i1H"/>
         <segue reference="Tcm-uA-bJe"/>
-        <segue reference="Czo-BE-JNp"/>
+        <segue reference="hDE-lo-N0j"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="arrow.left" catalog="system" width="128" height="98"/>
