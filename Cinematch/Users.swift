@@ -19,12 +19,10 @@ enum VisualMode {
     case light
 }
 
-// NOTE: Delete below class on merge
-struct Movie {
-    
-}
-
-struct User {
+struct User: Equatable {
+    static func == (lhs: User, rhs: User) -> Bool {
+        return lhs.email == rhs.email
+    }
     var name:String?
     var username:String?
     var bio:String?
