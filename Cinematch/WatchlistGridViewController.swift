@@ -9,7 +9,10 @@ import UIKit
 import TMDBSwift
 import Koloda
 class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, SwipeDelegate, UISearchBarDelegate{
-    
+    func reload() {
+        filteredMovies = CURRENT_USER.watchlist
+        collectionView.reloadData()
+    }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filteredMovies = CURRENT_USER.watchlist.filter { (movie: Movie) -> Bool in
             return movie.title!.lowercased().contains(searchBar.text!.lowercased())
