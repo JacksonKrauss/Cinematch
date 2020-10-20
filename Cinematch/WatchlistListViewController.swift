@@ -93,6 +93,7 @@ class WatchlistListViewController: UIViewController, UITableViewDelegate,UITable
         tableView.delegate = self
         tableView.dataSource = self
         searchBar.delegate = self
+        self.navigationController?.navigationBar.isHidden = true
         filteredMovies = CURRENT_USER.watchlist
     }
     override func viewWillAppear(_ animated: Bool) {

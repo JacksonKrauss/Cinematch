@@ -74,6 +74,7 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
         collectionView.delegate = self
         collectionView.dataSource = self
         searchBar.delegate = self
+        self.navigationController?.navigationBar.isHidden = true
         filteredMovies = CURRENT_USER.watchlist
     }
     override func viewWillAppear(_ animated: Bool) {
