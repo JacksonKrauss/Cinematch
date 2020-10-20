@@ -189,6 +189,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
+                                            <action selector="signUpDidPress:" destination="PTZ-ks-pJR" eventType="touchUpInside" id="MXY-pB-uDO"/>
                                             <segue destination="OCb-ec-3HP" kind="show" id="oIz-3Q-YY7"/>
                                         </connections>
                                     </button>
@@ -555,7 +556,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <segue destination="OCb-ec-3HP" kind="showDetail" id="Tcm-uA-bJe"/>
+                                            <action selector="loginDidPress:" destination="HMS-ms-FN5" eventType="touchUpInside" id="Jgq-JK-WXG"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -580,6 +581,7 @@
                     <connections>
                         <outlet property="passwordTextField" destination="OuP-Zf-ytx" id="sFt-OJ-GFV"/>
                         <outlet property="usernameTextField" destination="44Y-A5-YO5" id="6Lo-9v-rQy"/>
+                        <segue destination="OCb-ec-3HP" kind="show" identifier="loginSegue" id="aEA-Ql-DFx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ofg-h3-ZiD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1716,7 +1718,7 @@
         <segue reference="RCU-C9-hhH"/>
         <segue reference="b2g-nQ-9BZ"/>
         <segue reference="Uxw-XE-NGi"/>
-        <segue reference="Tcm-uA-bJe"/>
+        <segue reference="oIz-3Q-YY7"/>
         <segue reference="Czo-BE-JNp"/>
     </inferredMetricsTieBreakers>
     <resources>
