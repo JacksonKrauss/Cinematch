@@ -1042,7 +1042,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Bhk-qR-jP7">
-                                                    <rect key="frame" x="120" y="6" width="74" height="63"/>
+                                                    <rect key="frame" x="120" y="6" width="74" height="63.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9gi-T7-fSj">
                                                             <rect key="frame" x="0.0" y="0.0" width="74" height="20.5"/>
@@ -1056,11 +1056,11 @@
                                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <color key="highlightedColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="0Ky-lh-d38">
-                                                            <rect key="frame" x="0.0" y="43" width="74" height="20"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="0Ky-lh-d38">
+                                                            <rect key="frame" x="0.0" y="43" width="74" height="20.5"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rating" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ERK-9w-2lU">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="49" height="20"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="49" height="20.5"/>
                                                                     <color key="tintColor" red="0.98431372549019602" green="0.62745098039215685" blue="0.28627450980392155" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.98431372549019602" green="0.62745098039215685" blue="0.28627450980392155" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -1075,6 +1075,9 @@
                                                                     </constraints>
                                                                 </imageView>
                                                             </subviews>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="74" id="eNx-OV-gin"/>
+                                                            </constraints>
                                                         </stackView>
                                                     </subviews>
                                                     <constraints>
@@ -1172,15 +1175,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="uDo-KO-7vg">
-                                <rect key="frame" x="0.0" y="60" width="414" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="vuy-P1-5h9"/>
-                                </constraints>
-                                <textInputTraits key="textInputTraits"/>
-                            </searchBar>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="W7g-eO-cMP">
-                                <rect key="frame" x="30" y="104" width="354" height="718"/>
+                                <rect key="frame" x="30" y="132" width="354" height="691"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="4" id="ADy-Ng-aPn">
                                     <size key="itemSize" width="115" height="150"/>
@@ -1223,18 +1219,25 @@
                                     <outlet property="delegate" destination="PoF-ex-XRM" id="axa-sE-XRN"/>
                                 </connections>
                             </collectionView>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="uDo-KO-7vg">
+                                <rect key="frame" x="0.0" y="87.5" width="414" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="vuy-P1-5h9"/>
+                                </constraints>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="mWt-gR-ehp"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="jcJ-ei-7op" firstAttribute="leading" secondItem="mWt-gR-ehp" secondAttribute="leading" constant="30" id="5rj-h6-vWL"/>
                             <constraint firstItem="jcJ-ei-7op" firstAttribute="top" secondItem="mWt-gR-ehp" secondAttribute="top" constant="30" id="B8Y-Si-CRJ"/>
-                            <constraint firstItem="W7g-eO-cMP" firstAttribute="top" secondItem="uDo-KO-7vg" secondAttribute="bottom" id="BLc-iR-Bi8"/>
+                            <constraint firstItem="W7g-eO-cMP" firstAttribute="top" secondItem="uDo-KO-7vg" secondAttribute="bottom" constant="0.5" id="BLc-iR-Bi8"/>
                             <constraint firstItem="uDo-KO-7vg" firstAttribute="centerX" secondItem="W7g-eO-cMP" secondAttribute="centerX" id="BP0-jM-bim"/>
                             <constraint firstItem="mWt-gR-ehp" firstAttribute="trailing" secondItem="W7g-eO-cMP" secondAttribute="trailing" constant="30" id="DE5-jr-lW1"/>
-                            <constraint firstItem="W7g-eO-cMP" firstAttribute="bottom" secondItem="mWt-gR-ehp" secondAttribute="bottom" constant="14" id="E1r-mF-T50"/>
+                            <constraint firstItem="W7g-eO-cMP" firstAttribute="bottom" secondItem="mWt-gR-ehp" secondAttribute="bottom" constant="15" id="E1r-mF-T50"/>
                             <constraint firstItem="tl5-d6-eNW" firstAttribute="leading" secondItem="CEY-v9-9dz" secondAttribute="trailing" constant="30" id="EHh-cG-EWm"/>
-                            <constraint firstItem="uDo-KO-7vg" firstAttribute="top" secondItem="CEY-v9-9dz" secondAttribute="bottom" id="EQJ-bG-k4N"/>
+                            <constraint firstItem="uDo-KO-7vg" firstAttribute="top" secondItem="CEY-v9-9dz" secondAttribute="bottom" constant="27.5" id="EQJ-bG-k4N"/>
                             <constraint firstItem="jcJ-ei-7op" firstAttribute="leading" secondItem="W7g-eO-cMP" secondAttribute="leading" id="HG1-mb-3QV"/>
                             <constraint firstItem="mWt-gR-ehp" firstAttribute="trailing" secondItem="tl5-d6-eNW" secondAttribute="trailing" constant="30" id="Stb-6K-BSq"/>
                             <constraint firstItem="uDo-KO-7vg" firstAttribute="leading" secondItem="mWt-gR-ehp" secondAttribute="leading" id="aLc-E7-4Vc"/>
