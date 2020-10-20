@@ -40,13 +40,18 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
         cell.nameLabel.text = filteredUsers[indexPath.row].name
         cell.userLabel.text = filteredUsers[indexPath.row].username
         cell.profilePicView.image = filteredUsers[indexPath.row].profilePicture
+        if(selectedUsers.contains(filteredUsers[indexPath.row])){
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+        }
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedUsers?.append(filteredUsers[indexPath.row])
+        print("added")
     }
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         selectedUsers?.remove(object: filteredUsers[indexPath.row])
+        print("removed")
     }
 
     @IBOutlet weak var searchBar: UISearchBar!
@@ -61,19 +66,8 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
         searchBar.delegate = self
         self.selectedUsers = []
         self.filteredUsers = OTHER_USERS
-        
         // Do any additional setup after loading the view.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
