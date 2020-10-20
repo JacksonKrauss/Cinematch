@@ -7,7 +7,7 @@
 
 import UIKit
 import Firebase
-
+import FirebaseDatabase
 class LoginViewController: UIViewController {
 
     @IBOutlet weak var usernameTextField: UITextField!
