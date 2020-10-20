@@ -39,7 +39,7 @@ struct User: Equatable {
 }
 
 // sarah
-var CURRENT_USER = User(name: "Sarah Brown", username: "sarab", bio: "Hi, my name is sara and I like movies", email: "sarab@gmail.com", privacy: UserPrivacy.friends, visualMode: VisualMode.light, profilePicture: UIImage(named: "profileCurrent"), liked: [], disliked: [], watchlist: [], history: [])
+var CURRENT_USER = User(name: "Sarah Brown", username: "sarab", bio: "Hi, my name is sara and I like movies", email: "sarab@gmail.com", privacy: UserPrivacy.friends, visualMode: VisualMode.light, profilePicture: UIImage(named: "profileCurrent"), liked: SampleMovies.getMovies(), disliked: [], watchlist: SampleMovies.getMovies(), history: [])
 
 // other users
 var otherUser1 = User(name: "Greg Broughton", username: "gregb", bio: "hi, its greg, dis my bio", email: "greggboi@gmail.com", privacy: UserPrivacy.everyone, visualMode: VisualMode.dark, profilePicture: UIImage(named: "profile1"), liked: [], disliked: [], watchlist: [], history: [])

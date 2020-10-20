@@ -30,12 +30,17 @@ class SettingsViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    
     @IBAction func editImagePressed(_ sender: Any) {
         print("Editing Image")
     }
     
     @IBAction func logoutPressed(_ sender: Any) {
-        print("Logging Out")
+        //Figure this out
+        self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
+
+        
+        //self.view.window?.rootViewController?.presentedViewController!.dismiss(animated: true, completion: nil)
     }
     
 
