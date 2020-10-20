@@ -30,17 +30,16 @@ class SettingsViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    @IBAction func backPressed(_ sender: Any) {
-        print("Back pressed")
-        self.dismiss(animated: true, completion: nil)
-    }
     
     @IBAction func editImagePressed(_ sender: Any) {
         print("Editing Image")
     }
     
     @IBAction func logoutPressed(_ sender: Any) {
-        //Figure this out 
+        //Figure this out
+        self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
+
+        
         //self.view.window?.rootViewController?.presentedViewController!.dismiss(animated: true, completion: nil)
     }
     
