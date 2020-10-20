@@ -6,28 +6,45 @@
 //
 
 import UIKit
+import Firebase
 
 class LoginViewController: UIViewController {
 
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
+    // get the firebase database instance
+    let ref = Database.database().reference()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @IBAction func loginDidPress(_ sender: Any) {
+        guard let username = usernameTextField.text,
+              let password = passwordTextField.text
+        else {
+            return
+        }
+        
+        // if the user exists, log them in
+        // if not, nothing happens
+        ref.child("user_info").child(username).observeSingleEvent(of: .value, with: {
+            snapshot in
+            
+            if !snapshot.exists() {
+                return
+            }
+            
+            if let email = snapshot.childSnapshot(forPath: "email").value as? String {
+                Auth.auth().signIn(withEmail: email, password: password) {
+                    user, error in
+                    if error == nil {
+                        self.performSegue(withIdentifier: "loginSegue", sender: nil)
+                    }
+                }
+            }
+        })
     }
-    */
-    
-    // need segue for login button
 }
