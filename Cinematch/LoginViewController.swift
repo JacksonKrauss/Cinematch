@@ -13,11 +13,11 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
+    // get the firebase database instance
     let ref = Database.database().reference()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
     }
     
@@ -28,6 +28,8 @@ class LoginViewController: UIViewController {
             return
         }
         
+        // if the user exists, log them in
+        // if not, nothing happens
         ref.child("user_info").child(username).observeSingleEvent(of: .value, with: {
             snapshot in
             
@@ -38,8 +40,8 @@ class LoginViewController: UIViewController {
             if let email = snapshot.childSnapshot(forPath: "email").value as? String {
                 Auth.auth().signIn(withEmail: email, password: password) {
                     user, error in
-                    if error != nil {
-                        //need to change segue so that a bad login still doesn't transition
+                    if error == nil {
+                        self.performSegue(withIdentifier: "loginSegue", sender: nil)
                     }
                 }
             }

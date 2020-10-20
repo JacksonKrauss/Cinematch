@@ -438,7 +438,6 @@
                                 <state key="normal" title="Login"/>
                                 <connections>
                                     <action selector="loginDidPress:" destination="HMS-ms-FN5" eventType="touchUpInside" id="VUO-Ys-1kD"/>
-                                    <segue destination="OCb-ec-3HP" kind="showDetail" id="Tcm-uA-bJe"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Login" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4R6-Ke-YG1">
@@ -456,6 +455,7 @@
                     <connections>
                         <outlet property="passwordTextField" destination="OuP-Zf-ytx" id="sFt-OJ-GFV"/>
                         <outlet property="usernameTextField" destination="44Y-A5-YO5" id="6Lo-9v-rQy"/>
+                        <segue destination="OCb-ec-3HP" kind="show" identifier="loginSegue" id="3tg-gx-q6J"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ofg-h3-ZiD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1359,7 +1359,7 @@
         <segue reference="Xdh-iM-jPJ"/>
         <segue reference="b2g-nQ-9BZ"/>
         <segue reference="tvr-EH-i1H"/>
-        <segue reference="Tcm-uA-bJe"/>
+        <segue reference="3tg-gx-q6J"/>
         <segue reference="Czo-BE-JNp"/>
     </inferredMetricsTieBreakers>
     <resources>
