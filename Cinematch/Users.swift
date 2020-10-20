@@ -30,7 +30,6 @@ struct User: Equatable {
     var privacy:UserPrivacy = UserPrivacy.friends  // default to friends
     var visualMode:VisualMode = VisualMode.light   // default to light mode
     var profilePicture:UIImage?
-    
     var liked:[Movie] = []
     var disliked:[Movie] = []
     var watchlist:[Movie] = []

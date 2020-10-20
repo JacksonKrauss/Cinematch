@@ -8,21 +8,32 @@
 import UIKit
 import TMDBSwift
 import Koloda
-class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, SwipeDelegate, UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        let searchBar = searchController.searchBar
-        if((searchBar.text?.isEmpty) != nil){
+class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, SwipeDelegate, UISearchBarDelegate{
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        filteredMovies = CURRENT_USER.watchlist.filter { (movie: Movie) -> Bool in
+            return movie.title!.lowercased().contains(searchBar.text!.lowercased())
+        }
+        if(searchText.isEmpty){
             filteredMovies = CURRENT_USER.watchlist
         }
-        else{
-            filteredMovies = CURRENT_USER.watchlist.filter { (movie: Movie) -> Bool in
-                return movie.title!.lowercased().contains(searchBar.text!.lowercased())
-             }
-        }
-
         collectionView.reloadData()
     }
-    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+        searchBar.resignFirstResponder()
+    }
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+            self.searchBar.showsCancelButton = true
+    }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+            searchBar.showsCancelButton = false
+            filteredMovies = CURRENT_USER.watchlist
+            collectionView.reloadData()
+            searchBar.text = ""
+            searchBar.resignFirstResponder()
+    }
+    @IBOutlet weak var searchBar: UISearchBar!
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
         let movie = CURRENT_USER.watchlist[index]
         Movie.clearMovie(movie: CURRENT_USER.watchlist[index])
@@ -42,36 +53,25 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return CURRENT_USER.watchlist.count
+        return filteredMovies.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PosterCell", for: indexPath) as! PosterCollectionViewCell
-        cell.posterImageView.load(url: URL(string: "https://image.tmdb.org/t/p/original" + CURRENT_USER.watchlist[indexPath.row].poster!)!)
+        cell.posterImageView.load(url: URL(string: "https://image.tmdb.org/t/p/original" + filteredMovies[indexPath.row].poster!)!)
         return cell
     }
     
-
     @IBOutlet weak var listButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionButton: UIButton!
-    var searchController:UISearchController!
-    var filteredMovies:[Movie]?
+    var filteredMovies:[Movie]!
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.delegate = self
-        searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.sizeToFit()
-        searchController.searchBar.placeholder = "Search Watchlist"
-        navigationItem.searchController = searchController
-        definesPresentationContext = true
+        collectionView.dataSource = self
+        searchBar.delegate = self
         filteredMovies = CURRENT_USER.watchlist
-        // Do any additional setup after loading the view.
-    }
-    var isSearchBarEmpty: Bool {
-        return searchController!.searchBar.text?.isEmpty ?? true
     }
     override func viewWillAppear(_ animated: Bool) {
         collectionView.reloadData()
@@ -89,16 +89,5 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
             }
         }
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

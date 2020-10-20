@@ -8,7 +8,30 @@
 import UIKit
 import Koloda
 import TMDBSwift
-class WatchlistListViewController: UIViewController, UITableViewDelegate,UITableViewDataSource, SwipeDelegate {
+class WatchlistListViewController: UIViewController, UITableViewDelegate,UITableViewDataSource, SwipeDelegate, UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        filteredMovies = CURRENT_USER.watchlist.filter { (movie: Movie) -> Bool in
+            return movie.title!.lowercased().contains(searchBar.text!.lowercased())
+        }
+        if(searchText.isEmpty){
+            filteredMovies = CURRENT_USER.watchlist
+        }
+        tableView.reloadData()
+    }
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+        searchBar.resignFirstResponder()
+    }
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+            self.searchBar.showsCancelButton = true
+    }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+            searchBar.showsCancelButton = false
+            filteredMovies = CURRENT_USER.watchlist
+            tableView.reloadData()
+            searchBar.text = ""
+            searchBar.resignFirstResponder()
+    }
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
         let movie = CURRENT_USER.watchlist[index]
         Movie.clearMovie(movie: CURRENT_USER.watchlist[index])
@@ -28,15 +51,15 @@ class WatchlistListViewController: UIViewController, UITableViewDelegate,UITable
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        CURRENT_USER.watchlist.count
+        filteredMovies.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell") as! WatchlistTableViewCell
-        cell.posterView.load(url: URL(string: "https://image.tmdb.org/t/p/original" + CURRENT_USER.watchlist[indexPath.row].poster!)!)
-        cell.titleLabel.text = CURRENT_USER.watchlist[indexPath.row].title!
-        cell.descriptionLabel.text = CURRENT_USER.watchlist[indexPath.row].release!
-        cell.ratingLabel.text = CURRENT_USER.watchlist[indexPath.row].rating
+        cell.posterView.load(url: URL(string: "https://image.tmdb.org/t/p/original" + filteredMovies[indexPath.row].poster!)!)
+        cell.titleLabel.text = filteredMovies[indexPath.row].title!
+        cell.descriptionLabel.text = filteredMovies[indexPath.row].release!
+        cell.ratingLabel.text = filteredMovies[indexPath.row].rating
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -54,15 +77,18 @@ class WatchlistListViewController: UIViewController, UITableViewDelegate,UITable
         }
     }
     
-    
+    var filteredMovies:[Movie]!
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        searchBar.delegate = self
+        filteredMovies = CURRENT_USER.watchlist
+    }
+    override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()
-
-        // Do any additional setup after loading the view.
     }
     
     @IBAction func switchToList(_ sender: Any) {
@@ -74,14 +100,4 @@ class WatchlistListViewController: UIViewController, UITableViewDelegate,UITable
         print("switched to grid")
         //segue
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
