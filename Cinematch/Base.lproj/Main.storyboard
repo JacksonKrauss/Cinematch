@@ -189,6 +189,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
+                                            <action selector="signUpDidPress:" destination="PTZ-ks-pJR" eventType="touchUpInside" id="MXY-pB-uDO"/>
                                             <segue destination="OCb-ec-3HP" kind="show" id="oIz-3Q-YY7"/>
                                         </connections>
                                     </button>
@@ -639,7 +640,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <segue destination="OCb-ec-3HP" kind="showDetail" id="Tcm-uA-bJe"/>
+                                            <action selector="loginDidPress:" destination="HMS-ms-FN5" eventType="touchUpInside" id="Jgq-JK-WXG"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -664,6 +665,7 @@
                     <connections>
                         <outlet property="passwordTextField" destination="OuP-Zf-ytx" id="sFt-OJ-GFV"/>
                         <outlet property="usernameTextField" destination="44Y-A5-YO5" id="6Lo-9v-rQy"/>
+                        <segue destination="OCb-ec-3HP" kind="show" identifier="loginSegue" id="aEA-Ql-DFx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ofg-h3-ZiD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1244,7 +1246,7 @@
         <!--Search-->
         <scene sceneID="TiK-g6-8kd">
             <objects>
-                <viewController id="jhO-IG-dP9" sceneMemberID="viewController">
+                <viewController id="jhO-IG-dP9" customClass="SearchViewController" customModule="Cinematch" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gDn-FI-rK3">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1259,12 +1261,15 @@
                                     <segment title="Movies"/>
                                     <segment title="People"/>
                                 </segments>
+                                <connections>
+                                    <action selector="filterSelected:" destination="jhO-IG-dP9" eventType="valueChanged" id="qbT-nz-ajM"/>
+                                </connections>
                             </segmentedControl>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="prd-tO-lig">
                                 <rect key="frame" x="0.0" y="181" width="414" height="686"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="166" id="QR2-C0-ks5">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MovieCell" rowHeight="166" id="QR2-C0-ks5" customClass="MovieSearchTableViewCell" customModule="Cinematch" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="166"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QR2-C0-ks5" id="BPh-qM-FJJ">
@@ -1330,6 +1335,52 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <connections>
+                                            <outlet property="moviePosterImageView" destination="ZFm-Rr-w4i" id="Nn2-W0-9hc"/>
+                                            <outlet property="movieRatingLabel" destination="HEr-Fa-otQ" id="4y3-UH-3Xq"/>
+                                            <outlet property="movieTitleLabel" destination="VJA-GG-ECP" id="rX6-fQ-a4h"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PersonCell" rowHeight="166" id="gfP-m9-asf" customClass="PeopleSearchTableViewCell" customModule="Cinematch" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="194" width="414" height="166"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gfP-m9-asf" id="BqE-LY-nJx">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="166"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A2i-1N-tSP">
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="166"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Reem Schaefer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rcC-eR-fU8">
+                                                            <rect key="frame" x="123" y="8" width="239" height="45"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" name="DamascusBold" family="Damascus" pointSize="24"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jg0-tc-Amv">
+                                                            <rect key="frame" x="123" y="61" width="76" height="21"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
+                                                            <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" systemColor="systemGray4Color"/>
+                                                </view>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gnl-TR-oCn">
+                                                    <rect key="frame" x="10" y="10" width="94" height="145"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <connections>
+                                            <outlet property="nameLabel" destination="rcC-eR-fU8" id="Wtm-f2-G68"/>
+                                            <outlet property="profilePicImageView" destination="gnl-TR-oCn" id="6p1-2q-0cc"/>
+                                            <outlet property="usernameLabel" destination="jg0-tc-Amv" id="syr-SA-zDv"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <sections/>
@@ -1354,6 +1405,11 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Search" id="Q8T-us-j6U"/>
                     <navigationItem key="navigationItem" id="HEd-Iz-tG9"/>
+                    <connections>
+                        <outlet property="searchBar" destination="fx1-k9-O52" id="UVv-Ll-WQh"/>
+                        <outlet property="searchTableView" destination="prd-tO-lig" id="F7B-0R-MDW"/>
+                        <outlet property="searchTypeSegCtrl" destination="ITV-cl-s1x" id="dmq-ci-zwI"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eRP-2E-uvz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1817,6 +1873,7 @@
         <segue reference="Uxw-XE-NGi"/>
         <segue reference="oIz-3Q-YY7"/>
         <segue reference="yGY-WE-pLS"/>
+        <segue reference="Czo-BE-JNp"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="arrow.left" catalog="system" width="128" height="98"/>
