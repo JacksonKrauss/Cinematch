@@ -12,6 +12,9 @@ class WatchlistListViewController: UIViewController, UITableViewDelegate,UITable
     func reload() {
         filteredMovies = CURRENT_USER.watchlist
         tableView.reloadData()
+        searchBar.showsCancelButton = false
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -97,7 +100,16 @@ class WatchlistListViewController: UIViewController, UITableViewDelegate,UITable
         filteredMovies = CURRENT_USER.watchlist
     }
     override func viewWillAppear(_ animated: Bool) {
+        filteredMovies = CURRENT_USER.watchlist
         tableView.reloadData()
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        tableView.reloadData()
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        searchBar.showsCancelButton = false
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
     }
     
     @IBAction func switchToList(_ sender: Any) {

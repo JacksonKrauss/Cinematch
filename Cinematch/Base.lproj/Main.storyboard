@@ -1152,6 +1152,9 @@
                                 </constraints>
                                 <color key="tintColor" red="0.18823529410000001" green="0.18823529410000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <state key="normal" title="Button" image="list.dash" catalog="system"/>
+                                <connections>
+                                    <action selector="listButton:" destination="PoF-ex-XRM" eventType="touchUpInside" id="RRv-2V-5hE"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tl5-d6-eNW">
                                 <rect key="frame" x="354" y="118" width="30" height="30"/>
@@ -1245,7 +1248,6 @@
                     <connections>
                         <outlet property="collectionButton" destination="tl5-d6-eNW" id="B3g-Qh-0Y8"/>
                         <outlet property="collectionView" destination="W7g-eO-cMP" id="0Gr-qJ-50u"/>
-                        <outlet property="listButton" destination="CEY-v9-9dz" id="g0d-BD-mZU"/>
                         <outlet property="searchBar" destination="uDo-KO-7vg" id="RYd-OF-tfa"/>
                         <segue destination="moC-AU-uiy" kind="presentation" identifier="detailSegue" id="hDE-lo-N0j"/>
                     </connections>
