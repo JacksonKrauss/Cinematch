@@ -20,9 +20,6 @@ class MovieDetailViewController: UIViewController {
     @IBOutlet weak var posterView: UIImageView!
     @IBOutlet weak var friendsLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var actor1Label: UILabel!
-    @IBOutlet weak var actor2Label: UILabel!
-    @IBOutlet weak var actor3Label: UILabel!
     @IBAction func likeButton(_ sender: Any) {
         self.delegate?.buttonTapped(direction: .right, index: currentIndex!)
     }
@@ -46,9 +43,6 @@ class MovieDetailViewController: UIViewController {
         self.releaseLabel.text = self.movie?.release
         self.ratingLabel.text = self.movie?.rating
         self.friendsLabel.text = "\(movie!.friends!.count) liked this movie"
-        self.actor1Label.text = self.movie?.actors[0]
-        self.actor2Label.text = self.movie?.actors[1]
-        self.actor3Label.text = self.movie?.actors[2]
         self.posterView.load(url: URL(string: "https://image.tmdb.org/t/p/original" + (self.movie!.poster!))!)
     }
     
