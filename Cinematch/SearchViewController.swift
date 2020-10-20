@@ -13,84 +13,79 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     @IBOutlet weak var searchTypeSegCtrl: UISegmentedControl!
     @IBOutlet weak var searchTableView: UITableView!
     
-    var moviesData = SampleMovies.getMovies() // from Movie class
-    var usersData = OTHER_USERS // from Users class
-    
-    var currentFilter: ChosenFilter!
-    
-    enum ChosenFilter {
-        case movies, users
-    }
-    
-    var filteredMovies:[Movie]?
-    var filteredUsers:[User]?
+    //hardcoded data to search
+    var moviesData = SampleMovies.getMovies()
+    var filteredMovies:[Movie]!
+    var usersData = OTHER_USERS
+    var filteredUsers:[User]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         searchTableView.dataSource = self
         searchBar.delegate = self
+        // Do any additional setup after loading the view.
+        // initial data source
         filteredMovies = moviesData
         filteredUsers = usersData
-        // Do any additional setup after loading the view.
-        currentFilter = ChosenFilter.movies
     }
     
     @IBAction func filterSelected(_ sender: Any) {
-        switch searchTypeSegCtrl.selectedSegmentIndex {
-        case 0:
-            currentFilter = .movies
-        case 1:
-            currentFilter = .users
-        default:
-            return
-        }
+        // table view needs to be updated
+        searchTableView.reloadData()
     }
     
-    // populates tableview depending on current filter
+    // get count of table cells based on selected filter
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch currentFilter {
-        case .movies:
-            return filteredMovies!.count
-        case .users:
-            return filteredUsers!.count
+        switch searchTypeSegCtrl.selectedSegmentIndex {
+        case 0:
+            return filteredMovies.count
+        case 1:
+            return filteredUsers.count
         default:
             return 0
         }
     }
     
+    // populate the table view with data depending on the filter
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if currentFilter == .movies{
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as! WatchlistTableViewCell
-            var currentMovie = filteredMovies![indexPath.row]
-            cell.titleLabel?.text = currentMovie.title
-            cell.descriptionLabel?.text = currentMovie.description
-            cell.ratingLabel?.text = currentMovie.rating
+        switch searchTypeSegCtrl.selectedSegmentIndex {
+        case 0:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as! MovieSearchTableViewCell
+            var currentMovie = filteredMovies[indexPath.row]
+            cell.movieTitleLabel?.text = currentMovie.title!
+            cell.movieRatingLabel?.text = currentMovie.rating!
             var poster = UIImageView()
             poster.load(url: URL(string: "https://image.tmdb.org/t/p/original" + currentMovie.poster!)!)
-            cell.posterView = poster
+            cell.moviePosterImageView? = poster
             return cell
-        } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath) as! SendToFriendTableViewCell
-            var currentTableUser = filteredUsers![indexPath.row]
-            cell.nameLabel?.text = currentTableUser.name
-            cell.userLabel?.text = currentTableUser.username
-            var profilePic = UIImage(named: "profile1")
+        case 1:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "PersonCell", for: indexPath) as! PeopleSearchTableViewCell
+            var currentPerson = filteredUsers[indexPath.row]
+            cell.nameLabel?.text = currentPerson.name
+            cell.usernameLabel?.text = currentPerson.username
             return cell
+        default:
+            return UITableViewCell()
         }
     }
     
+    // search bar functionality that updates the table view based on the selected filter
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if currentFilter == .movies {
-            filteredMovies = searchText.isEmpty ? moviesData : moviesData.filter {
+        switch searchTypeSegCtrl.selectedSegmentIndex {
+        case 0:
+            filteredMovies = searchText.isEmpty ? moviesData : filteredMovies.filter {
                 (movie: Movie) -> Bool in
                 return movie.title?.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
             }
-        } else {
-            filteredUsers = searchText.isEmpty ? usersData : usersData.filter {
+            break
+        case 1:
+            filteredUsers = searchText.isEmpty ? usersData : filteredUsers.filter {
                 (user: User) -> Bool in
-                return user.name?.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
+                return user.name?.range(of: searchText, options: .caseInsensitive, range: nil, locale:nil) != nil
             }
+            break
+        default:
+            break
         }
         searchTableView.reloadData()
     }
