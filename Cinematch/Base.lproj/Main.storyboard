@@ -199,6 +199,10 @@
                                 <rect key="frame" x="30" y="54" width="12.5" height="22"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" image="chevron.backward" catalog="system"/>
+                                <connections>
+                                    <action selector="backButtonDidPress:" destination="KdV-6l-BUX" eventType="touchUpInside" id="k0Y-1R-q3H"/>
+                                    <action selector="backButtonDidPress:" destination="PTZ-ks-pJR" eventType="touchUpInside" id="usv-KX-kqh"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="2it-dY-saA"/>
@@ -222,6 +226,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HHs-gB-7g2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="KdV-6l-BUX" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1660.8695652173915" y="343.52678571428572"/>
         </scene>
@@ -655,6 +660,9 @@
                                 <rect key="frame" x="30" y="54" width="12.5" height="22"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" image="chevron.left" catalog="system"/>
+                                <connections>
+                                    <action selector="backButtonDidPress:" destination="HMS-ms-FN5" eventType="touchUpInside" id="RN9-D0-Md6"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="jNU-hv-f0C"/>
