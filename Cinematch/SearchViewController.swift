@@ -147,12 +147,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
                 detailViewController.movie = filteredMovies[index!]
                 detailViewController.currentIndex = index
             }
-            // "Cannot complete segue at this time, as movie detail view needs a swipe delegate"
-            // DO NOT CLICK
         }
         if segue.identifier == "peopleSearchSegue" {
             let indexPath = searchTableView.indexPathForSelectedRow
-            let selectedUser = usersData[indexPath!.row]
+            let selectedUser = filteredUsers[indexPath!.row]
             let destination = segue.destination as! FriendProfileViewController
             destination.user = selectedUser
         }
