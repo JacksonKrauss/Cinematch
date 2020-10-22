@@ -1301,6 +1301,7 @@
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BLACK PANTHER" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VJA-GG-ECP">
                                                                     <rect key="frame" x="0.0" y="0.0" width="204.5" height="30"/>
+                                                                </label>                                                                    
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4.5" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HEr-Fa-otQ">
                                                                     <rect key="frame" x="0.0" y="0.0" width="184.5" height="20"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
