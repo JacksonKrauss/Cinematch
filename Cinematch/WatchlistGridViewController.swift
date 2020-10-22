@@ -9,7 +9,13 @@ import UIKit
 import TMDBSwift
 import Koloda
 class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, SwipeDelegate, UISearchBarDelegate{
-    
+    func reload() {
+        filteredMovies = CURRENT_USER.watchlist
+        collectionView.reloadData()
+        searchBar.showsCancelButton = false
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
+    }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filteredMovies = CURRENT_USER.watchlist.filter { (movie: Movie) -> Bool in
             return movie.title!.lowercased().contains(searchBar.text!.lowercased())
@@ -62,7 +68,6 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
         return cell
     }
     
-    @IBOutlet weak var listButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionButton: UIButton!
     var filteredMovies:[Movie]!
@@ -71,13 +76,28 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
         collectionView.delegate = self
         collectionView.dataSource = self
         searchBar.delegate = self
+        self.navigationController?.navigationBar.isHidden = true
         filteredMovies = CURRENT_USER.watchlist
     }
     override func viewWillAppear(_ animated: Bool) {
+        filteredMovies = CURRENT_USER.watchlist
         collectionView.reloadData()
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        collectionView.reloadData()
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        searchBar.showsCancelButton = false
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         performSegue(withIdentifier: "detailSegue", sender: indexPath.row)
+    }
+    @IBAction func listButton(_ sender: Any) {
+        if let navController = self.navigationController {
+            navController.popViewController(animated: false)
+        }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "detailSegue"){

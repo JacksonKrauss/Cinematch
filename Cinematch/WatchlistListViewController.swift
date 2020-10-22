@@ -9,6 +9,14 @@ import UIKit
 import Koloda
 import TMDBSwift
 class WatchlistListViewController: UIViewController, UITableViewDelegate,UITableViewDataSource, SwipeDelegate, UISearchBarDelegate {
+    func reload() {
+        filteredMovies = CURRENT_USER.watchlist
+        tableView.reloadData()
+        searchBar.showsCancelButton = false
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
+    }
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filteredMovies = CURRENT_USER.watchlist.filter { (movie: Movie) -> Bool in
             return movie.title!.lowercased().contains(searchBar.text!.lowercased())
@@ -38,16 +46,19 @@ class WatchlistListViewController: UIViewController, UITableViewDelegate,UITable
         if(direction == .right){
             CURRENT_USER.liked.append(movie)
             movie.opinion = .like
+            tableView.reloadData()
         }
         else if(direction == .left){
             CURRENT_USER.disliked.append(movie)
             movie.opinion = .dislike
+            tableView.reloadData()
         }
         else if(direction == .up){
             CURRENT_USER.watchlist.append(movie)
             movie.opinion = .watchlist
+            tableView.reloadData()
         }
-        tableView.reloadData()
+        self.tableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -85,10 +96,20 @@ class WatchlistListViewController: UIViewController, UITableViewDelegate,UITable
         tableView.delegate = self
         tableView.dataSource = self
         searchBar.delegate = self
+        self.navigationController?.navigationBar.isHidden = true
         filteredMovies = CURRENT_USER.watchlist
     }
     override func viewWillAppear(_ animated: Bool) {
+        filteredMovies = CURRENT_USER.watchlist
         tableView.reloadData()
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        tableView.reloadData()
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        searchBar.showsCancelButton = false
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
     }
     
     @IBAction func switchToList(_ sender: Any) {
