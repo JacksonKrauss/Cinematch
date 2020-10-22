@@ -31,7 +31,7 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         bioTextLabel.text = user.bio
         userMoviesData = user.liked
         
-        profilePicture.layer.cornerRadius = 125 / 2 // fix this jank shit
+        profilePicture.layer.cornerRadius = 125 / 2 // fix this jank
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

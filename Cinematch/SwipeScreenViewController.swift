@@ -9,14 +9,11 @@ import UIKit
 import Koloda
 import TMDBSwift
 class SwipeScreenViewController: UIViewController,SwipeDelegate {
-    func reload() {
-        
-    }
-    
     func buttonTapped(direction: SwipeResultDirection, index:Int) {
         Movie.clearMovie(movie: movies[index])
         if(index==kolodaView.currentCardIndex){
             self.kolodaView.swipe(direction)
+            print("lol")
         }
         else if(direction == .right){
             CURRENT_USER.liked.append(movies[index])
