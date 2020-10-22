@@ -33,6 +33,7 @@ class LoginViewController: UIViewController {
             if !snapshot.exists() {
                 return
             }
+            // if the username exists, log the user in with the associated email
             if let email = snapshot.childSnapshot(forPath: "email").value as? String {
                 Auth.auth().signIn(withEmail: email, password: password) {
                     user, error in
@@ -42,5 +43,10 @@ class LoginViewController: UIViewController {
                 }
             }
         })
+    }
+    
+    // programmatic back button
+    @IBAction func backButtonDidPress(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
     }
 }
