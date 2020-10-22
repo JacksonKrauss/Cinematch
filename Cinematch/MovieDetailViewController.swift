@@ -9,6 +9,7 @@ import UIKit
 import Koloda
 protocol SwipeDelegate {
     func buttonTapped(direction: SwipeResultDirection, index: Int)
+    func reload()
 }
 class MovieDetailViewController: UIViewController {
     var movie: Movie?
@@ -22,12 +23,15 @@ class MovieDetailViewController: UIViewController {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBAction func likeButton(_ sender: Any) {
         self.delegate?.buttonTapped(direction: .right, index: currentIndex!)
+        print("liked")
     }
     @IBAction func downButton(_ sender: Any) {
         self.delegate?.buttonTapped(direction: .left, index: currentIndex!)
+        print("disliked")
     }
     @IBAction func addButton(_ sender: Any) {
         self.delegate?.buttonTapped(direction: .up, index: currentIndex!)
+        print("watchlist")
     }
     @IBAction func shareButton(_ sender: Any) {
     }
@@ -42,8 +46,11 @@ class MovieDetailViewController: UIViewController {
         self.descriptionLabel.text = self.movie?.description
         self.releaseLabel.text = self.movie?.release
         self.ratingLabel.text = self.movie?.rating
-        self.friendsLabel.text = "\(movie!.friends!.count) liked this movie"
+        self.friendsLabel.text = "\(movie!.friends!.count) of your friends liked this movie"
         self.posterView.load(url: URL(string: "https://image.tmdb.org/t/p/original" + (self.movie!.poster!))!)
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        self.delegate?.reload()
     }
     
 
