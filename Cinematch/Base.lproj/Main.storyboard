@@ -1337,6 +1337,7 @@
                                         <connections>
                                             <outlet property="moviePosterImageView" destination="ZFm-Rr-w4i" id="Nn2-W0-9hc"/>
                                             <outlet property="movieRatingLabel" destination="HEr-Fa-otQ" id="4y3-UH-3Xq"/>
+                                            <outlet property="movieReleaseLabel" destination="W4g-4I-0AF" id="AXh-em-N1X"/>
                                             <outlet property="movieTitleLabel" destination="VJA-GG-ECP" id="rX6-fQ-a4h"/>
                                             <segue destination="moC-AU-uiy" kind="presentation" identifier="movieSearchSegue" id="Ugq-qH-Kja"/>
                                         </connections>

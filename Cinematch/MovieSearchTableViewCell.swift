@@ -11,6 +11,7 @@ import UIKit
 class MovieSearchTableViewCell: UITableViewCell {
     @IBOutlet weak var movieTitleLabel: UILabel!
     @IBOutlet weak var movieRatingLabel: UILabel!
+    @IBOutlet weak var movieReleaseLabel: UILabel!
     @IBOutlet weak var moviePosterImageView: UIImageView!
     
     override func awakeFromNib() {
