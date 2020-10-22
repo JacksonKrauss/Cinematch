@@ -158,7 +158,7 @@
                                         <rect key="frame" x="0.0" y="425" width="354" height="34"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YnZ-tn-c4F">
                                         <rect key="frame" x="0.0" y="469" width="354" height="20.5"/>
@@ -170,7 +170,7 @@
                                         <rect key="frame" x="0.0" y="499.5" width="354" height="34"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                     <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V02-IP-NyF">
                                         <rect key="frame" x="0.0" y="543.5" width="354" height="20"/>
@@ -377,7 +377,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="kCl-T5-sXs">
-                                                <rect key="frame" x="30" y="451" width="18" height="17"/>
+                                                <rect key="frame" x="30" y="453.5" width="18" height="17"/>
                                                 <color key="tintColor" name="AccentColor"/>
                                             </imageView>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="U9u-2j-bRp">
@@ -621,7 +621,7 @@
                                         <rect key="frame" x="0.0" y="201.5" width="354" height="34"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                     <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XfM-yn-9Ze">
                                         <rect key="frame" x="0.0" y="245.5" width="354" height="20"/>
@@ -1046,7 +1046,7 @@
                                                             <rect key="frame" x="0.0" y="43" width="74" height="20.5"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rating" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ERK-9w-2lU">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="49" height="20"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="49" height="20.5"/>
                                                                     <color key="tintColor" name="AccentColor"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" red="0.98431372549019602" green="0.62745098039215685" blue="0.28627450980392155" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -1338,13 +1338,14 @@
                                             <outlet property="moviePosterImageView" destination="ZFm-Rr-w4i" id="Nn2-W0-9hc"/>
                                             <outlet property="movieRatingLabel" destination="HEr-Fa-otQ" id="4y3-UH-3Xq"/>
                                             <outlet property="movieTitleLabel" destination="VJA-GG-ECP" id="rX6-fQ-a4h"/>
+                                            <segue destination="moC-AU-uiy" kind="presentation" identifier="movieSearchSegue" id="Ugq-qH-Kja"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PersonCell" rowHeight="166" id="gfP-m9-asf" customClass="PeopleSearchTableViewCell" customModule="Cinematch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="194" width="414" height="166"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PersonCell" rowHeight="115" id="gfP-m9-asf" customClass="PeopleSearchTableViewCell" customModule="Cinematch" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="194" width="414" height="115"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gfP-m9-asf" id="BqE-LY-nJx">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="166"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="115"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A2i-1N-tSP">
@@ -1352,24 +1353,23 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Reem Schaefer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rcC-eR-fU8">
-                                                            <rect key="frame" x="123" y="8" width="239" height="45"/>
+                                                            <rect key="frame" x="123" y="8" width="283" height="45"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" name="DamascusBold" family="Damascus" pointSize="24"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jg0-tc-Amv">
-                                                            <rect key="frame" x="123" y="61" width="76" height="21"/>
+                                                            <rect key="frame" x="123" y="41" width="283" height="21"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
                                                             <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
-                                                    <color key="backgroundColor" systemColor="systemGray4Color"/>
                                                 </view>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gnl-TR-oCn">
-                                                    <rect key="frame" x="10" y="10" width="94" height="145"/>
+                                                    <rect key="frame" x="10" y="10" width="94" height="94"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
                                             </subviews>
@@ -1379,6 +1379,7 @@
                                             <outlet property="nameLabel" destination="rcC-eR-fU8" id="Wtm-f2-G68"/>
                                             <outlet property="profilePicImageView" destination="gnl-TR-oCn" id="6p1-2q-0cc"/>
                                             <outlet property="usernameLabel" destination="jg0-tc-Amv" id="syr-SA-zDv"/>
+                                            <segue destination="4NG-4c-ujP" kind="presentation" identifier="peopleSearchSegue" id="Rsf-4k-jvu"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1892,10 +1893,10 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="RCU-C9-hhH"/>
+        <segue reference="Rsf-4k-jvu"/>
         <segue reference="BhN-fk-W34"/>
         <segue reference="oIz-3Q-YY7"/>
-        <segue reference="Czo-BE-JNp"/>
+        <segue reference="Ugq-qH-Kja"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="arrow.left" catalog="system" width="128" height="98"/>
@@ -1911,9 +1912,8 @@
         <image name="hand.thumbsup.fill" catalog="system" width="128" height="121"/>
         <image name="house.fill" catalog="system" width="128" height="106"/>
         <image name="list.dash" catalog="system" width="128" height="85"/>
-        <image name="paperplane" catalog="system" width="128" height="118"/>
-        <image name="list.star" catalog="system" width="128" height="94"/>
         <image name="magnifyingglass" catalog="system" width="128" height="115"/>
+        <image name="paperplane" catalog="system" width="128" height="118"/>
         <image name="pencil.circle.fill" catalog="system" width="128" height="121"/>
         <image name="person.2.fill" catalog="system" width="128" height="80"/>
         <image name="person.circle.fill" catalog="system" width="128" height="121"/>
