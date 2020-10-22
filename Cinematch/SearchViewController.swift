@@ -6,8 +6,28 @@
 //
 
 import UIKit
-
-class SearchViewController: UIViewController, UITableViewDataSource, UISearchBarDelegate {
+import Koloda
+class SearchViewController: UIViewController, UITableViewDataSource, UISearchBarDelegate, UITableViewDelegate, SwipeDelegate {
+    func buttonTapped(direction: SwipeResultDirection, index: Int) {
+        let movie = filteredMovies[index]
+        Movie.clearMovie(movie: filteredMovies[index])
+        if(direction == .right){
+            CURRENT_USER.liked.append(movie)
+            movie.opinion = .like
+        }
+        else if(direction == .left){
+            CURRENT_USER.disliked.append(movie)
+            movie.opinion = .dislike
+        }
+        else if(direction == .up){
+            CURRENT_USER.watchlist.append(movie)
+            movie.opinion = .watchlist
+        }
+    }
+    
+    func reload() {
+    }
+    
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var searchTypeSegCtrl: UISegmentedControl!
@@ -22,6 +42,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     override func viewDidLoad() {
         super.viewDidLoad()
         searchTableView.dataSource = self
+        searchTableView.delegate = self
         searchBar.delegate = self
         // Do any additional setup after loading the view.
         // initial data source
@@ -30,7 +51,21 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
         
         searchTableView.rowHeight = 166
     }
-    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+        searchBar.resignFirstResponder()
+    }
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+            self.searchBar.showsCancelButton = true
+    }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+            searchBar.showsCancelButton = false
+            filteredMovies = moviesData
+            filteredUsers = usersData
+            searchTableView.reloadData()
+            searchBar.text = ""
+            searchBar.resignFirstResponder()
+    }
     @IBAction func filterSelected(_ sender: Any) {
         // table view needs to be updated
         searchTableView.reloadData()
@@ -55,6 +90,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
             return 0
         }
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
     
     // populate the table view with data depending on the filter
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -64,6 +102,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
             let currentMovie = filteredMovies[indexPath.row]
             cell.movieTitleLabel?.text = currentMovie.title!
             cell.movieRatingLabel?.text = currentMovie.rating!
+            cell.movieReleaseLabel?.text = currentMovie.release!
             cell.moviePosterImageView.load(url: URL(string: "https://image.tmdb.org/t/p/original" + currentMovie.poster!)!)
             return cell
         case 1:
@@ -102,6 +141,12 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "movieSearchSegue" {
+            if let detailViewController = segue.destination as? MovieDetailViewController{
+                let index = searchTableView.indexPathForSelectedRow?.row
+                detailViewController.delegate = self
+                detailViewController.movie = filteredMovies[index!]
+                detailViewController.currentIndex = index
+            }
             // "Cannot complete segue at this time, as movie detail view needs a swipe delegate"
             // DO NOT CLICK
         }

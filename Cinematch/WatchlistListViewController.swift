@@ -41,8 +41,8 @@ class WatchlistListViewController: UIViewController, UITableViewDelegate,UITable
             searchBar.resignFirstResponder()
     }
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
-        let movie = CURRENT_USER.watchlist[index]
-        Movie.clearMovie(movie: CURRENT_USER.watchlist[index])
+        let movie = filteredMovies[index]
+        Movie.clearMovie(movie: filteredMovies[index])
         if(direction == .right){
             CURRENT_USER.liked.append(movie)
             movie.opinion = .like
@@ -82,7 +82,7 @@ class WatchlistListViewController: UIViewController, UITableViewDelegate,UITable
             let index:Int = sender as! Int
             if let detailViewController = segue.destination as? MovieDetailViewController{
                 detailViewController.delegate = self
-                detailViewController.movie = CURRENT_USER.watchlist[index]
+                detailViewController.movie = filteredMovies[index]
                 detailViewController.currentIndex = index
             }
         }
