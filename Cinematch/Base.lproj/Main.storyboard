@@ -1876,7 +1876,7 @@
         <scene sceneID="C6l-hC-sgo">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0r2-0k-CX7" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Watchlist" id="4Bs-x9-Met"/>
+                    <tabBarItem key="tabBarItem" title="Watchlist" selectedImage="list.star" catalog="system" id="4Bs-x9-Met"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="eOE-fn-TK3"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="lai-NE-jPq">
@@ -1913,6 +1913,7 @@
         <image name="hand.thumbsup.fill" catalog="system" width="128" height="121"/>
         <image name="house.fill" catalog="system" width="128" height="106"/>
         <image name="list.dash" catalog="system" width="128" height="85"/>
+        <image name="list.star" catalog="system" width="128" height="94"/>
         <image name="magnifyingglass" catalog="system" width="128" height="115"/>
         <image name="paperplane" catalog="system" width="128" height="118"/>
         <image name="pencil.circle.fill" catalog="system" width="128" height="121"/>
