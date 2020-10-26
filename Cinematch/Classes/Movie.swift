@@ -36,6 +36,7 @@ class Movie:Equatable{
     var opinion: Opinion?
     var friends: [User]?
     var duration:String?
+    var posterImg: UIImage?
     func setVars(id:Int){
         print("Starting vars")
         self.id = id

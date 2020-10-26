@@ -64,7 +64,12 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PosterCell", for: indexPath) as! PosterCollectionViewCell
-        cell.posterImageView.load(url: URL(string: "https://image.tmdb.org/t/p/original" + filteredMovies[indexPath.row].poster!)!)
+        if(filteredMovies[indexPath.row].posterImg == nil){
+            cell.posterImageView.load(url: URL(string: "https://image.tmdb.org/t/p/original" + filteredMovies[indexPath.row].poster!)!)
+        }
+        else{
+            cell.posterImageView.image = filteredMovies[indexPath.row].posterImg!
+        }
         return cell
     }
     

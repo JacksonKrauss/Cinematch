@@ -47,7 +47,22 @@ class MovieDetailViewController: UIViewController {
         self.releaseLabel.text = self.movie?.release
         self.ratingLabel.text = self.movie?.rating
         self.friendsLabel.text = "\(movie!.friends!.count) of your friends liked this movie"
-        self.posterView.load(url: URL(string: "https://image.tmdb.org/t/p/original" + (self.movie!.poster!))!)
+        if(movie!.posterImg == nil){
+            let url = URL(string: "https://image.tmdb.org/t/p/original" + movie!.poster!)!
+            DispatchQueue.global().async { [weak self] in
+                if let data = try? Data(contentsOf: url) {
+                    if let image = UIImage(data: data) {
+                        DispatchQueue.main.async {
+                            self!.posterView.image = image
+                            self!.movie!.posterImg = self!.posterView.image
+                        }
+                    }
+                }
+            }
+        }
+        else{
+            posterView.image = movie!.posterImg!
+        }
     }
     override func viewWillDisappear(_ animated: Bool) {
         self.delegate?.reload()

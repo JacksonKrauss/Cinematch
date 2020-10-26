@@ -86,16 +86,28 @@ extension SwipeScreenViewController: KolodaViewDataSource {
         return [SwipeResultDirection.left,SwipeResultDirection.right,SwipeResultDirection.up]
     }
     func koloda(_ koloda: KolodaView, viewForCardAt index: Int) -> UIView {
-        print("loading")
-        let image = UIImageView()
-        image.load(url: URL(string: "https://image.tmdb.org/t/p/original" + movies[index].poster!)!)
-        print("loaded")
-        return image
+        let imageView = UIImageView()
+        if(movies[index].posterImg == nil){
+            let url = URL(string: "https://image.tmdb.org/t/p/original" + movies[index].poster!)!
+            DispatchQueue.global().async { [weak self] in
+                if let data = try? Data(contentsOf: url) {
+                    if let image = UIImage(data: data) {
+                        DispatchQueue.main.async {
+                            imageView.image = image
+                            self!.movies[index].posterImg = imageView.image
+                        }
+                    }
+                }
+            }
+        }
+        else{
+            imageView.image = movies[index].posterImg!
+        }
+        return imageView
     }
     func koloda(_ koloda: KolodaView, didShowCardAt index: Int) {
         self.descriptionLabel.text = movies[index].release
         self.titleLabel.text = movies[index].title
-        //add check for empty
         if(movies[index].friends!.count > 0){
             self.friendLabel.text = movies[index].friends![0].name! + " liked this movie!"
         }

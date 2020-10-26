@@ -67,7 +67,12 @@ class WatchlistListViewController: UIViewController, UITableViewDelegate,UITable
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell") as! WatchlistTableViewCell
-        cell.posterView.load(url: URL(string: "https://image.tmdb.org/t/p/original" + filteredMovies[indexPath.row].poster!)!)
+        if(filteredMovies[indexPath.row].posterImg == nil){
+            cell.posterView.load(url: URL(string: "https://image.tmdb.org/t/p/original" + filteredMovies[indexPath.row].poster!)!)
+        }
+        else{
+            cell.posterView.image = filteredMovies[indexPath.row].posterImg!
+        }
         cell.titleLabel.text = filteredMovies[indexPath.row].title!
         cell.descriptionLabel.text = filteredMovies[indexPath.row].release!
         cell.ratingLabel.text = filteredMovies[indexPath.row].rating
