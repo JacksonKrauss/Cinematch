@@ -60,6 +60,26 @@ class Movie:Equatable{
             }
         print("end vars")
     }
+    static func getMovies(page: Int,completion: @escaping (_ movieList: [Movie]) -> ()){
+        var movieList:[Movie] = []
+        MovieMDB.popular(language: "en", page: page){
+          data, popularMovies in
+          if let movie = popularMovies{
+            for m in movie {
+                let curr = Movie()
+                curr.title = m.title
+                curr.description = m.overview
+                curr.poster = m.poster_path
+                curr.rating = m.vote_average?.description
+                curr.id = m.id
+                curr.release = m.release_date
+                curr.friends = []
+                movieList.append(curr)
+            }
+            completion(movieList)
+          }
+        }
+    }
     static func clearMovie(movie: Movie){
         CURRENT_USER.liked.remove(object: movie)
         CURRENT_USER.disliked.remove(object: movie)

@@ -37,21 +37,17 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var kolodaView: KolodaView!
-    fileprivate var movies: [Movie] = {
-        var array: [Movie] = SampleMovies.getMovies()
-        return array
-    }()
+    var page = 1
+    var movies: [Movie] = []
     override func viewDidLoad() {
         super.viewDidLoad()
         kolodaView.dataSource = self
         kolodaView.delegate = self
         TMDBConfig.apikey = "da04189f6c8bb1116ff3c217c908b776"
-        //workaround because it didnt show label of first movie
-        self.descriptionLabel.text = movies[0].release
-        self.titleLabel.text = movies[0].title
-        //add check for empty
-        self.friendLabel.text = movies[0].friends![0].name! + " liked this movie!"
-        // Do any additional setup after loading the view.
+        Movie.getMovies(page: page) { (list) in
+            self.movies = list
+            self.kolodaView.reloadData()
+        }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "detailSegue"){
@@ -63,21 +59,14 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
             }
         }
     }
-    
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
 }
 extension SwipeScreenViewController: KolodaViewDelegate {
     func kolodaDidRunOutOfCards(_ koloda: KolodaView) {
-        koloda.reloadData()
+        page += 1
+        Movie.getMovies(page: page) { (list) in
+            self.movies.append(contentsOf: list)
+            self.kolodaView.reloadData()
+        }
     }
     
     func koloda(_ koloda: KolodaView, didSelectCardAt index: Int) {
@@ -87,7 +76,6 @@ extension SwipeScreenViewController: KolodaViewDelegate {
 extension SwipeScreenViewController: KolodaViewDataSource {
     
     func kolodaNumberOfCards(_ koloda:KolodaView) -> Int {
-        //workaround for first movie not showing
         return movies.count
     }
     
@@ -108,7 +96,9 @@ extension SwipeScreenViewController: KolodaViewDataSource {
         self.descriptionLabel.text = movies[index].release
         self.titleLabel.text = movies[index].title
         //add check for empty
-        self.friendLabel.text = movies[index].friends![0].name! + " liked this movie!"
+        if(movies[index].friends!.count > 0){
+            self.friendLabel.text = movies[index].friends![0].name! + " liked this movie!"
+        }
     }
     
     func koloda(_ koloda: KolodaView, viewForCardOverlayAt index: Int) -> OverlayView? {
