@@ -113,20 +113,45 @@
 		4306D45C252E1FE0004FDB48 /* Cinematch */ = {
 			isa = PBXGroup;
 			children = (
+				431DDF2E25473C5C00F7DC7A /* Classes */,
 				43372AD52530CD2800657725 /* GoogleService-Info.plist */,
 				4306D45D252E1FE0004FDB48 /* AppDelegate.swift */,
 				4306D45F252E1FE0004FDB48 /* SceneDelegate.swift */,
-				4306D461252E1FE0004FDB48 /* ViewController.swift */,
 				4306D463252E1FE0004FDB48 /* Main.storyboard */,
-				F10785CD253ED98400834262 /* PeopleSearchTableViewCell.swift */,
-				F13506B7253D97CB00EA1439 /* SearchViewController.swift */,
-				F10785CA253ED1B300834262 /* MovieSearchTableViewCell.swift */,
+				431DDF2625473BE500F7DC7A /* Cells */,
+				431DDF2925473C1A00F7DC7A /* View Controllers */,
+				4306D469252E1FE3004FDB48 /* Assets.xcassets */,
+				4306D46B252E1FE3004FDB48 /* LaunchScreen.storyboard */,
+				4306D46E252E1FE3004FDB48 /* Info.plist */,
+				4306D466252E1FE0004FDB48 /* Cinematch.xcdatamodeld */,
+			);
+			path = Cinematch;
+			sourceTree = "<group>";
+		};
+		431DDF2625473BE500F7DC7A /* Cells */ = {
+			isa = PBXGroup;
+			children = (
 				43E9F1F7253D38A700B52C4A /* SendToFriendTableViewCell.swift */,
+				43E9F1F1253D1F9600B52C4A /* PosterCollectionViewCell.swift */,
+				2746923A253E700A00F2D306 /* FriendListViewCell.swift */,
+				F10785CD253ED98400834262 /* PeopleSearchTableViewCell.swift */,
+				27469240253E788400F2D306 /* FriendProfileViewCell.swift */,
+				27469243253E7F6D00F2D306 /* ProfileCollectionViewCell.swift */,
+				2746923D253E733C00F2D306 /* FriendRequestViewCell.swift */,
+				F10785CA253ED1B300834262 /* MovieSearchTableViewCell.swift */,
+				43E9F1F4253D2F1C00B52C4A /* WatchlistTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		431DDF2925473C1A00F7DC7A /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				4306D461252E1FE0004FDB48 /* ViewController.swift */,
 				436171E02530C7B90045BC67 /* SettingsViewController.swift */,
+				F13506B7253D97CB00EA1439 /* SearchViewController.swift */,
 				436171DD2530C7850045BC67 /* FriendProfileViewController.swift */,
 				436171DA2530C7200045BC67 /* WatchlistGridViewController.swift */,
-				43E9F1F1253D1F9600B52C4A /* PosterCollectionViewCell.swift */,
-				43E9F1F4253D2F1C00B52C4A /* WatchlistTableViewCell.swift */,
 				436171D72530C5460045BC67 /* ProfileViewController.swift */,
 				436171D42530C4F10045BC67 /* FriendsListViewController.swift */,
 				436171D12530C4540045BC67 /* WatchlistListViewController.swift */,
@@ -135,18 +160,17 @@
 				436171C82530C1FB0045BC67 /* SwipeScreenViewController.swift */,
 				436171C22530BD360045BC67 /* LoginViewController.swift */,
 				436171C52530BD420045BC67 /* SignUpViewController.swift */,
-				4306D469252E1FE3004FDB48 /* Assets.xcassets */,
-				4306D46B252E1FE3004FDB48 /* LaunchScreen.storyboard */,
-				4306D46E252E1FE3004FDB48 /* Info.plist */,
-				4306D466252E1FE0004FDB48 /* Cinematch.xcdatamodeld */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		431DDF2E25473C5C00F7DC7A /* Classes */ = {
+			isa = PBXGroup;
+			children = (
 				278152812538C4F00045A697 /* Users.swift */,
 				43E3B5F62538E27D00902D4A /* Movie.swift */,
-				2746923A253E700A00F2D306 /* FriendListViewCell.swift */,
-				2746923D253E733C00F2D306 /* FriendRequestViewCell.swift */,
-				27469240253E788400F2D306 /* FriendProfileViewCell.swift */,
-				27469243253E7F6D00F2D306 /* ProfileCollectionViewCell.swift */,
 			);
-			path = Cinematch;
+			path = Classes;
 			sourceTree = "<group>";
 		};
 		64474343AF898D61A9D09E4F /* Frameworks */ = {
