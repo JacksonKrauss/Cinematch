@@ -10,11 +10,11 @@ import UIKit
 import TMDBSwift
 
 extension Array where Element: Equatable {
- mutating func remove(object: Element) {
-     guard let index = firstIndex(of: object) else {return}
-     remove(at: index)
- }
-
+    mutating func remove(object: Element) {
+        guard let index = firstIndex(of: object) else {return}
+        remove(at: index)
+    }
+    
 }
 enum Opinion {
     case like
@@ -41,44 +41,75 @@ class Movie:Equatable{
         print("Starting vars")
         self.id = id
         MovieMDB.movie(movieID: id, language: "en"){
-             apiReturn, movie in
-             if let movie = movie{
+            apiReturn, movie in
+            if let movie = movie{
                 self.title = movie.title
                 self.description = movie.overview
                 self.rating = String(movie.vote_average!)
                 self.release = movie.release_date
                 self.poster = movie.poster_path
-             }
+            }
             
-           }
+        }
         MovieMDB.credits(movieID: id){
-              apiReturn, credits in
-              if let credits = credits{
+            apiReturn, credits in
+            if let credits = credits{
                 for cast in credits.cast{
                     self.actors.append(cast.name)
                 }
-              }
             }
+        }
         print("end vars")
+    }
+    static func getRecommended(page: Int, id: Int, completion: @escaping(_ movieList: [Movie]) -> ()){
+        var movieList:[Movie] = []
+        MovieMDB.recommendations(movieID: id, page: page) { (ClientReturn, movies: [MovieMDB]?) in
+            if let recs = movies{
+                for rec in recs{
+                    let curr = Movie()
+                    curr.title = rec.title
+                    curr.description = rec.overview
+                    curr.poster = rec.poster_path
+                    curr.rating = rec.vote_average?.description
+                    curr.id = rec.id
+                    curr.release = rec.release_date
+                    curr.friends = []
+                    movieList.append(curr)
+                }
+                completion(movieList)
+            }
+        }
     }
     static func getMovies(page: Int,completion: @escaping (_ movieList: [Movie]) -> ()){
         var movieList:[Movie] = []
         MovieMDB.popular(language: "en", page: page){
-          data, popularMovies in
-          if let movie = popularMovies{
-            for m in movie {
-                let curr = Movie()
-                curr.title = m.title
-                curr.description = m.overview
-                curr.poster = m.poster_path
-                curr.rating = m.vote_average?.description
-                curr.id = m.id
-                curr.release = m.release_date
-                curr.friends = []
-                movieList.append(curr)
+            data, popularMovies in
+            if let movie = popularMovies{
+                for m in movie {
+                    let curr = Movie()
+                    curr.title = m.title
+                    curr.description = m.overview
+                    curr.poster = m.poster_path
+                    curr.rating = m.vote_average?.description
+                    curr.id = m.id
+                    curr.release = m.release_date
+                    curr.friends = []
+                    //works but only loads one movie at a time
+//                    MovieMDB.credits(movieID: m.id){
+//                        apiReturn, credits in
+//                        if let credits = credits{
+//                            for cast in credits.cast{
+//                                curr.actors.append(cast.name)
+//                            }
+//                        }
+//                        movieList.append(curr)
+//                        completion(movieList)
+//                    }
+                    movieList.append(curr)
+                }
+                completion(movieList)
+                
             }
-            completion(movieList)
-          }
         }
     }
     static func clearMovie(movie: Movie){

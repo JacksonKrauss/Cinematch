@@ -120,6 +120,11 @@ extension SwipeScreenViewController: KolodaViewDataSource {
         if(direction == .right){
             CURRENT_USER.liked.append(movies[index])
             movies[index].opinion = .like
+            Movie.getRecommended(page: 1, id: movies[index].id!) { (list) in
+                self.movies.append(contentsOf: list)
+                print("adding \(list)")
+                koloda.reloadData()
+            }
         }
         else if(direction == .left){
             CURRENT_USER.disliked.append(movies[index])
