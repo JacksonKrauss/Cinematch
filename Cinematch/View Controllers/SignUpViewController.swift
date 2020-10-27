@@ -32,6 +32,10 @@ class SignUpViewController: UIViewController {
               let email = emailTextField.text,
               let password = passwordTextField.text,
               let confirmedPassword = confirmPasswordTextField.text,
+              firstName.count > 0,
+              lastName.count > 0,
+              username.count > 0,
+              email.count > 0,
               password.count > 0,
               confirmedPassword.count > 0,
               password == confirmedPassword
