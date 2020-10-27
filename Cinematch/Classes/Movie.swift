@@ -8,7 +8,15 @@
 import Foundation
 import UIKit
 import TMDBSwift
-
+extension Array where Element: Equatable {
+    mutating func addAll(array: [Element]) {
+        for item in array{
+            if(!self.contains(item)){
+                self.append(item)
+            }
+        }
+    }
+}
 extension Array where Element: Equatable {
     mutating func remove(object: Element) {
         guard let index = firstIndex(of: object) else {return}

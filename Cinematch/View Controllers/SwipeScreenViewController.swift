@@ -121,7 +121,7 @@ extension SwipeScreenViewController: KolodaViewDataSource {
             CURRENT_USER.liked.append(movies[index])
             movies[index].opinion = .like
             Movie.getRecommended(page: 1, id: movies[index].id!) { (list) in
-                self.movies.append(contentsOf: list)
+                self.movies.addAll(array: list)
                 print("adding \(list)")
                 koloda.reloadData()
             }
