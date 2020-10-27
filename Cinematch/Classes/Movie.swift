@@ -29,6 +29,10 @@ enum Opinion {
     case dislike
     case watchlist
 }
+struct Actor {
+    var actorName: String?
+    var characterName: String?
+}
 class Movie:Equatable{
     static func == (lhs: Movie, rhs: Movie) -> Bool {
         return lhs.id == rhs.id
@@ -39,14 +43,13 @@ class Movie:Equatable{
     var description: String?
     var rating: String?
     var release: String?
-    var actors: [String] = []
+    var actors: [Actor] = []
     var id: Int?
     var opinion: Opinion?
     var friends: [User]?
     var duration:String?
     var posterImg: UIImage?
     func setVars(id:Int){
-        print("Starting vars")
         self.id = id
         MovieMDB.movie(movieID: id, language: "en"){
             apiReturn, movie in
@@ -59,15 +62,14 @@ class Movie:Equatable{
             }
             
         }
-        MovieMDB.credits(movieID: id){
-            apiReturn, credits in
-            if let credits = credits{
-                for cast in credits.cast{
-                    self.actors.append(cast.name)
-                }
-            }
-        }
-        print("end vars")
+//        MovieMDB.credits(movieID: id){
+//            apiReturn, credits in
+//            if let credits = credits{
+//                for cast in credits.cast{
+//                    self.actors.append(cast.name)
+//                }
+//            }
+//        }
     }
     static func getRecommended(page: Int, id: Int, completion: @escaping(_ movieList: [Movie]) -> ()){
         var movieList:[Movie] = []
@@ -136,7 +138,7 @@ class SampleMovies{
         blackPanther.poster = "/uxzzxijgPIY7slzFvMotPv8wjKA.jpg"
         blackPanther.rating = "3.7"
         blackPanther.release = "2018"
-        blackPanther.actors = ["Chadwick Boseman","Michael B. Jordan","Lupita Nyong'o","Danai Gurira"]
+        //blackPanther.actors = ["Chadwick Boseman","Michael B. Jordan","Lupita Nyong'o","Danai Gurira"]
         blackPanther.duration = "2h 15m"
         blackPanther.friends = [otherUser1, otherUser2]
         movieList.append(blackPanther)
@@ -147,7 +149,7 @@ class SampleMovies{
         mulan.poster = "/aKx1ARwG55zZ0GpRvU2WrGrCG9o.jpg"
         mulan.rating = "3.7"
         mulan.release = "2020"
-        mulan.actors = ["Liu Yifei","Jet Li","Tzi Ma","Donnie Yen"]
+        //mulan.actors = ["Liu Yifei","Jet Li","Tzi Ma","Donnie Yen"]
         mulan.duration = "1h 55m"
         mulan.friends = [otherUser3]
         movieList.append(mulan)
