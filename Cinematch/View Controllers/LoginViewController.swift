@@ -23,7 +23,9 @@ class LoginViewController: UIViewController {
     
     @IBAction func loginDidPress(_ sender: Any) {
         guard let username = usernameTextField.text,
-              let password = passwordTextField.text
+              let password = passwordTextField.text,
+              username.count > 0,
+              password.count > 0
         else {
             return
         }
