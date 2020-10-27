@@ -71,7 +71,7 @@ class Movie:Equatable{
     }
     static func getRecommended(page: Int, id: Int, completion: @escaping(_ movieList: [Movie]) -> ()){
         var movieList:[Movie] = []
-        MovieMDB.recommendations(movieID: id, page: page) { (ClientReturn, movies: [MovieMDB]?) in
+        MovieMDB.recommendations(movieID: id, page: page, language: "en") { (ClientReturn, movies: [MovieMDB]?) in
             if let recs = movies{
                 for rec in recs{
                     let curr = Movie()

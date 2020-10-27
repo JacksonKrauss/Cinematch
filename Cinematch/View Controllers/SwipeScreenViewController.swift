@@ -64,7 +64,7 @@ extension SwipeScreenViewController: KolodaViewDelegate {
     func kolodaDidRunOutOfCards(_ koloda: KolodaView) {
         page += 1
         Movie.getMovies(page: page) { (list) in
-            self.movies.append(contentsOf: list)
+            self.movies.addAll(array: list)
             self.kolodaView.reloadData()
         }
     }
@@ -87,14 +87,22 @@ extension SwipeScreenViewController: KolodaViewDataSource {
     }
     func koloda(_ koloda: KolodaView, viewForCardAt index: Int) -> UIView {
         let imageView = UIImageView()
+        print(movies[index].title!)
         if(movies[index].posterImg == nil){
-            let url = URL(string: "https://image.tmdb.org/t/p/original" + movies[index].poster!)!
-            DispatchQueue.global().async { [weak self] in
-                if let data = try? Data(contentsOf: url) {
-                    if let image = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                            imageView.image = image
-                            self!.movies[index].posterImg = imageView.image
+            if(movies[index].poster == nil){
+                imageView.backgroundColor = .white
+                imageView.image = UIImage(named: "no-image")
+                self.movies[index].posterImg = UIImage(named: "no-image")
+            }
+            else{
+                let url = URL(string: "https://image.tmdb.org/t/p/original" + movies[index].poster!)!
+                DispatchQueue.global().async { [weak self] in
+                    if let data = try? Data(contentsOf: url) {
+                        if let image = UIImage(data: data) {
+                            DispatchQueue.main.async {
+                                imageView.image = image
+                                self!.movies[index].posterImg = imageView.image
+                            }
                         }
                     }
                 }
@@ -117,6 +125,7 @@ extension SwipeScreenViewController: KolodaViewDataSource {
         return OverlayView()
     }
     func koloda(_ koloda: KolodaView, didSwipeCardAt index: Int, in direction: SwipeResultDirection) {
+        Movie.clearMovie(movie: movies[index])
         if(direction == .right){
             CURRENT_USER.liked.append(movies[index])
             movies[index].opinion = .like

@@ -48,13 +48,20 @@ class MovieDetailViewController: UIViewController {
         self.ratingLabel.text = self.movie?.rating
         self.friendsLabel.text = "\(movie!.friends!.count) of your friends liked this movie"
         if(movie!.posterImg == nil){
-            let url = URL(string: "https://image.tmdb.org/t/p/original" + movie!.poster!)!
-            DispatchQueue.global().async { [weak self] in
-                if let data = try? Data(contentsOf: url) {
-                    if let image = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                            self!.posterView.image = image
-                            self!.movie!.posterImg = self!.posterView.image
+            if(movie!.poster == nil){
+                self.posterView.backgroundColor = .white
+                self.posterView.image = UIImage(named: "no-image")
+                movie!.posterImg = UIImage(named: "no-image")
+            }
+            else{
+                let url = URL(string: "https://image.tmdb.org/t/p/original" + movie!.poster!)!
+                DispatchQueue.global().async { [weak self] in
+                    if let data = try? Data(contentsOf: url) {
+                        if let image = UIImage(data: data) {
+                            DispatchQueue.main.async {
+                                self!.posterView.image = image
+                                self!.movie!.posterImg = self!.posterView.image
+                            }
                         }
                     }
                 }
