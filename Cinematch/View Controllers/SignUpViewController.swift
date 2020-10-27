@@ -9,8 +9,7 @@ import UIKit
 import Firebase
 import FirebaseDatabase
 class SignUpViewController: UIViewController {
-    @IBOutlet weak var firstNameTextField: UITextField!
-    @IBOutlet weak var lastNameTextField: UITextField!
+    @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -26,14 +25,12 @@ class SignUpViewController: UIViewController {
     }
     
     @IBAction func signUpDidPress(_ sender: Any) {
-        guard let firstName = firstNameTextField.text,
-              let lastName = lastNameTextField.text,
+        guard let name = nameTextField.text,
               let username = usernameTextField.text,
               let email = emailTextField.text,
               let password = passwordTextField.text,
               let confirmedPassword = confirmPasswordTextField.text,
-              firstName.count > 0,
-              lastName.count > 0,
+              name.count > 0,
               username.count > 0,
               email.count > 0,
               password.count > 0,
@@ -45,8 +42,7 @@ class SignUpViewController: UIViewController {
         
         // user is tied to their email, first name, and last name
         let newUserInfo = [
-            "first_name": firstName,
-            "last_name": lastName,
+            "name": name,
             "email": email
         ]
         let newUser = self.ref.child("user_info").child(username)
@@ -57,6 +53,7 @@ class SignUpViewController: UIViewController {
             user, error in
             if error == nil {
                 Auth.auth().signIn(withEmail: email, password: password)
+                self.performSegue(withIdentifier: "signUpSegue", sender: nil)
             }
         }
     }
