@@ -2,7 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="4Mz-jQ-PzZ">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -733,7 +733,7 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S8t-hw-JnZ">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S8t-hw-JnZ">
                                         <rect key="frame" x="0.0" y="41" width="354" height="20.5"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <color key="textColor" red="0.18823529410000001" green="0.18823529410000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -1017,7 +1017,7 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Bhk-qR-jP7">
                                                     <rect key="frame" x="120" y="6" width="74" height="63.5"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9gi-T7-fSj">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9gi-T7-fSj">
                                                             <rect key="frame" x="0.0" y="0.0" width="74" height="20.5"/>
                                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                             <nil key="textColor"/>
@@ -1067,6 +1067,7 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="fBD-Yl-vh1" firstAttribute="top" secondItem="EOc-vX-gYG" secondAttribute="top" constant="10" id="26Z-Mf-Fcj"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Bhk-qR-jP7" secondAttribute="trailing" id="7gz-aO-ZUo"/>
                                                 <constraint firstItem="Bhk-qR-jP7" firstAttribute="leading" secondItem="fBD-Yl-vh1" secondAttribute="trailing" constant="20" id="OUL-Xo-CFl"/>
                                                 <constraint firstItem="fBD-Yl-vh1" firstAttribute="leading" secondItem="EOc-vX-gYG" secondAttribute="leading" constant="20" id="Uzx-4q-ZHZ"/>
                                                 <constraint firstItem="Bhk-qR-jP7" firstAttribute="top" secondItem="EOc-vX-gYG" secondAttribute="top" constant="6" id="uoQ-rk-30c"/>
@@ -1884,7 +1885,7 @@
         <segue reference="Rsf-4k-jvu"/>
         <segue reference="BhN-fk-W34"/>
         <segue reference="tSa-yd-FV7"/>
-        <segue reference="Ugq-qH-Kja"/>
+        <segue reference="yGY-WE-pLS"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="arrow.left" catalog="system" width="128" height="98"/>
