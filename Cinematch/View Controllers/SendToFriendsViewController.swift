@@ -58,6 +58,10 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var tableView: UITableView!
     var filteredUsers: [User]!
     var selectedUsers: [User]!
+    var movie: Movie?
+    @IBAction func sendButtonPressed(_ sender: Any) {
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
@@ -68,6 +72,4 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
         self.filteredUsers = OTHER_USERS
         // Do any additional setup after loading the view.
     }
-    
-
 }

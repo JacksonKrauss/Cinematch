@@ -285,7 +285,7 @@
                                                         <state key="normal" title="Button" image="square.and.arrow.up" catalog="system"/>
                                                         <connections>
                                                             <action selector="shareButton:" destination="moC-AU-uiy" eventType="touchUpInside" id="JBA-qk-NAq"/>
-                                                            <segue destination="b3o-dr-1Rw" kind="presentation" id="9Vu-WR-shW"/>
+                                                            <segue destination="b3o-dr-1Rw" kind="presentation" identifier="friendSegue" id="9Vu-WR-shW"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -566,6 +566,9 @@
                                     <constraint firstAttribute="width" constant="46" id="DMy-bS-cRf"/>
                                 </constraints>
                                 <state key="normal" title="Button" image="paperplane" catalog="system"/>
+                                <connections>
+                                    <action selector="sendButtonPressed:" destination="b3o-dr-1Rw" eventType="touchUpInside" id="VYh-zB-lYS"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="lIS-U4-TlS"/>

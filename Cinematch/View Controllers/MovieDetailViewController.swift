@@ -89,6 +89,13 @@ class MovieDetailViewController: UIViewController, UICollectionViewDelegate, UIC
     override func viewWillDisappear(_ animated: Bool) {
         self.delegate?.reload()
     }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "friendSegue"){
+            if let sendToFriendsVC = segue.destination as? SendToFriendsViewController{
+                sendToFriendsVC.movie = self.movie
+            }
+        }
+    }
     
 
     /*
