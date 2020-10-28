@@ -80,7 +80,7 @@ class Movie:Equatable{
                     curr.title = rec.title
                     curr.description = rec.overview
                     curr.poster = rec.poster_path
-                    curr.rating = rec.vote_average?.description
+                    curr.rating = rec.vote_average!.description
                     curr.id = rec.id
                     curr.release = rec.release_date
                     curr.friends = []

@@ -11,7 +11,19 @@ protocol SwipeDelegate {
     func buttonTapped(direction: SwipeResultDirection, index: Int)
     func reload()
 }
-class MovieDetailViewController: UIViewController {
+class MovieDetailViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return movie!.actors.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "actorCell", for: indexPath) as! ActorCollectionViewCell
+        cell.actorLabel.text = movie!.actors[indexPath.row].actorName
+        cell.characterLabel.text = movie!.actors[indexPath.row].characterName
+        return cell
+    }
+    
+    @IBOutlet weak var collectionView: UICollectionView!
     var movie: Movie?
     var delegate: SwipeDelegate?
     var currentIndex: Int?
@@ -38,6 +50,8 @@ class MovieDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView.delegate = self
+        collectionView.dataSource = self
 
         // Do any additional setup after loading the view.
     }
@@ -70,6 +84,7 @@ class MovieDetailViewController: UIViewController {
         else{
             posterView.image = movie!.posterImg!
         }
+        collectionView.reloadData()
     }
     override func viewWillDisappear(_ animated: Bool) {
         self.delegate?.reload()
