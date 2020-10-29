@@ -70,15 +70,7 @@ extension SwipeScreenViewController: KolodaViewDelegate {
     }
     
     func koloda(_ koloda: KolodaView, didSelectCardAt index: Int) {
-        MovieMDB.credits(movieID: movies[index].id){
-            apiReturn, credits in
-            if let credits = credits{
-                for cast in credits.cast{
-                    self.movies[index].actors.append(Actor(actorName: cast.name, characterName: cast.character))
-                }
-                self.performSegue(withIdentifier: "detailSegue", sender: index)
-            }
-        }
+        self.performSegue(withIdentifier: "detailSegue", sender: index)
     }
 }
 extension SwipeScreenViewController: KolodaViewDataSource {

@@ -7,6 +7,7 @@
 
 import UIKit
 import Koloda
+import TMDBSwift
 protocol SwipeDelegate {
     func buttonTapped(direction: SwipeResultDirection, index: Int)
     func reload()
@@ -61,6 +62,15 @@ class MovieDetailViewController: UIViewController, UICollectionViewDelegate, UIC
         self.releaseLabel.text = self.movie?.release
         self.ratingLabel.text = self.movie?.rating
         self.friendsLabel.text = "\(movie!.friends!.count) of your friends liked this movie"
+        MovieMDB.credits(movieID: movie!.id){
+            apiReturn, credits in
+            if let credits = credits{
+                for cast in credits.cast{
+                    self.movie!.actors.append(Actor(actorName: cast.name, characterName: cast.character))
+                }
+                self.collectionView.reloadData()
+            }
+        }
         if(movie!.posterImg == nil){
             if(movie!.poster == nil){
                 self.posterView.backgroundColor = .white
@@ -84,7 +94,7 @@ class MovieDetailViewController: UIViewController, UICollectionViewDelegate, UIC
         else{
             posterView.image = movie!.posterImg!
         }
-        collectionView.reloadData()
+        
     }
     override func viewWillDisappear(_ animated: Bool) {
         self.delegate?.reload()
