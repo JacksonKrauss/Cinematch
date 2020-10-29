@@ -14,9 +14,53 @@ enum UserPrivacy {
     case everyone
 }
 
+func privacyToString(privacy: UserPrivacy) -> String {
+    switch privacy {
+    case .me:
+        return "me"
+    case .friends:
+        return "friends"
+    case .everyone:
+        return "everyone"
+    }
+}
+
+func stringToPrivacy(privacy: String) -> UserPrivacy {
+    switch privacy {
+    case "me":
+        return UserPrivacy.me
+    case "friends":
+        return UserPrivacy.friends
+    case "everyone":
+        return UserPrivacy.everyone
+    default:
+        return UserPrivacy.friends
+    }
+}
+
 enum VisualMode {
     case dark
     case light
+}
+
+func visualToString(visualMode: VisualMode) -> String {
+    switch visualMode {
+    case .dark:
+        return "dark"
+    case .light:
+        return "light"
+    }
+}
+
+func stringToVisual(visualMode: String) -> VisualMode {
+    switch visualMode {
+    case "dark":
+        return VisualMode.dark
+    case "light":
+        return VisualMode.light
+    default:
+        return VisualMode.light
+    }
 }
 
 struct User: Equatable {
