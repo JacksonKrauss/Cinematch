@@ -43,6 +43,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     var hitEnd = false
     var currentQuery = ""
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         searchTableView.dataSource = self

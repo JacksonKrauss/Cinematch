@@ -1850,11 +1850,11 @@
             </objects>
             <point key="canvasLocation" x="-17.39130434782609" y="88.392857142857139"/>
         </scene>
-        <!--Watchlist-->
+        <!--Navigation Controller-->
         <scene sceneID="C6l-hC-sgo">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0r2-0k-CX7" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Watchlist" selectedImage="list.star" catalog="system" id="4Bs-x9-Met"/>
+                    <tabBarItem key="tabBarItem" title="" image="list.star" catalog="system" selectedImage="list.star" id="4Bs-x9-Met"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="eOE-fn-TK3"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="lai-NE-jPq">
