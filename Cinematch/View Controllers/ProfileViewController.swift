@@ -34,6 +34,11 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
         collectionView.dataSource = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        profilePicture.image = currentUser.profilePicture
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return userMovieData[movieViewSegCtrl.selectedSegmentIndex].count
     }

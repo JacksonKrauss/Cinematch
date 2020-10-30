@@ -8,7 +8,7 @@
 import UIKit
 import Firebase
 
-class SettingsViewController: UIViewController {
+class SettingsViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var nameTextField: UITextField!
     
@@ -58,6 +58,8 @@ class SettingsViewController: UIViewController {
             appearanceSegControl.selectedSegmentIndex = 1
             break
         }
+        
+        profileImage.image = CURRENT_USER.profilePicture
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -190,6 +192,40 @@ class SettingsViewController: UIViewController {
     
     @IBAction func editImagePressed(_ sender: Any) {
         print("Editing Image")
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = .photoLibrary
+            imagePicker.allowsEditing = true
+            present(imagePicker, animated: true)
+        }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController,
+          didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
+
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            self.profileImage.image = image
+            if self.profileImage.frame.width > self.profileImage.frame.height {
+                self.profileImage.contentMode = .scaleAspectFit
+            } else {
+                self.profileImage.contentMode = .scaleAspectFill
+            }
+            CURRENT_USER.profilePicture = profileImage.image
+            
+            let documentDirectory = FileManager.SearchPathDirectory.documentDirectory
+            let userDomainMask = FileManager.SearchPathDomainMask.userDomainMask
+            let paths = NSSearchPathForDirectoriesInDomains(documentDirectory, userDomainMask, true)
+            if let dirPath = paths.first
+            {
+               let imageURL = URL(fileURLWithPath: dirPath).appendingPathComponent("new_pfp.png")
+            
+                // upload pic to firebase
+                // need to set up storage firebase
+            }
+        }
+        
+        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func logoutPressed(_ sender: Any) {
