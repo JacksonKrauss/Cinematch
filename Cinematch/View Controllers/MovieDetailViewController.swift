@@ -62,6 +62,7 @@ class MovieDetailViewController: UIViewController, UICollectionViewDelegate, UIC
         self.releaseLabel.text = self.movie?.release
         self.ratingLabel.text = self.movie?.rating
         self.friendsLabel.text = "\(movie!.friends!.count) of your friends liked this movie"
+        movie!.actors = []
         MovieMDB.credits(movieID: movie!.id){
             apiReturn, credits in
             if let credits = credits{

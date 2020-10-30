@@ -15,20 +15,17 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     }
     
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
-//        let movie = moviesData[index]
-//        Movie.clearMovie(movie: moviesData[index])
-//        if(direction == .right){
-//            CURRENT_USER.liked.append(movie)
-//            movie.opinion = .like
-//        }
-//        else if(direction == .left){
-//            CURRENT_USER.disliked.append(movie)
-//            movie.opinion = .dislike
-//        }
-//        else if(direction == .up){
-//            CURRENT_USER.watchlist.append(movie)
-//            movie.opinion = .watchlist
-//        }
+        //need to change
+        let movie = Movie()
+        movie.title = moviesData[index].title
+        movie.description = moviesData[index].overview
+        movie.release = moviesData[index].release_date
+        movie.rating = moviesData[index].vote_average!.description
+        movie.friends = []
+        movie.poster = moviesData[index].poster_path
+        movie.actors = []
+        movie.id = moviesData[index].id
+        Movie.addToList(direction: direction, movie: movie)
     }
     
     @IBOutlet weak var searchBar: UISearchBar!
@@ -207,7 +204,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
                 movie.title = moviesData[index!].title
                 movie.description = moviesData[index!].overview
                 movie.release = moviesData[index!].release_date
-                movie.rating = "\(moviesData[index!].vote_average)"
+                movie.rating = moviesData[index!].vote_average!.description
                 movie.friends = []
                 movie.poster = moviesData[index!].poster_path
                 movie.actors = []

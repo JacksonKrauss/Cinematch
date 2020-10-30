@@ -41,23 +41,7 @@ class WatchlistListViewController: UIViewController, UITableViewDelegate,UITable
             searchBar.resignFirstResponder()
     }
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
-        let movie = filteredMovies[index]
-        Movie.clearMovie(movie: filteredMovies[index])
-        if(direction == .right){
-            CURRENT_USER.liked.append(movie)
-            movie.opinion = .like
-            tableView.reloadData()
-        }
-        else if(direction == .left){
-            CURRENT_USER.disliked.append(movie)
-            movie.opinion = .dislike
-            tableView.reloadData()
-        }
-        else if(direction == .up){
-            CURRENT_USER.watchlist.append(movie)
-            movie.opinion = .watchlist
-            tableView.reloadData()
-        }
+        Movie.addToList(direction: direction, movie: filteredMovies[index])
         self.tableView.reloadData()
     }
     

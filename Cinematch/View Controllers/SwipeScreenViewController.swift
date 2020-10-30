@@ -14,21 +14,12 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
     }
     
     func buttonTapped(direction: SwipeResultDirection, index:Int) {
-        Movie.clearMovie(movie: movies[index])
         if(index==kolodaView.currentCardIndex){
+            Movie.clearMovie(movie: movies[index])
             self.kolodaView.swipe(direction)
         }
-        else if(direction == .right){
-            CURRENT_USER.liked.append(movies[index])
-            movies[index].opinion = .like
-        }
-        else if(direction == .left){
-            CURRENT_USER.disliked.append(movies[index])
-            movies[index].opinion = .dislike
-        }
-        else if(direction == .up){
-            CURRENT_USER.watchlist.append(movies[index])
-            movies[index].opinion = .watchlist
+        else{
+            Movie.addToList(direction: direction, movie: movies[index])
         }
         
     }

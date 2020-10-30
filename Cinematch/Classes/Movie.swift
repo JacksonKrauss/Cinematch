@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import TMDBSwift
+import Koloda
 extension Array where Element: Equatable {
     mutating func addAll(array: [Element]) {
         for item in array{
@@ -62,14 +63,21 @@ class Movie:Equatable{
             }
             
         }
-//        MovieMDB.credits(movieID: id){
-//            apiReturn, credits in
-//            if let credits = credits{
-//                for cast in credits.cast{
-//                    self.actors.append(cast.name)
-//                }
-//            }
-//        }
+    }
+    static func addToList(direction: SwipeResultDirection, movie: Movie){
+        Movie.clearMovie(movie: movie)
+        if(direction == .right){
+            CURRENT_USER.liked.append(movie)
+            movie.opinion = .like
+        }
+        else if(direction == .left){
+            CURRENT_USER.disliked.append(movie)
+            movie.opinion = .dislike
+        }
+        else if(direction == .up){
+            CURRENT_USER.watchlist.append(movie)
+            movie.opinion = .watchlist
+        }
     }
     static func getRecommended(page: Int, id: Int, completion: @escaping(_ movieList: [Movie]) -> ()){
         var movieList:[Movie] = []
