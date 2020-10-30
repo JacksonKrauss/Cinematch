@@ -864,8 +864,10 @@
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="128" height="162"/>
                                         <connections>
+                                            <outlet property="addFriend" destination="eGE-U9-eGb" id="b1V-FR-NDR"/>
                                             <outlet property="nameLabel" destination="Lnm-xV-NgG" id="hqf-XU-1Ji"/>
                                             <outlet property="profilePicture" destination="dws-BD-ksg" id="yDC-So-vVy"/>
+                                            <outlet property="rejectFriend" destination="ap5-ha-eeO" id="xHa-i8-Syh"/>
                                             <segue destination="4NG-4c-ujP" kind="presentation" identifier="friendRequestToProfile" id="RCU-C9-hhH"/>
                                         </connections>
                                     </collectionViewCell>
@@ -1234,15 +1236,15 @@
             <objects>
                 <viewController id="jhO-IG-dP9" customClass="SearchViewController" customModule="Cinematch" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gDn-FI-rK3">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <searchBar contentMode="redraw" text="" placeholder="Search for People or Movies" translatesAutoresizingMaskIntoConstraints="NO" id="fx1-k9-O52">
-                                <rect key="frame" x="10" y="74" width="394" height="56"/>
+                                <rect key="frame" x="10" y="30" width="394" height="56"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartQuotesType="no"/>
                             </searchBar>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ITV-cl-s1x">
-                                <rect key="frame" x="20" y="140" width="125" height="32"/>
+                                <rect key="frame" x="20" y="96" width="125" height="32"/>
                                 <segments>
                                     <segment title="Movies"/>
                                     <segment title="People"/>
@@ -1252,7 +1254,7 @@
                                 </connections>
                             </segmentedControl>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="prd-tO-lig">
-                                <rect key="frame" x="0.0" y="181" width="414" height="686"/>
+                                <rect key="frame" x="0.0" y="137" width="414" height="676"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MovieCell" rowHeight="166" id="QR2-C0-ks5" customClass="MovieSearchTableViewCell" customModule="Cinematch" customModuleProvider="target">
@@ -1881,8 +1883,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Rsf-4k-jvu"/>
-        <segue reference="BhN-fk-W34"/>
+        <segue reference="RCU-C9-hhH"/>
+        <segue reference="b2g-nQ-9BZ"/>
         <segue reference="tSa-yd-FV7"/>
         <segue reference="Ugq-qH-Kja"/>
     </inferredMetricsTieBreakers>

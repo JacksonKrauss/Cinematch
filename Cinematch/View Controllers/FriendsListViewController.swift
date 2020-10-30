@@ -6,13 +6,20 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseDatabase
 
 class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     
-    let friendListData = OTHER_USERS
+    var ref: DatabaseReference!
+    
+    var currentUsername:String? = nil
+    var currentUser:User? = nil
+    
+    var friendListData:[User] = []
     let FRIEND_LIST_CELL_IDENTIFIER = "friendListViewCell"
     
-    let friendRequestData = [CURRENT_USER] // fix, this doesn't make sense
+    var friendRequestData:[User] = []
     let FRIEND_REQUEST_CELL_IDENTIFIER = "friendRequestViewCell"
     
     private let itemsPerRow: CGFloat = 4
@@ -28,12 +35,78 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ref = Database.database().reference()
+        
+        if Auth.auth().currentUser != nil {
+            let currentUser = Auth.auth().currentUser!
+            
+            print("user signed in. email: ")
+            
+            
+            ref.child("uid").child(currentUser.uid).observeSingleEvent(of: .value) { [self] (snapshot) in
+                self.currentUsername = snapshot.value as? String
+                fetchFriends(self.currentUsername!)
+            }
+            
+            
+            
+        } else {
+          print("no user is signed in ")
+        }
+        
+        
+        
         numFriendsLabel.text = "You have " + String(friendListData.count) + " friends"
         
         friendListCollectionView.delegate = self
         friendListCollectionView.dataSource = self
         
         self.friendListCollectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+    }
+    
+    func fetchFriends(_ username:String) {
+        ref.child("user_info").child(username).observeSingleEvent(of: .value) { (snapshot) in
+            self.currentUser = User(snapshot, username)
+        }
+        
+        ref.child("friends").child(username).observe(.value) { (snapshot) in
+            self.friendListData = []
+            for f in snapshot.children {
+                let friend:DataSnapshot = f as! DataSnapshot
+                print(friend.key)
+                if(friend.value as! Bool == true) {
+                self.ref.child("user_info").child(friend.key).observeSingleEvent(of: .value) { (snapshot) in
+                    self.friendListData.append(User(snapshot, friend.key))
+                    print("called")
+                    
+                    self.friendListCollectionView.reloadData()
+                    self.numFriendsLabel.text = "You have " + String(self.friendListData.count) + " friends"
+                }
+                }
+                
+            }
+            
+        }
+        
+        ref.child("friend_request").child(username).observe(.value) { (snapshot) in
+            self.friendRequestData = []
+            print("observed change")
+            for f in snapshot.children {
+                let friend:DataSnapshot = f as! DataSnapshot
+                print(friend.key)
+                if(friend.value as! Bool == true) {
+                
+                    self.ref.child("user_info").child(friend.key).observe(.value) { (snapshot) in
+                        self.friendRequestData = []
+                        self.friendRequestData.append(User(snapshot, friend.key))
+                        
+                        self.friendListCollectionView.reloadData()
+                }
+                }
+            }
+            self.friendListCollectionView.reloadData()
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -96,6 +169,8 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
             cell.profilePicture.layer.cornerRadius = 78.5 / 2 // fix
             cell.positionInList = indexPath.row
             
+            cell.loadProfilePicture(cellData.remoteProfilePath ?? "")
+            
             return cell;
         }
         if indexPath.section == 1 {
@@ -106,6 +181,10 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
             cell.profilePicture.image = cellData.profilePicture
             cell.profilePicture.layer.cornerRadius = 78.5 / 2 // fix
             cell.positionInList = indexPath.row
+            
+            cell.loadProfilePicture(cellData.remoteProfilePath ?? "")
+            cell.currentUser = self.currentUser
+            cell.friendRequestUser = cellData
 
             return cell
         }

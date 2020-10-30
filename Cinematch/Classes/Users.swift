@@ -7,6 +7,7 @@
 
 //import Foundation
 import UIKit
+import FirebaseDatabase
 
 enum UserPrivacy {
     case me
@@ -35,20 +36,53 @@ struct User: Equatable {
     var watchlist:[Movie] = []
     var history:[Movie] = []
     
+    var remoteProfilePath:String?
+    
+    init() {
+        // all default values
+    }
+    
+    init(name:String, username:String, bio:String, email:String, privacy:UserPrivacy, visualMode:VisualMode, profilePicture:UIImage, liked:[Movie], disliked:[Movie], watchlist:[Movie], history:[Movie]) {
+        self.name = name
+        self.username = username
+        self.bio = bio
+        self.email = email
+        self.privacy = privacy
+        self.visualMode = visualMode
+        self.profilePicture = profilePicture
+        self.liked = liked
+        self.disliked = disliked
+        self.watchlist = watchlist
+        self.history = history
+    }
+    
+    // build this object from a data snapshot of a user json object
+    // if snapshot malformed, this init will return the same result as init()
+    init(_ snapshot:DataSnapshot, _ username:String) {
+        let dataDictionary = snapshot.value as! NSDictionary
+        print(type(of: dataDictionary))
+        
+        self.name = dataDictionary["name"] as? String
+        self.username = username
+        self.bio = dataDictionary["bio"] as? String
+        self.profilePicture = UIImage(named: "profileCurrent") // not consistent
+        self.remoteProfilePath = dataDictionary["profile_path"] as? String
+    }
+    
     // no getters/setters, directly read/update vars instead
 }
 
 // sarah
-var CURRENT_USER = User(name: "Sarah Brown", username: "sarab", bio: "Hi, my name is sara and I like movies", email: "sarab@gmail.com", privacy: UserPrivacy.friends, visualMode: VisualMode.light, profilePicture: UIImage(named: "profileCurrent"), liked: [], disliked: [], watchlist: [], history: [])
+var CURRENT_USER = User(name: "Sarah Brown", username: "sarab", bio: "Hi, my name is sara and I like movies", email: "sarab@gmail.com", privacy: UserPrivacy.friends, visualMode: VisualMode.light, profilePicture: UIImage(named: "profileCurrent")!, liked: [], disliked: [], watchlist: [], history: [])
 
 // other users
-var otherUser1 = User(name: "Greg Broughton", username: "gregb", bio: "hi, its greg, dis my bio", email: "greggboi@gmail.com", privacy: UserPrivacy.everyone, visualMode: VisualMode.dark, profilePicture: UIImage(named: "profile1"), liked: [], disliked: [], watchlist: [], history: [])
+var otherUser1 = User(name: "Greg Broughton", username: "gregb", bio: "hi, its greg, dis my bio", email: "greggboi@gmail.com", privacy: UserPrivacy.everyone, visualMode: VisualMode.dark, profilePicture: UIImage(named: "profile1")!, liked: [], disliked: [], watchlist: [], history: [])
 
-var otherUser2 = User(name: "Cathy Boone", username: "cathyboo", bio: "lover of movies, dog mom", email: "boocathy@hotmail.org", privacy: UserPrivacy.me, visualMode: VisualMode.light, profilePicture: UIImage(named: "profile2"), liked: [], disliked: [], watchlist: [], history: [])
+var otherUser2 = User(name: "Cathy Boone", username: "cathyboo", bio: "lover of movies, dog mom", email: "boocathy@hotmail.org", privacy: UserPrivacy.me, visualMode: VisualMode.light, profilePicture: UIImage(named: "profile2")!, liked: [], disliked: [], watchlist: [], history: [])
 
-var otherUser3 = User(name: "Keane Bloom", username: "keanbloom", bio: "all kinds of movies are my favorite", email: "keaaaanbloo@gmail.com", privacy: UserPrivacy.everyone, visualMode: VisualMode.light, profilePicture: UIImage(named: "profile3"), liked: [], disliked: [], watchlist: [], history: [])
+var otherUser3 = User(name: "Keane Bloom", username: "keanbloom", bio: "all kinds of movies are my favorite", email: "keaaaanbloo@gmail.com", privacy: UserPrivacy.everyone, visualMode: VisualMode.light, profilePicture: UIImage(named: "profile3")!, liked: [], disliked: [], watchlist: [], history: [])
 
-var otherUser4 = User(name: "Reem Schafer", username: "reemmovies", bio: "movie producer and cinephile", email: "schafer.reem@gmail.com", privacy: UserPrivacy.everyone, visualMode: VisualMode.dark, profilePicture: UIImage(named: "profile4"), liked: [], disliked: [], watchlist: [], history: [])
+var otherUser4 = User(name: "Reem Schafer", username: "reemmovies", bio: "movie producer and cinephile", email: "schafer.reem@gmail.com", privacy: UserPrivacy.everyone, visualMode: VisualMode.dark, profilePicture: UIImage(named: "profile4")!, liked: [], disliked: [], watchlist: [], history: [])
 
 
 var OTHER_USERS = [otherUser1, otherUser2, otherUser3, otherUser4]

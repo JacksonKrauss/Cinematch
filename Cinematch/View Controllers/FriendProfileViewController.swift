@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import FirebaseDatabase
+import FirebaseAuth
 
 class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource {
     @IBOutlet weak var profilePicture: UIImageView!
@@ -17,6 +19,8 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     
     var user:User = User()
     var userMoviesData:[Movie] = []
+    
+    var ref: DatabaseReference!
     
     
     override func viewDidLoad() {
@@ -58,5 +62,36 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     */
 
     @IBAction func changeFriendStatus(_ sender: Any) {
+        // add to friend requests
+        var currentUser:User? = nil
+        var currentUsername:String? = nil
+        ref = Database.database().reference()
+        
+        if Auth.auth().currentUser != nil {
+            let currentUserAuth = Auth.auth().currentUser!
+            
+            print("user signed in. email: ")
+            
+            
+            ref.child("uid").child(currentUserAuth.uid).observeSingleEvent(of: .value) { [self] (snapshot) in
+                currentUsername = snapshot.value as? String
+                ref.child("user_info").child(currentUsername!).observeSingleEvent(of: .value) { (snapshot) in
+                    currentUser = User(snapshot, currentUsername!)
+                    // add friend
+                    
+                    ref.child("friend_request").child(user.username!).child((currentUser?.username!)!).setValue(true)
+                    
+                    // success
+                    
+                }
+                
+            }
+            
+            
+            
+        } else {
+          print("no user is signed in ")
+        }
+        
     }
 }
