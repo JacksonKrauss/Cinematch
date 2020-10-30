@@ -803,6 +803,7 @@
                         <outlet property="descriptionLabel" destination="SMM-Wy-7He" id="axm-8Q-V75"/>
                         <outlet property="friendLabel" destination="gTC-qc-iFp" id="1ww-qO-Xat"/>
                         <outlet property="kolodaView" destination="VsF-67-A7x" id="VX8-0p-4V3"/>
+                        <outlet property="starView" destination="SyC-vM-Svj" id="WNo-Cr-CKN"/>
                         <outlet property="titleLabel" destination="S8t-hw-JnZ" id="L0B-Sg-3lI"/>
                         <segue destination="moC-AU-uiy" kind="presentation" identifier="detailSegue" id="yGY-WE-pLS"/>
                     </connections>

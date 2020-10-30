@@ -35,6 +35,7 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
     
     @IBOutlet weak var friendLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var starView: UIImageView!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var kolodaView: KolodaView!
     var page = 1
@@ -117,7 +118,13 @@ extension SwipeScreenViewController: KolodaViewDataSource {
         self.descriptionLabel.text = movies[index].release
         self.titleLabel.text = movies[index].title
         if(movies[index].friends!.count > 0){
+            self.friendLabel.isHidden = false
+            self.starView.isHidden = false
             self.friendLabel.text = movies[index].friends![0].name! + " liked this movie!"
+        }
+        else{
+            self.friendLabel.isHidden = true
+            self.starView.isHidden = true
         }
     }
     
