@@ -25,4 +25,10 @@ class MovieSearchTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        moviePosterImageView.image = nil
+        moviePosterImageView.backgroundColor = .white
+    }
+    
 }
