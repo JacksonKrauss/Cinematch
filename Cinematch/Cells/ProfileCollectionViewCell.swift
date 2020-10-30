@@ -9,5 +9,6 @@ import UIKit
 
 class ProfileCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var moviePoster: UIImageView!
+    @IBOutlet weak var historyView: UIImageView!
     
 }
