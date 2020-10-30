@@ -61,22 +61,21 @@ class Movie:Equatable{
                 self.release = movie.release_date
                 self.poster = movie.poster_path
             }
-            
         }
     }
     static func addToList(direction: SwipeResultDirection, movie: Movie){
         Movie.clearMovie(movie: movie)
         if(direction == .right){
-            CURRENT_USER.liked.append(movie)
             movie.opinion = .like
+            CURRENT_USER.liked.append(movie)
         }
         else if(direction == .left){
-            CURRENT_USER.disliked.append(movie)
             movie.opinion = .dislike
+            CURRENT_USER.disliked.append(movie)
         }
         else if(direction == .up){
-            CURRENT_USER.watchlist.append(movie)
             movie.opinion = .watchlist
+            CURRENT_USER.watchlist.append(movie)
         }
     }
     static func getRecommended(page: Int, id: Int, completion: @escaping(_ movieList: [Movie]) -> ()){

@@ -10,7 +10,6 @@ import Koloda
 import TMDBSwift
 class SwipeScreenViewController: UIViewController,SwipeDelegate {
     func reload() {
-        
     }
     
     func buttonTapped(direction: SwipeResultDirection, index:Int) {
@@ -125,8 +124,8 @@ extension SwipeScreenViewController: KolodaViewDataSource {
     func koloda(_ koloda: KolodaView, didSwipeCardAt index: Int, in direction: SwipeResultDirection) {
         Movie.clearMovie(movie: movies[index])
         if(direction == .right){
-            CURRENT_USER.liked.append(movies[index])
             movies[index].opinion = .like
+            CURRENT_USER.liked.append(movies[index])
             Movie.getRecommended(page: 1, id: movies[index].id!) { (list) in
                 self.movies.addAll(array: list)
                 print("adding \(list)")
@@ -134,12 +133,12 @@ extension SwipeScreenViewController: KolodaViewDataSource {
             }
         }
         else if(direction == .left){
-            CURRENT_USER.disliked.append(movies[index])
             movies[index].opinion = .dislike
+            CURRENT_USER.disliked.append(movies[index])
         }
         else if(direction == .up){
-            CURRENT_USER.watchlist.append(movies[index])
             movies[index].opinion = .watchlist
+            CURRENT_USER.watchlist.append(movies[index])
         }
         CURRENT_USER.history.append(movies[index])
         if(index == movies.endIndex-1){

@@ -272,7 +272,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="20" id="S9O-G9-VrD"/>
                                                         </constraints>
-                                                        <state key="normal" title="Button" image="plus" catalog="system"/>
+                                                        <state key="normal" title="Button" image="plus.app" catalog="system"/>
                                                         <connections>
                                                             <action selector="addButton:" destination="moC-AU-uiy" eventType="touchUpInside" id="TVG-hU-VNi"/>
                                                         </connections>
@@ -487,11 +487,14 @@
                     <connections>
                         <outlet property="collectionView" destination="P0c-Nz-CHP" id="W00-HQ-on7"/>
                         <outlet property="descriptionLabel" destination="Ypo-NR-X1o" id="k7j-HO-M7j"/>
+                        <outlet property="downButtonOutlet" destination="DNc-Fx-lRZ" id="YuZ-OO-eIC"/>
                         <outlet property="friendsLabel" destination="qxg-8v-bmO" id="csc-oF-bfb"/>
+                        <outlet property="likeButtonOutlet" destination="gUb-Ww-Y3G" id="a2b-XD-gIS"/>
                         <outlet property="posterView" destination="btG-fd-u0s" id="dLM-WM-533"/>
                         <outlet property="ratingLabel" destination="HFZ-Wr-a10" id="rVe-ua-fCf"/>
                         <outlet property="releaseLabel" destination="SXX-QC-b89" id="kc1-n4-rv6"/>
                         <outlet property="titleLabel" destination="adc-O5-TBI" id="Zq1-0d-CZK"/>
+                        <outlet property="watchlistButtonOutlet" destination="Yrs-k6-bnb" id="cq7-o7-umz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5ED-fv-bMx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1911,7 +1914,7 @@
         <segue reference="RCU-C9-hhH"/>
         <segue reference="b2g-nQ-9BZ"/>
         <segue reference="tSa-yd-FV7"/>
-        <segue reference="yGY-WE-pLS"/>
+        <segue reference="Ugq-qH-Kja"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="arrow.left" catalog="system" width="128" height="98"/>
@@ -1933,7 +1936,7 @@
         <image name="pencil.circle.fill" catalog="system" width="128" height="121"/>
         <image name="person.2.fill" catalog="system" width="128" height="80"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
-        <image name="plus" catalog="system" width="128" height="113"/>
+        <image name="plus.app" catalog="system" width="128" height="114"/>
         <image name="plus.circle.fill" catalog="system" width="128" height="121"/>
         <image name="square.and.arrow.up" catalog="system" width="115" height="128"/>
         <image name="square.grid.3x3" catalog="system" width="128" height="112"/>
