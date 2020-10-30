@@ -8,6 +8,7 @@
 import UIKit
 import Firebase
 import FirebaseDatabase
+
 class SignUpViewController: UIViewController {
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var usernameTextField: UITextField!
@@ -43,15 +44,29 @@ class SignUpViewController: UIViewController {
         // user is tied to their email, first name, and last name
         let newUserInfo = [
             "name": name,
-            "email": email
+            "email": email,
+            "bio": "",
+            "privacy": "friends",
+            "visual_mode": "light"
         ]
-        let newUser = self.ref.child("user_info").child(username)
-        newUser.setValue(newUserInfo)
         
         // after sign in, user is automatically logged in
         Auth.auth().createUser(withEmail: email, password: password) {
             user, error in
             if error == nil {
+                CURRENT_USER = User(name: name,
+                                    username: username,
+                                    bio: "",
+                                    email: email,
+                                    privacy: UserPrivacy.friends,
+                                    visualMode: VisualMode.light,
+                                    profilePicture: UIImage(named: "profileCurrent"),
+                                    liked:[],
+                                    disliked: [],
+                                    watchlist: [],
+                                    history: [])
+                let newUser = self.ref.child("user_info").child(username)
+                newUser.setValue(newUserInfo)
                 Auth.auth().signIn(withEmail: email, password: password)
                 self.performSegue(withIdentifier: "signUpSegue", sender: nil)
             }
