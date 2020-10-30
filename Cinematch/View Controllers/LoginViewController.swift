@@ -39,13 +39,13 @@ class LoginViewController: UIViewController {
                 Auth.auth().signIn(withEmail: email, password: password) {
                     user, error in
                     if error == nil {
-                        CURRENT_USER = User(name: snapshot.childSnapshot(forPath: "name").value as? String,
+                        CURRENT_USER = User(name: (snapshot.childSnapshot(forPath: "name").value as? String)!,
                                             username: username,
-                                            bio: snapshot.childSnapshot(forPath: "bio").value as? String,
+                                            bio: (snapshot.childSnapshot(forPath: "bio").value as? String)!,
                                             email: email,
                                             privacy: stringToPrivacy(privacy: snapshot.childSnapshot(forPath: "privacy").value as? String ?? ""),
                                             visualMode: stringToVisual(visualMode: snapshot.childSnapshot(forPath: "visual_mode").value as? String ?? ""),
-                                            profilePicture: UIImage(named: "profileCurrent"),
+                                            profilePicture: UIImage(named: "profileCurrent")!,
                                             liked:[],
                                             disliked: [],
                                             watchlist: [],

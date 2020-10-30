@@ -60,7 +60,7 @@ class SignUpViewController: UIViewController {
                                     email: email,
                                     privacy: UserPrivacy.friends,
                                     visualMode: VisualMode.light,
-                                    profilePicture: UIImage(named: "profileCurrent"),
+                                    profilePicture: UIImage(named: "profileCurrent")!,
                                     liked:[],
                                     disliked: [],
                                     watchlist: [],

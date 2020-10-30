@@ -210,6 +210,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
                 movie.rating = "\(moviesData[index!].vote_average)"
                 movie.friends = []
                 movie.poster = moviesData[index!].poster_path
+                movie.actors = []
+                movie.id = moviesData[index!].id
                 //TODO: change movie to take in a MovieDB and populate it
                 //Also make sure that it checks the movies a user has
                 //looked at before
