@@ -77,6 +77,7 @@ class Movie:Equatable{
             movie.opinion = .watchlist
             CURRENT_USER.watchlist.append(movie)
         }
+        CURRENT_USER.history.append(movie)
     }
     static func getRecommended(page: Int, id: Int, completion: @escaping(_ movieList: [Movie]) -> ()){
         var movieList:[Movie] = []
@@ -133,6 +134,7 @@ class Movie:Equatable{
         CURRENT_USER.liked.remove(object: movie)
         CURRENT_USER.disliked.remove(object: movie)
         CURRENT_USER.watchlist.remove(object: movie)
+        CURRENT_USER.history.remove(object: movie)
     }
 }
 class SampleMovies{
