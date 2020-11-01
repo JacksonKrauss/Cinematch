@@ -57,20 +57,26 @@ class Movie:Equatable{
     var posterImg: UIImage?
 
     static func addToList(direction: SwipeResultDirection, movie: Movie){
+        let ref = Database.database().reference()
         Movie.clearMovie(movie: movie)
+        var op:String?
         if(direction == .right){
             movie.opinion = .like
-            CURRENT_USER.liked.append(movie)
+            op = "l"
+            //CURRENT_USER.liked.append(movie)
         }
         else if(direction == .left){
             movie.opinion = .dislike
-            CURRENT_USER.disliked.append(movie)
+            op = "d"
+            //CURRENT_USER.disliked.append(movie)
         }
         else if(direction == .up){
             movie.opinion = .watchlist
+            op = "w"
             CURRENT_USER.watchlist.append(movie)
         }
-        CURRENT_USER.history.append(movie)
+        //CURRENT_USER.history.append(movie)
+        ref.child("movies").child(CURRENT_USER.username!).child(movie.id!.description).setValue(op!)
     }
     static func getRecommended(page: Int, id: Int, completion: @escaping(_ movieList: [Movie]) -> ()){
         var movieList:[Movie] = []
@@ -146,12 +152,28 @@ class Movie:Equatable{
                 curr.release = movie.release_date
                 curr.friends = []
                 curr.opinion = movieFB.opinion
+                if(curr.poster == nil){
+                    curr.posterImg = UIImage(named: "no-image")
+                }
+                else{
+                    let url = URL(string: "https://image.tmdb.org/t/p/original" + curr.poster!)!
+                    DispatchQueue.global().async {
+                        if let data = try? Data(contentsOf: url) {
+                            if let image = UIImage(data: data) {
+                                DispatchQueue.main.async {
+                                    curr.posterImg = image
+                                }
+                            }
+                        }
+                    }
+                }
                 completion(curr)
               }
             }
     }
     static func getUserListsFromMovies(movieList: [Movie]){
         for movie in movieList{
+            //Movie.clearMovie(movie: movie)
             switch movie.opinion {
             case .like:
                 CURRENT_USER.liked.append(movie)
@@ -166,6 +188,8 @@ class Movie:Equatable{
         }
     }
     static func clearMovie(movie: Movie){
+        let ref = Database.database().reference()
+        ref.child("movies").child(CURRENT_USER.username!).child(movie.id!.description).removeValue()
         CURRENT_USER.liked.remove(object: movie)
         CURRENT_USER.disliked.remove(object: movie)
         CURRENT_USER.watchlist.remove(object: movie)
