@@ -32,8 +32,6 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
     let ref = Database.database().reference()
     var movies: [Movie] = []
     var userMovies: [Movie] = []
-    var currentUsername:String? = nil
-    var currentUser:User? = nil
     override func viewDidLoad() {
         super.viewDidLoad()
         kolodaView.dataSource = self
@@ -43,25 +41,17 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
             self.movies = list
             self.kolodaView.reloadData()
         }
-        if Auth.auth().currentUser != nil {
-            let currentUser = Auth.auth().currentUser!
-            print("user signed in. email: ")
-            ref.child("uid").child(currentUser.uid).observeSingleEvent(of: .value) { [self] (snapshot) in
-                self.currentUsername = snapshot.value as? String
-                Movie.getMoviesForUser(username: self.currentUsername!) { (userHist) in
-                    for x in userHist{
-                        Movie.getMovieFromFB(movieFB: x) { (movie) in
-                            userMovies.append(movie)
-                            if(userMovies.count == userHist.count){
-                                Movie.getUserListsFromMovies(movieList: userMovies)
-                                print("done")
-                            }
-                        }
+        //add observer
+        Movie.getMoviesForUser(username: CURRENT_USER.username!) { (userHist) in
+            for x in userHist{
+                Movie.getMovieFromFB(movieFB: x) { (movie) in
+                    self.userMovies.append(movie)
+                    if(self.userMovies.count == userHist.count){
+                        Movie.getUserListsFromMovies(movieList: self.userMovies)
+                        print("done")
                     }
                 }
             }
-        } else {
-          print("no user is signed in ")
         }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -168,7 +158,7 @@ extension SwipeScreenViewController: KolodaViewDataSource {
             movies[index].opinion = .watchlist
             //CURRENT_USER.watchlist.append(movies[index])
         }
-        self.ref.child("movies").child(currentUsername!).child(movies[index].id!.description).setValue(op!)
+        self.ref.child("movies").child(CURRENT_USER.username!).child(movies[index].id!.description).setValue(op!)
         //CURRENT_USER.history.append(movies[index])
         if(index == movies.endIndex-1){
             self.descriptionLabel.text = ""
