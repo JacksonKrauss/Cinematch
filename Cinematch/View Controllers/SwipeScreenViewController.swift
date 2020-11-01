@@ -48,9 +48,17 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
             print("user signed in. email: ")
             ref.child("uid").child(currentUser.uid).observeSingleEvent(of: .value) { [self] (snapshot) in
                 self.currentUsername = snapshot.value as? String
-//                Movie.getMoviesForUser(username: self.currentUsername!) { (userHist) in
-//                    self.userMovies = userHist
-//                }
+                Movie.getMoviesForUser(username: self.currentUsername!) { (userHist) in
+                    for x in userHist{
+                        Movie.getMovieFromFB(movieFB: x) { (movie) in
+                            userMovies.append(movie)
+                            if(userMovies.count == userHist.count){
+                                Movie.getUserListsFromMovies(movieList: userMovies)
+                                print("done")
+                            }
+                        }
+                    }
+                }
             }
         } else {
           print("no user is signed in ")

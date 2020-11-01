@@ -27,8 +27,8 @@ extension Array where Element: Equatable {
     
 }
 struct MovieFB {
-    var id: Int?
-    var opinion: Opinion?
+    var id: Int
+    var opinion: Opinion
 }
 enum Opinion {
     case like
@@ -55,19 +55,7 @@ class Movie:Equatable{
     var friends: [User]?
     var duration:String?
     var posterImg: UIImage?
-    func setVars(id:Int){
-        self.id = id
-        MovieMDB.movie(movieID: id, language: "en"){
-            apiReturn, movie in
-            if let movie = movie{
-                self.title = movie.title
-                self.description = movie.overview
-                self.rating = String(movie.vote_average!)
-                self.release = movie.release_date
-                self.poster = movie.poster_path
-            }
-        }
-    }
+
     static func addToList(direction: SwipeResultDirection, movie: Movie){
         Movie.clearMovie(movie: movie)
         if(direction == .right){
@@ -123,37 +111,58 @@ class Movie:Equatable{
             }
         }
     }
-    static func getMoviesForUser(username: String, completion: @escaping(_ movieList: [Movie]) -> ()){
+    static func getMoviesForUser(username: String, completion: @escaping(_ movieList: [MovieFB]) -> ()){
         let ref = Database.database().reference()
-        var movieList:[Movie] = []
+        var movieList:[MovieFB] = []
         ref.child("movies").child(username).observe(.value) { (snapshot) in
             for m in snapshot.children {
                 let movieData:DataSnapshot = m as! DataSnapshot
-                MovieMDB.movie(movieID: Int(movieData.key), language: "en"){
-                  apiReturn, movie in
-                  if let movie = movie{
-                    let curr = Movie()
-                    curr.title = movie.title
-                    curr.description = movie.overview
-                    curr.poster = movie.poster_path
-                    curr.rating = movie.vote_average?.description
-                    curr.id = movie.id
-                    curr.release = movie.release_date
-                    curr.friends = []
-                    if((movieData.value as! String) == "l"){
-                        curr.opinion = .like
-                    }
-                    if((movieData.value as! String) == "w"){
-                        curr.opinion = .watchlist
-                    }
-                    if((movieData.value as! String) == "d"){
-                        curr.opinion = .dislike
-                    }
-                    movieList.append(curr)
-                  }
+                var currentOP: Opinion?
+                if((movieData.value as! String) == "l"){
+                    currentOP = .like
                 }
+                if((movieData.value as! String) == "w"){
+                    currentOP = .watchlist
+                }
+                if((movieData.value as! String) == "d"){
+                    currentOP = .dislike
+                }
+                let movie: MovieFB = MovieFB(id: Int(movieData.key)!, opinion: currentOP!)
+                movieList.append(movie)
             }
             completion(movieList)
+        }
+    }
+    static func getMovieFromFB(movieFB: MovieFB, completion: @escaping(_ movie: Movie) -> ()){
+        MovieMDB.movie(movieID: movieFB.id, language: "en"){
+              apiReturn, movie in
+              if let movie = movie{
+                let curr = Movie()
+                curr.title = movie.title
+                curr.description = movie.overview
+                curr.poster = movie.poster_path
+                curr.rating = movie.vote_average!.description
+                curr.id = movie.id
+                curr.release = movie.release_date
+                curr.friends = []
+                curr.opinion = movieFB.opinion
+                completion(curr)
+              }
+            }
+    }
+    static func getUserListsFromMovies(movieList: [Movie]){
+        for movie in movieList{
+            switch movie.opinion {
+            case .like:
+                CURRENT_USER.liked.append(movie)
+            case .watchlist:
+                CURRENT_USER.watchlist.append(movie)
+            case .dislike:
+                CURRENT_USER.disliked.append(movie)
+            default:
+                break
+            }
+            CURRENT_USER.history.append(movie)
         }
     }
     static func clearMovie(movie: Movie){
