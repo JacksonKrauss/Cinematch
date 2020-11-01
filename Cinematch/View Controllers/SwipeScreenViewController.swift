@@ -8,6 +8,7 @@
 import UIKit
 import Koloda
 import TMDBSwift
+import Firebase
 class SwipeScreenViewController: UIViewController,SwipeDelegate {
     func reload() {
     }
@@ -20,7 +21,6 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
         else{
             Movie.addToList(direction: direction, movie: movies[index])
         }
-        
     }
     
     @IBOutlet weak var friendLabel: UILabel!
@@ -29,7 +29,11 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var kolodaView: KolodaView!
     var page = 1
+    let ref = Database.database().reference()
     var movies: [Movie] = []
+    var userMovies: [Movie] = []
+    var currentUsername:String? = nil
+    var currentUser:User? = nil
     override func viewDidLoad() {
         super.viewDidLoad()
         kolodaView.dataSource = self
@@ -38,6 +42,18 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
         Movie.getMovies(page: page) { (list) in
             self.movies = list
             self.kolodaView.reloadData()
+        }
+        if Auth.auth().currentUser != nil {
+            let currentUser = Auth.auth().currentUser!
+            print("user signed in. email: ")
+            ref.child("uid").child(currentUser.uid).observeSingleEvent(of: .value) { [self] (snapshot) in
+                self.currentUsername = snapshot.value as? String
+//                Movie.getMoviesForUser(username: self.currentUsername!) { (userHist) in
+//                    self.userMovies = userHist
+//                }
+            }
+        } else {
+          print("no user is signed in ")
         }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

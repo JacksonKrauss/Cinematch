@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import TMDBSwift
 import Koloda
+import Firebase
 extension Array where Element: Equatable {
     mutating func addAll(array: [Element]) {
         for item in array{
@@ -24,6 +25,10 @@ extension Array where Element: Equatable {
         remove(at: index)
     }
     
+}
+struct MovieFB {
+    var id: Int?
+    var opinion: Opinion?
 }
 enum Opinion {
     case like
@@ -112,22 +117,43 @@ class Movie:Equatable{
                     curr.id = m.id
                     curr.release = m.release_date
                     curr.friends = []
-                    //works but only loads one movie at a time
-//                    MovieMDB.credits(movieID: m.id){
-//                        apiReturn, credits in
-//                        if let credits = credits{
-//                            for cast in credits.cast{
-//                                curr.actors.append(cast.name)
-//                            }
-//                        }
-//                        movieList.append(curr)
-//                        completion(movieList)
-//                    }
                     movieList.append(curr)
                 }
                 completion(movieList)
-                
             }
+        }
+    }
+    static func getMoviesForUser(username: String, completion: @escaping(_ movieList: [Movie]) -> ()){
+        let ref = Database.database().reference()
+        var movieList:[Movie] = []
+        ref.child("movies").child(username).observe(.value) { (snapshot) in
+            for m in snapshot.children {
+                let movieData:DataSnapshot = m as! DataSnapshot
+                MovieMDB.movie(movieID: Int(movieData.key), language: "en"){
+                  apiReturn, movie in
+                  if let movie = movie{
+                    let curr = Movie()
+                    curr.title = movie.title
+                    curr.description = movie.overview
+                    curr.poster = movie.poster_path
+                    curr.rating = movie.vote_average?.description
+                    curr.id = movie.id
+                    curr.release = movie.release_date
+                    curr.friends = []
+                    if((movieData.value as! String) == "l"){
+                        curr.opinion = .like
+                    }
+                    if((movieData.value as! String) == "w"){
+                        curr.opinion = .watchlist
+                    }
+                    if((movieData.value as! String) == "d"){
+                        curr.opinion = .dislike
+                    }
+                    movieList.append(curr)
+                  }
+                }
+            }
+            completion(movieList)
         }
     }
     static func clearMovie(movie: Movie){
@@ -137,34 +163,3 @@ class Movie:Equatable{
         CURRENT_USER.history.remove(object: movie)
     }
 }
-class SampleMovies{
-    static func getMovies() -> [Movie]{
-        var movieList:[Movie] = []
-        let blackPanther = Movie()
-        blackPanther.description = "King T'Challa returns home from America to the reclusive, technologically advanced African nation of Wakanda to serve as his country's new leader. However, T'Challa soon finds that he is challenged for the throne by factions within his own country as well as without. Using powers reserved to Wakandan kings, T'Challa assumes the Black Panther mantel to join with girlfriend Nakia, the queen-mother, his princess-kid sister, members of the Dora Milaje (the Wakandan 'special forces') and an American secret agent, to prevent Wakanda from being dragged into a world war."
-        blackPanther.title = "Black Panther"
-        blackPanther.id = 284054
-        blackPanther.poster = "/uxzzxijgPIY7slzFvMotPv8wjKA.jpg"
-        blackPanther.rating = "3.7"
-        blackPanther.release = "2018"
-        //blackPanther.actors = ["Chadwick Boseman","Michael B. Jordan","Lupita Nyong'o","Danai Gurira"]
-        blackPanther.duration = "2h 15m"
-        blackPanther.friends = [otherUser1, otherUser2]
-        movieList.append(blackPanther)
-        let mulan = Movie()
-        mulan.description = "When the Emperor of China issues a decree that one man per family must serve in the Imperial Chinese Army to defend the country from Huns, Hua Mulan, the eldest daughter of an honored warrior, steps in to take the place of her ailing father. She is spirited, determined and quick on her feet. Disguised as a man by the name of Hua Jun, she is tested every step of the way and must harness her innermost strength and embrace her true potential."
-        mulan.title = "Mulan"
-        mulan.id = 337401
-        mulan.poster = "/aKx1ARwG55zZ0GpRvU2WrGrCG9o.jpg"
-        mulan.rating = "3.7"
-        mulan.release = "2020"
-        //mulan.actors = ["Liu Yifei","Jet Li","Tzi Ma","Donnie Yen"]
-        mulan.duration = "1h 55m"
-        mulan.friends = [otherUser3]
-        movieList.append(mulan)
-        return movieList
-    }
-    
-    
-}
-

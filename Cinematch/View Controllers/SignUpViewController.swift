@@ -42,6 +42,7 @@ class SignUpViewController: UIViewController {
         }
         
         // user is tied to their email, first name, and last name
+        //add movie list
         let newUserInfo = [
             "name": name,
             "email": email,
