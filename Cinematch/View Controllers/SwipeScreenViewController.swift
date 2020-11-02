@@ -15,12 +15,13 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
     
     func buttonTapped(direction: SwipeResultDirection, index:Int) {
         if(index==kolodaView.currentCardIndex){
-            Movie.clearMovie(movie: movies[index])
+            //Movie.clearMovie(movie: movies[index])
             self.kolodaView.swipe(direction)
         }
         else{
             Movie.addToList(direction: direction, movie: movies[index])
         }
+        Movie.updateFromFB()
     }
     
     @IBOutlet weak var friendLabel: UILabel!
@@ -31,7 +32,6 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
     var page = 1
     let ref = Database.database().reference()
     var movies: [Movie] = []
-    var userMovies: [Movie] = []
     override func viewDidLoad() {
         super.viewDidLoad()
         kolodaView.dataSource = self
@@ -41,18 +41,7 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
             self.movies = list
             self.kolodaView.reloadData()
         }
-        //add observer
-        Movie.getMoviesForUser(username: CURRENT_USER.username!) { (userHist) in
-            for x in userHist{
-                Movie.getMovieFromFB(movieFB: x) { (movie) in
-                    self.userMovies.append(movie)
-                    if(self.userMovies.count == userHist.count){
-                        Movie.getUserListsFromMovies(movieList: self.userMovies)
-                        print("done")
-                    }
-                }
-            }
-        }
+        Movie.updateFromFB()
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "detailSegue"){
@@ -136,7 +125,7 @@ extension SwipeScreenViewController: KolodaViewDataSource {
         return OverlayView()
     }
     func koloda(_ koloda: KolodaView, didSwipeCardAt index: Int, in direction: SwipeResultDirection) {
-        Movie.clearMovie(movie: movies[index])
+        //Movie.clearMovie(movie: movies[index])
         var op: String?
         if(direction == .right){
             op = "l"
@@ -159,6 +148,7 @@ extension SwipeScreenViewController: KolodaViewDataSource {
             //CURRENT_USER.watchlist.append(movies[index])
         }
         self.ref.child("movies").child(CURRENT_USER.username!).child(movies[index].id!.description).setValue(op!)
+        Movie.updateFromFB()
         //CURRENT_USER.history.append(movies[index])
         if(index == movies.endIndex-1){
             self.descriptionLabel.text = ""

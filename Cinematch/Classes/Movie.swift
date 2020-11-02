@@ -58,7 +58,7 @@ class Movie:Equatable{
 
     static func addToList(direction: SwipeResultDirection, movie: Movie){
         let ref = Database.database().reference()
-        Movie.clearMovie(movie: movie)
+        //Movie.clearMovie(movie: movie)
         var op:String?
         if(direction == .right){
             movie.opinion = .like
@@ -77,6 +77,7 @@ class Movie:Equatable{
         }
         //CURRENT_USER.history.append(movie)
         ref.child("movies").child(CURRENT_USER.username!).child(movie.id!.description).setValue(op!)
+        Movie.updateFromFB()
     }
     static func getRecommended(page: Int, id: Int, completion: @escaping(_ movieList: [Movie]) -> ()){
         var movieList:[Movie] = []
@@ -120,7 +121,7 @@ class Movie:Equatable{
     static func getMoviesForUser(username: String, completion: @escaping(_ movieList: [MovieFB]) -> ()){
         let ref = Database.database().reference()
         var movieList:[MovieFB] = []
-        ref.child("movies").child(username).observe(.value) { (snapshot) in
+        ref.child("movies").child(username).observeSingleEvent(of: .value) { (snapshot) in
             for m in snapshot.children {
                 let movieData:DataSnapshot = m as! DataSnapshot
                 var currentOP: Opinion?
@@ -173,7 +174,6 @@ class Movie:Equatable{
     }
     static func getUserListsFromMovies(movieList: [Movie]){
         for movie in movieList{
-            //Movie.clearMovie(movie: movie)
             switch movie.opinion {
             case .like:
                 CURRENT_USER.liked.append(movie)
@@ -187,12 +187,30 @@ class Movie:Equatable{
             CURRENT_USER.history.append(movie)
         }
     }
-    static func clearMovie(movie: Movie){
-        let ref = Database.database().reference()
-        ref.child("movies").child(CURRENT_USER.username!).child(movie.id!.description).removeValue()
-        CURRENT_USER.liked.remove(object: movie)
-        CURRENT_USER.disliked.remove(object: movie)
-        CURRENT_USER.watchlist.remove(object: movie)
-        CURRENT_USER.history.remove(object: movie)
+    static func updateFromFB(){
+        var userMovies: [Movie] = []
+        CURRENT_USER.watchlist = []
+        CURRENT_USER.disliked = []
+        CURRENT_USER.liked = []
+        CURRENT_USER.history = []
+        Movie.getMoviesForUser(username: CURRENT_USER.username!) { (userHist) in
+            for x in userHist{
+                Movie.getMovieFromFB(movieFB: x) { (movie) in
+                    userMovies.append(movie)
+                    if(userMovies.count == userHist.count){
+                        Movie.getUserListsFromMovies(movieList: userMovies)
+                        print("done")
+                    }
+                }
+            }
+        }
     }
+//    static func clearMovie(movie: Movie){
+//        let ref = Database.database().reference()
+//        ref.child("movies").child(CURRENT_USER.username!).child(movie.id!.description).removeValue()
+//        CURRENT_USER.liked.remove(object: movie)
+//        CURRENT_USER.disliked.remove(object: movie)
+//        CURRENT_USER.watchlist.remove(object: movie)
+//        CURRENT_USER.history.remove(object: movie)
+//    }
 }
