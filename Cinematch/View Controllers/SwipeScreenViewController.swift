@@ -15,13 +15,14 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
     
     func buttonTapped(direction: SwipeResultDirection, index:Int) {
         if(index==kolodaView.currentCardIndex){
-            //Movie.clearMovie(movie: movies[index])
             self.kolodaView.swipe(direction)
         }
         else{
             Movie.addToList(direction: direction, movie: movies[index])
         }
-        Movie.updateFromFB()
+        Movie.updateFromFB {
+            
+        }
     }
     
     @IBOutlet weak var friendLabel: UILabel!
@@ -37,11 +38,13 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
         kolodaView.dataSource = self
         kolodaView.delegate = self
         TMDBConfig.apikey = "da04189f6c8bb1116ff3c217c908b776"
-        Movie.getMovies(page: page) { (list) in
-            self.movies = list
-            self.kolodaView.reloadData()
+        Movie.updateFromFB{
+            Movie.getMovies(page: self.page) { (list) in
+                self.movies = list
+                self.kolodaView.reloadData()
+            }
         }
-        Movie.updateFromFB()
+        //Movie.updateFromFB()
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "detailSegue"){
@@ -148,7 +151,8 @@ extension SwipeScreenViewController: KolodaViewDataSource {
             //CURRENT_USER.watchlist.append(movies[index])
         }
         self.ref.child("movies").child(CURRENT_USER.username!).child(movies[index].id!.description).setValue(op!)
-        Movie.updateFromFB()
+        Movie.updateFromFB{
+        }
         //CURRENT_USER.history.append(movies[index])
         if(index == movies.endIndex-1){
             self.descriptionLabel.text = ""

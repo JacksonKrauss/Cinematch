@@ -77,7 +77,9 @@ class Movie:Equatable{
         }
         //CURRENT_USER.history.append(movie)
         ref.child("movies").child(CURRENT_USER.username!).child(movie.id!.description).setValue(op!)
-        Movie.updateFromFB()
+        Movie.updateFromFB {
+            
+        }
     }
     static func getRecommended(page: Int, id: Int, completion: @escaping(_ movieList: [Movie]) -> ()){
         var movieList:[Movie] = []
@@ -92,7 +94,9 @@ class Movie:Equatable{
                     curr.id = rec.id
                     curr.release = rec.release_date
                     curr.friends = []
-                    movieList.append(curr)
+                    if(!CURRENT_USER.history.contains(curr)){
+                        movieList.append(curr)
+                    }
                 }
                 completion(movieList)
             }
@@ -112,7 +116,9 @@ class Movie:Equatable{
                     curr.id = m.id
                     curr.release = m.release_date
                     curr.friends = []
-                    movieList.append(curr)
+                    if(!CURRENT_USER.history.contains(curr)){
+                        movieList.append(curr)
+                    }
                 }
                 completion(movieList)
             }
@@ -187,7 +193,7 @@ class Movie:Equatable{
             CURRENT_USER.history.append(movie)
         }
     }
-    static func updateFromFB(){
+    static func updateFromFB(completion: @escaping() -> ()){
         var userMovies: [Movie] = []
         CURRENT_USER.watchlist = []
         CURRENT_USER.disliked = []
@@ -200,17 +206,10 @@ class Movie:Equatable{
                     if(userMovies.count == userHist.count){
                         Movie.getUserListsFromMovies(movieList: userMovies)
                         print("done")
+                        completion()
                     }
                 }
             }
         }
     }
-//    static func clearMovie(movie: Movie){
-//        let ref = Database.database().reference()
-//        ref.child("movies").child(CURRENT_USER.username!).child(movie.id!.description).removeValue()
-//        CURRENT_USER.liked.remove(object: movie)
-//        CURRENT_USER.disliked.remove(object: movie)
-//        CURRENT_USER.watchlist.remove(object: movie)
-//        CURRENT_USER.history.remove(object: movie)
-//    }
 }
