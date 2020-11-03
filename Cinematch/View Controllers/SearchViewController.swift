@@ -219,18 +219,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
                 
                 //get the movie in form
                 let movie = Movie()
-                movie.title = moviesData[index!].title
-                movie.description = moviesData[index!].overview
-                movie.release = moviesData[index!].release_date
-                movie.rating = "\(moviesData[index!].vote_average)"
-                movie.friends = []
-                movie.poster = moviesData[index!].poster_path
-                movie.actors = []
-                movie.id = moviesData[index!].id
-                //TODO: change movie to take in a MovieDB and populate it
-                //Also make sure that it checks the movies a user has
-                //looked at before
-                
+                movie.setFromMovie(movie:  moviesData[index!])
                 detailViewController.movie = movie
                 detailViewController.currentIndex = index
             }

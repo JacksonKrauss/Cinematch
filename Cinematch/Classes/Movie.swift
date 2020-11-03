@@ -49,6 +49,7 @@ class Movie:Equatable{
     var friends: [User]?
     var duration:String?
     var posterImg: UIImage?
+    
     func setVars(id:Int){
         self.id = id
         MovieMDB.movie(movieID: id, language: "en"){
@@ -71,6 +72,22 @@ class Movie:Equatable{
 //            }
 //        }
     }
+    
+    func setFromMovie(movie: MovieMDB){
+        self.id = movie.id
+        self.title = movie.title
+        self.description = movie.overview
+        self.rating = String(movie.vote_average!)
+        self.release = movie.release_date
+        self.poster = movie.poster_path
+        
+        //populate from the user/ other source
+        self.actors = []
+        self.friends = []
+        //opinion
+        //self.duration = movie.runtime
+    }
+    
     static func getRecommended(page: Int, id: Int, completion: @escaping(_ movieList: [Movie]) -> ()){
         var movieList:[Movie] = []
         MovieMDB.recommendations(movieID: id, page: page, language: "en") { (ClientReturn, movies: [MovieMDB]?) in
@@ -90,6 +107,7 @@ class Movie:Equatable{
             }
         }
     }
+    
     static func getMovies(page: Int,completion: @escaping (_ movieList: [Movie]) -> ()){
         var movieList:[Movie] = []
         MovieMDB.popular(language: "en", page: page){
@@ -122,12 +140,14 @@ class Movie:Equatable{
             }
         }
     }
+    
     static func clearMovie(movie: Movie){
         CURRENT_USER.liked.remove(object: movie)
         CURRENT_USER.disliked.remove(object: movie)
         CURRENT_USER.watchlist.remove(object: movie)
     }
 }
+
 class SampleMovies{
     static func getMovies() -> [Movie]{
         var movieList:[Movie] = []

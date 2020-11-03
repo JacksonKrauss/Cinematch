@@ -57,11 +57,12 @@ class MovieDetailViewController: UIViewController, UICollectionViewDelegate, UIC
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
+        print(movie?.title)
         self.titleLabel.text = self.movie?.title
         self.descriptionLabel.text = self.movie?.description
         self.releaseLabel.text = self.movie?.release
         self.ratingLabel.text = self.movie?.rating
-        self.friendsLabel.text = "\(movie!.friends!.count) of your friends liked this movie"
+        self.friendsLabel.text = "\(movie!.friends?.count ?? 0) of your friends liked this movie"
         MovieMDB.credits(movieID: movie!.id){
             apiReturn, credits in
             if let credits = credits{
