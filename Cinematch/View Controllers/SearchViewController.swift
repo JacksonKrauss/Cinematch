@@ -8,50 +8,69 @@
 import UIKit
 import Koloda
 import TMDBSwift
+import Firebase
 
-class SearchViewController: UIViewController, UITableViewDataSource, UISearchBarDelegate, UITableViewDelegate, SwipeDelegate {
+class SearchViewController: UIViewController, UITableViewDataSource, UISearchBarDelegate, UITableViewDelegate {
     
-    func reload() {
-    }
+    let ref = Database.database().reference()
     
-    func buttonTapped(direction: SwipeResultDirection, index: Int) {
-//        let movie = moviesData[index]
-//        Movie.clearMovie(movie: moviesData[index])
-//        if(direction == .right){
-//            CURRENT_USER.liked.append(movie)
-//            movie.opinion = .like
-//        }
-//        else if(direction == .left){
-//            CURRENT_USER.disliked.append(movie)
-//            movie.opinion = .dislike
-//        }
-//        else if(direction == .up){
-//            CURRENT_USER.watchlist.append(movie)
-//            movie.opinion = .watchlist
-//        }
-    }
+    var usersData:[[String:Any]] = []
+    var moviesData:[MovieMDB] = []
+    var page = 1
+    var hitEnd = false
+    var currentQuery = ""
+    var imageCache = NSCache<NSString, UIImage>()
+    var startPeople = false
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var searchTypeSegCtrl: UISegmentedControl!
     @IBOutlet weak var searchTableView: UITableView!
     
-    //hardcoded data to search
-    var usersData = OTHER_USERS
-    var filteredUsers:[User]!
-    var moviesData:[MovieMDB] = []
-    var page = 1
-    var hitEnd = false
-    var currentQuery = ""
-    
+    func reload() {}
     
     override func viewDidLoad() {
         super.viewDidLoad()
         searchTableView.dataSource = self
         searchTableView.delegate = self
         searchBar.delegate = self
-        filteredUsers = usersData
-        
         searchTableView.rowHeight = 166
+        searchTypeSegCtrl.selectedSegmentIndex = startPeople == true ? 1 : 0
+    }
+    
+    @IBAction func filterSelected(_ sender: Any) {
+        // table view needs to be updated
+        searchTableView.reloadData()
+        clickSearchButton(self)
+        
+        switch searchTypeSegCtrl.selectedSegmentIndex {
+            case 0:
+                searchTableView.rowHeight = 166
+                break
+            case 1:
+                searchTableView.rowHeight = 115
+                break
+            default:
+                searchTableView.rowHeight = 166
+                break
+        }
+    }
+    
+    @IBAction func clickSearchButton(_ sender: Any) {
+        moviesData = []
+        usersData = []
+        page = 1
+        hitEnd = false
+        
+        switch searchTypeSegCtrl.selectedSegmentIndex {
+            case 0:
+                self.loadMovies()
+                break
+            case 1:
+                self.loadUsers()
+                break
+            default:
+                break
+        }
     }
     
     func loadMovies() {
@@ -73,42 +92,38 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     }
     
     func loadUsers() {
-        //get all the users from firebase and add them to usersData
-        //        filteredUsers = searchText.isEmpty ? usersData : filteredUsers.filter {
-        //                        (user: User) -> Bool in
-        //                        return user.name?.range(of: searchText, options: .caseInsensitive, range: nil, locale:nil) != nil
-        //                    }
+        
+        usersData = []
+    
+        ref.child("user_info").observe(.value) {snapshot in
+            for user in snapshot.children.allObjects as! [DataSnapshot] {
+                
+                if let userObj = user.value as? [String: Any] {
+                    if let name = userObj["name"] as? String {
+                        if (name.lowercased().contains(self.currentQuery.lowercased())) {
+                            self.usersData.append(userObj)
+                        }
+                    }
+                }
+            
+            }
+            self.searchTableView?.reloadData()
+        }
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.showsCancelButton = false
         searchBar.resignFirstResponder()
     }
     
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-            self.searchBar.showsCancelButton = true
-    }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-            searchBar.showsCancelButton = false
-            searchTableView.reloadData()
-            filteredUsers = usersData
-            searchBar.text = ""
-            searchBar.resignFirstResponder()
-    }
-    @IBAction func filterSelected(_ sender: Any) {
-        // table view needs to be updated
+        usersData = []
+        searchBar.text = ""
         searchTableView.reloadData()
-        switch searchTypeSegCtrl.selectedSegmentIndex {
-            case 0:
-                searchTableView.rowHeight = 166
-                break
-            case 1:
-                searchTableView.rowHeight = 115
-                break
-            default:
-                searchTableView.rowHeight = 166
-                break
-        }
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        currentQuery = searchText
     }
     
     // get count of table cells based on selected filter
@@ -122,6 +137,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
             return 0
         }
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -129,13 +145,14 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     // populate the table view with data depending on the filter
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch searchTypeSegCtrl.selectedSegmentIndex {
+        //MOVIE CELL
         case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as! MovieSearchTableViewCell
 
             if moviesData.count > indexPath.row {
-                let currentMovie = moviesData[indexPath.row]
                 
                 //movie data
+                let currentMovie = moviesData[indexPath.row]
                 cell.movieTitleLabel?.text = currentMovie.title
                 cell.movieReleaseLabel?.text = currentMovie.release_date
                 
@@ -148,27 +165,50 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
                 
                 //image
                 if let path = currentMovie.poster_path {
-                    DispatchQueue.main.async {
-                        cell.moviePosterImageView.load(url: URL(string: "https://image.tmdb.org/t/p/original" + path)!)
+                                        
+                    if let image = imageCache.object(forKey: path as NSString) {
+                        cell.moviePosterImageView.image = image
+                    } else {
+                        
+                        let url = "https://image.tmdb.org/t/p/original" + path
+                        
+                        URLSession.shared.dataTask(with: URL(string: url)!) { [self] (data, response, error) in
+                                                        
+                            if (error != nil) {
+                                print(error)
+                                return
+                            }
+                                                        
+                            let image = UIImage(data: data!)
+                            
+                            imageCache.setObject(image!, forKey: path as NSString)
+                                                        
+                            DispatchQueue.main.async {
+                                cell.moviePosterImageView.image = image
+                            }
+                            
+                        }.resume()
                     }
+                //No poster
                 } else {
-                    cell.moviePosterImageView.backgroundColor = .gray
+                    cell.moviePosterImageView.image = UIImage(named: "no-image")
                 }
-                
             }
             
+            //load the next set of moviesData
             if (indexPath.row == moviesData.count - 1 && !hitEnd){
                 self.loadMovies()
-                
             }
                     
             return cell
+        //PERSON CELL
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: "PersonCell", for: indexPath) as! PeopleSearchTableViewCell
             let currentPerson = usersData[indexPath.row]
-            cell.nameLabel?.text = currentPerson.name
-            cell.usernameLabel?.text = currentPerson.username
-            cell.profilePicImageView.image = currentPerson.profilePicture
+            cell.nameLabel?.text = currentPerson["name"] as? String
+            cell.usernameLabel?.text = currentPerson["bio"] as? String
+            cell.profilePicImageView.backgroundColor = .gray
+            cell.profilePicImageView.image = UIImage(named: "no-image")
             cell.profilePicImageView.layer.cornerRadius = cell.profilePicImageView.frame.height / 2
             return cell
         default:
@@ -176,46 +216,14 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
         }
     }
     
-    // search bar functionality that updates the table view based on the selected filter
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        currentQuery = searchText
-        moviesData = []
-        usersData = []
-        page = 1
-        hitEnd = false
-        
-        switch searchTypeSegCtrl.selectedSegmentIndex {
-            case 0:
-                self.loadMovies()
-                break
-            case 1:
-                self.loadUsers()
-                break
-            default:
-                break
-        }
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "movieSearchSegue" {
             if let detailViewController = segue.destination as? MovieDetailViewController{
                 let index = searchTableView.indexPathForSelectedRow?.row
-                detailViewController.delegate = self
                 
                 //get the movie in form
                 let movie = Movie()
-                movie.title = moviesData[index!].title
-                movie.description = moviesData[index!].overview
-                movie.release = moviesData[index!].release_date
-                movie.rating = "\(moviesData[index!].vote_average)"
-                movie.friends = []
-                movie.poster = moviesData[index!].poster_path
-                movie.actors = []
-                movie.id = moviesData[index!].id
-                //TODO: change movie to take in a MovieDB and populate it
-                //Also make sure that it checks the movies a user has
-                //looked at before
-                
+                movie.setFromMovie(movie:  moviesData[index!])
                 detailViewController.movie = movie
                 detailViewController.currentIndex = index
             }
@@ -224,7 +232,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
             let indexPath = searchTableView.indexPathForSelectedRow
             let selectedUser = usersData[indexPath!.row]
             let destination = segue.destination as! FriendProfileViewController
-            destination.user = selectedUser
+            
+            //Get real user
+            //destination.user = selectedUser
         }
     }
 }
