@@ -13,22 +13,15 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
     @IBOutlet weak var fullNameTextLabel: UILabel!
     @IBOutlet weak var bioTextLabel: UILabel!
     @IBOutlet weak var movieViewSegCtrl: UISegmentedControl!
-    // ask about making a consistent class for pfp
     @IBOutlet weak var collectionView: UICollectionView!
     
-    let currentUser = CURRENT_USER
+    var currentUser = CURRENT_USER
     let PROFILE_CELL_IDENTIFIER = "profileCollectionViewCell"
     
     let userMovieData = [CURRENT_USER.liked, CURRENT_USER.watchlist]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        usernameTextLabel.text = currentUser.username
-        fullNameTextLabel.text = currentUser.name
-        bioTextLabel.text = currentUser.bio
-        profilePicture.image = currentUser.profilePicture
-        profilePicture.layer.cornerRadius = 100 / 2 // fix
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -36,6 +29,11 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        currentUser = CURRENT_USER
+        usernameTextLabel.text = currentUser.username
+        fullNameTextLabel.text = currentUser.name
+        bioTextLabel.text = currentUser.bio
+        profilePicture.layer.cornerRadius = 100 / 2 // fix
         profilePicture.image = currentUser.profilePicture
     }
     

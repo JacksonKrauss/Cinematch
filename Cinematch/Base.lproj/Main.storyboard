@@ -11,10 +11,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--LoginSignUpViewController-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Cinematch" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="LoginSignUpViewController" id="BYZ-38-t0r" customClass="ViewController" customModule="Cinematch" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1595,9 +1595,11 @@
                         <outlet property="privacySegControl" destination="Q5w-Ow-0pw" id="ID7-Nl-jAF"/>
                         <outlet property="profileImage" destination="byJ-fg-UvD" id="69b-aB-7kD"/>
                         <outlet property="usernameTextField" destination="jeW-LB-PvW" id="5ic-TF-gip"/>
+                        <segue destination="K95-b4-FcF" kind="unwind" identifier="unwindToStartView" unwindAction="prepareForUnwindWithSegue:" id="3X1-vu-Spe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e28-Vq-pd1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="K95-b4-FcF" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="4276.811594202899" y="668.97321428571422"/>
         </scene>
@@ -1874,6 +1876,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="4Mz-jQ-PzZ" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="90t-gz-cuG"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Rgt-dq-CzR">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1910,8 +1913,8 @@
     <inferredMetricsTieBreakers>
         <segue reference="RCU-C9-hhH"/>
         <segue reference="b2g-nQ-9BZ"/>
-        <segue reference="tSa-yd-FV7"/>
-        <segue reference="yGY-WE-pLS"/>
+        <segue reference="aEA-Ql-DFx"/>
+        <segue reference="Czo-BE-JNp"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="arrow.left" catalog="system" width="128" height="98"/>

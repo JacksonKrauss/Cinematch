@@ -25,6 +25,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
     @IBOutlet weak var profileImage: UIImageView!
     
     let ref = Database.database().reference()
+    let storageRef = Storage.storage().reference()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,6 +61,11 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         }
         
         profileImage.image = CURRENT_USER.profilePicture
+        if self.profileImage.frame.width > self.profileImage.frame.height {
+            self.profileImage.contentMode = .scaleAspectFit
+        } else {
+            self.profileImage.contentMode = .scaleAspectFill
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -211,42 +217,63 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
             } else {
                 self.profileImage.contentMode = .scaleAspectFill
             }
+            
             CURRENT_USER.profilePicture = profileImage.image
             
-            let documentDirectory = FileManager.SearchPathDirectory.documentDirectory
-            let userDomainMask = FileManager.SearchPathDomainMask.userDomainMask
-            let paths = NSSearchPathForDirectoriesInDomains(documentDirectory, userDomainMask, true)
-            if let dirPath = paths.first
-            {
-               let imageURL = URL(fileURLWithPath: dirPath).appendingPathComponent("new_pfp.png")
+            let profileRef = storageRef.child("profile_pictures/" + CURRENT_USER.username!)
             
-                // upload pic to firebase
-                // need to set up storage firebase
+            profileRef.delete() {
+                error in
+                if let error = error {
+                    guard let errorCode = (error as NSError?)?.code else {
+                        return
+                    }
+                    guard let err = StorageErrorCode(rawValue: errorCode) else {
+                        return
+                    }
+                    switch err {
+                    case .objectNotFound:
+                        print("Correct error returned")
+                        break
+                    default:
+                        print("Uh oh, some other error returned")
+                        return
+                    }
+                }
             }
+            
+            if let uploadData = profileImage.image!.pngData() {
+                profileRef.putData(uploadData, metadata: nil) {
+                    metadata, error in
+                    if error != nil {
+                        print(error)
+                    }
+                }
+            }
+            
         }
         
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func logoutPressed(_ sender: Any) {
-        //Figure this out
-        // set CURRENT_USER to nil, segue to initial screen?
-        // Auth.auth().signOut() or something like that
-        self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
-
+        CURRENT_USER = User(name: "defaultName",
+                            username: "defaultUsername",
+                            bio: "defaultBio",
+                            email: "defaultEmail@email.com",
+                            privacy: UserPrivacy.everyone,
+                            visualMode: VisualMode.light,
+                            profilePicture: UIImage(imageLiteralResourceName: "Popcorn Logo"),
+                            liked: [],
+                            disliked: [],
+                            watchlist: [],
+                            history: [])
+        do {
+            try Auth.auth().signOut()
+        } catch let signOutError as NSError {
+            print("Error signing out: %@", signOutError)
+        }
         
-        //self.view.window?.rootViewController?.presentedViewController!.dismiss(animated: true, completion: nil)
+        self.performSegue(withIdentifier: "unwindToStartView", sender: self)
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
