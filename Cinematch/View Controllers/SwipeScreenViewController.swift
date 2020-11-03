@@ -42,9 +42,10 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
             Movie.getMovies(page: self.page) { (list) in
                 self.movies = list
                 self.kolodaView.reloadData()
+                //print(self.movies)
             }
         }
-        //Movie.updateFromFB()
+        self.kolodaView.reloadData()
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "detailSegue"){

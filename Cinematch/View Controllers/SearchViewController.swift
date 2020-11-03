@@ -16,16 +16,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     }
     
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
-        //need to change
         let movie = Movie()
-        movie.title = moviesData[index].title
-        movie.description = moviesData[index].overview
-        movie.release = moviesData[index].release_date
-        movie.rating = moviesData[index].vote_average!.description
-        movie.friends = []
-        movie.poster = moviesData[index].poster_path
-        movie.actors = []
-        movie.id = moviesData[index].id
+        movie.setFromMovie(movie:  moviesData[index])
         Movie.addToList(direction: direction, movie: movie)
     }
     var usersData:[[String:Any]] = []
@@ -236,6 +228,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
                 //get the movie in form
                 let movie = Movie()
                 movie.setFromMovie(movie:  moviesData[index!])
+                detailViewController.delegate = self
                 detailViewController.movie = movie
                 detailViewController.currentIndex = index
             }

@@ -58,24 +58,19 @@ class Movie:Equatable{
 
     static func addToList(direction: SwipeResultDirection, movie: Movie){
         let ref = Database.database().reference()
-        //Movie.clearMovie(movie: movie)
         var op:String?
         if(direction == .right){
             movie.opinion = .like
             op = "l"
-            //CURRENT_USER.liked.append(movie)
         }
         else if(direction == .left){
             movie.opinion = .dislike
             op = "d"
-            //CURRENT_USER.disliked.append(movie)
         }
         else if(direction == .up){
             movie.opinion = .watchlist
             op = "w"
-            CURRENT_USER.watchlist.append(movie)
         }
-        //CURRENT_USER.history.append(movie)
         ref.child("movies").child(CURRENT_USER.username!).child(movie.id!.description).setValue(op!)
         Movie.updateFromFB {
             
@@ -110,6 +105,7 @@ class Movie:Equatable{
                     curr.id = rec.id
                     curr.release = rec.release_date
                     curr.friends = []
+                    movieList.append(curr)
                 }
                 completion(movieList)
             }
@@ -134,7 +130,14 @@ class Movie:Equatable{
                         movieList.append(curr)
                     }
                 }
-                completion(movieList)
+                if(movieList.isEmpty){
+                    getMovies(page: page+1) { (movieList2) in
+                        completion(movieList2)
+                    }
+                }
+                else{
+                    completion(movieList)
+                }
             }
         }
     }
@@ -223,6 +226,10 @@ class Movie:Equatable{
                         completion()
                     }
                 }
+            }
+            if(userHist.isEmpty){
+                print("no movies")
+                completion()
             }
         }
     }
