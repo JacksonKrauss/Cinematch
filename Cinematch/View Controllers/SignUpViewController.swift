@@ -67,7 +67,14 @@ class SignUpViewController: UIViewController {
                                     history: [])
                 let newUser = self.ref.child("user_info").child(username)
                 newUser.setValue(newUserInfo)
-                Auth.auth().signIn(withEmail: email, password: password)
+                Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+                    guard let strongSelf = self else { print("failed to create uid to username map!");
+                        return }
+                    // map the user's UID to their username in the database
+                    if let newlyCreatedUID = authResult?.user.uid {
+                        strongSelf.ref.child("uid").child(newlyCreatedUID).setValue(username)
+                    }
+                  }
                 self.performSegue(withIdentifier: "signUpSegue", sender: nil)
             }
         }

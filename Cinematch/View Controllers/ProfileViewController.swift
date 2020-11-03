@@ -6,8 +6,10 @@
 //
 
 import UIKit
+import FirebaseDatabase
 
 class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource {
+    var ref: DatabaseReference!
     @IBOutlet weak var profilePicture: UIImageView!
     @IBOutlet weak var usernameTextLabel: UILabel!
     @IBOutlet weak var fullNameTextLabel: UILabel!
@@ -23,18 +25,34 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ref = Database.database().reference()
+        
+        ref.child("user_info").child(self.currentUser.username!).observe(.value) { (snapshot) in
+            let updatedUser = User(snapshot, self.currentUser.username!)
+            CURRENT_USER = updatedUser
+            self.currentUser = updatedUser
+            
+            self.renderViews()
+        }
+                
         collectionView.delegate = self
         collectionView.dataSource = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        currentUser = CURRENT_USER
+        
+        renderViews()
+        
+        profilePicture.image = currentUser.profilePicture
+    }
+    
+    func renderViews() {
         usernameTextLabel.text = currentUser.username
         fullNameTextLabel.text = currentUser.name
         bioTextLabel.text = currentUser.bio
-        profilePicture.layer.cornerRadius = 100 / 2 // fix
         profilePicture.image = currentUser.profilePicture
+        profilePicture.layer.cornerRadius = 100 / 2 // fix
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

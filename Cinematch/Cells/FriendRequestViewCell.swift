@@ -43,6 +43,7 @@ class FriendRequestViewCell: UICollectionViewCell {
     @objc func imageTapped(gestureRecognizer: UITapGestureRecognizer) {
         self.ref.child("friend_request").child((currentUser?.username!)!).child((friendRequestUser?.username)!).setValue(false)
         self.ref.child("friends").child((currentUser?.username!)!).child((friendRequestUser?.username)!).setValue(true)
+        self.ref.child("friends").child((friendRequestUser?.username)!).child((currentUser?.username!)!).setValue(true)
     }
     
     @objc func imageTappedRemove(gestureRecognizer: UITapGestureRecognizer) {
