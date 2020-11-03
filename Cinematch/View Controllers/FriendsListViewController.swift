@@ -210,6 +210,10 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
             
             destination.user = friendRequestData[friendToViewIndex]
         }
+        if segue.identifier == "searchFriend" {
+            let destination = segue.destination as! SearchViewController
+            destination.startPeople = true
+        }
     }
 
 }

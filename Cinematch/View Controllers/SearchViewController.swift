@@ -20,6 +20,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     var hitEnd = false
     var currentQuery = ""
     var imageCache = NSCache<NSString, UIImage>()
+    var startPeople = false
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var searchTypeSegCtrl: UISegmentedControl!
@@ -33,11 +34,14 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
         searchTableView.delegate = self
         searchBar.delegate = self
         searchTableView.rowHeight = 166
+        searchTypeSegCtrl.selectedSegmentIndex = startPeople == true ? 1 : 0
     }
     
     @IBAction func filterSelected(_ sender: Any) {
         // table view needs to be updated
         searchTableView.reloadData()
+        clickSearchButton(self)
+        
         switch searchTypeSegCtrl.selectedSegmentIndex {
             case 0:
                 searchTableView.rowHeight = 166
