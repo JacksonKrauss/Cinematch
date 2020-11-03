@@ -11,10 +11,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--LoginSignUpViewController-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Cinematch" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="LoginSignUpViewController" id="BYZ-38-t0r" customClass="ViewController" customModule="Cinematch" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1622,9 +1622,11 @@
                         <outlet property="privacySegControl" destination="Q5w-Ow-0pw" id="ID7-Nl-jAF"/>
                         <outlet property="profileImage" destination="byJ-fg-UvD" id="69b-aB-7kD"/>
                         <outlet property="usernameTextField" destination="jeW-LB-PvW" id="5ic-TF-gip"/>
+                        <segue destination="K95-b4-FcF" kind="unwind" identifier="unwindToStartView" unwindAction="prepareForUnwindWithSegue:" id="3X1-vu-Spe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e28-Vq-pd1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="K95-b4-FcF" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="4276.811594202899" y="668.97321428571422"/>
         </scene>
@@ -1675,7 +1677,7 @@
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="medium"/>
                                 </state>
                                 <connections>
-                                    <segue destination="8UG-JJ-1Xx" kind="presentation" id="UHt-aj-VPe"/>
+                                    <segue destination="8UG-JJ-1Xx" kind="presentation" identifier="settingsSegue" id="UHt-aj-VPe"/>
                                 </connections>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="gGk-Yw-Dv8">
@@ -1887,6 +1889,7 @@
                     <connections>
                         <outlet property="bioTextLabel" destination="kxr-zV-H1K" id="QbI-5K-fr6"/>
                         <outlet property="collectionView" destination="3K1-Y2-7JC" id="ijg-fp-APU"/>
+                        <outlet property="friendStatusButton" destination="sAt-wZ-iLy" id="WfG-7e-H4g"/>
                         <outlet property="fullNameTextLabel" destination="J0o-cd-nz7" id="wGY-Gr-FLx"/>
                         <outlet property="profilePicture" destination="wZo-N8-wIa" id="rGI-uV-4ka"/>
                         <outlet property="usernameTextLabel" destination="qmf-Lu-0gV" id="AK5-bL-ALI"/>
@@ -1901,6 +1904,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="4Mz-jQ-PzZ" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="90t-gz-cuG"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Rgt-dq-CzR">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1939,6 +1943,8 @@
         <segue reference="b2g-nQ-9BZ"/>
         <segue reference="tSa-yd-FV7"/>
         <segue reference="Ugq-qH-Kja"/>
+        <segue reference="aEA-Ql-DFx"/>
+        <segue reference="Czo-BE-JNp"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="arrow.left" catalog="system" width="128" height="98"/>

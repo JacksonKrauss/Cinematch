@@ -54,20 +54,28 @@ class SignUpViewController: UIViewController {
         Auth.auth().createUser(withEmail: email, password: password) {
             user, error in
             if error == nil {
+                // cannot use snapshot init because snapshot does not exist
                 CURRENT_USER = User(name: name,
                                     username: username,
                                     bio: "",
                                     email: email,
                                     privacy: UserPrivacy.friends,
                                     visualMode: VisualMode.light,
-                                    profilePicture: UIImage(named: "profileCurrent")!,
+                                    profilePicture: UIImage(named: "Popcorn Logo")!,
                                     liked:[],
                                     disliked: [],
                                     watchlist: [],
                                     history: [])
                 let newUser = self.ref.child("user_info").child(username)
                 newUser.setValue(newUserInfo)
-                Auth.auth().signIn(withEmail: email, password: password)
+                Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+                    guard let strongSelf = self else { print("failed to create uid to username map!");
+                        return }
+                    // map the user's UID to their username in the database
+                    if let newlyCreatedUID = authResult?.user.uid {
+                        strongSelf.ref.child("uid").child(newlyCreatedUID).setValue(username)
+                    }
+                  }
                 self.performSegue(withIdentifier: "signUpSegue", sender: nil)
             }
         }

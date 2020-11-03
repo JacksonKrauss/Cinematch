@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseDatabase
 import FirebaseAuth
+import FirebaseStorage
 
 class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource {
     @IBOutlet weak var profilePicture: UIImageView!
@@ -15,10 +16,12 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     @IBOutlet weak var fullNameTextLabel: UILabel!
     @IBOutlet weak var bioTextLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var friendStatusButton: UIButton!
     let FRIEND_PROFILE_CELL_IDENTIFIER = "friendProfileViewCell"
     
     var user:User = User()
     var userMoviesData:[Movie] = []
+    var userIsFriend = false
     
     var ref: DatabaseReference!
     
@@ -28,14 +31,53 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         
         collectionView.delegate = self
         collectionView.dataSource = self
-
-        profilePicture.image = user.profilePicture
+        
+        profilePicture.layer.cornerRadius = 125 / 2 // fix this jank
+        
+        ref = Database.database().reference()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        ref.child("friends").child(CURRENT_USER.username!).child(user.username!).observeSingleEvent(of: .value) { (snapshot) in
+            let friendValue = snapshot.value
+            if let value = friendValue {
+                if value as! Bool == true {
+                    self.friend()
+                }
+            }
+        }
+        
         usernameTextLabel.text = user.username
         fullNameTextLabel.text = user.name
         bioTextLabel.text = user.bio
         userMoviesData = user.liked
-        
-        profilePicture.layer.cornerRadius = 125 / 2 // fix this jank
+        loadProfilePicture(user.remoteProfilePath ?? "")
+    }
+    
+    func friend() {
+        self.friendStatusButton.setTitle("Unfriend", for: .normal)
+        self.userIsFriend = true
+    }
+    
+    func unfriend() {
+        self.friendStatusButton.setTitle("Friend", for: .normal)
+        self.userIsFriend = false
+    }
+    
+    func loadProfilePicture(_ picturePath:String) {
+        // Get a reference to the storage service using the default Firebase App
+        let storage = Storage.storage()
+
+        // Create a storage reference from our storage service
+        let storageRef = storage.reference()
+        // Reference to an image file in Firebase Storage
+        let reference = storageRef.child(picturePath)
+
+        // Placeholder image
+        let placeholderImage = UIImage(named: "image-placeholder")
+
+        // Load the image using SDWebImage
+        profilePicture.sd_setImage(with: reference, placeholderImage: placeholderImage)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -65,33 +107,26 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         // add to friend requests
         var currentUser:User? = nil
         var currentUsername:String? = nil
-        ref = Database.database().reference()
         
-        if Auth.auth().currentUser != nil {
-            let currentUserAuth = Auth.auth().currentUser!
-            
-            print("user signed in. email: ")
-            
-            
-            ref.child("uid").child(currentUserAuth.uid).observeSingleEvent(of: .value) { [self] (snapshot) in
-                currentUsername = snapshot.value as? String
-                ref.child("user_info").child(currentUsername!).observeSingleEvent(of: .value) { (snapshot) in
-                    currentUser = User(snapshot, currentUsername!)
-                    // add friend
-                    
-                    ref.child("friend_request").child(user.username!).child((currentUser?.username!)!).setValue(true)
-                    
-                    // success
-                    
-                }
+        currentUsername = CURRENT_USER.username
+        
+        ref.child("user_info").child(currentUsername!).observeSingleEvent(of: .value) { (snapshot) in
+            currentUser = User(snapshot, currentUsername!)
+            if self.userIsFriend {
+                // remove friend
+                self.ref.child("friends").child(currentUsername!).child(self.user.username!).setValue(false)
+                self.ref.child("friends").child(self.user.username!).child(currentUsername!).setValue(false)
                 
+                self.unfriend()
+            } else {
+                // add friend
+                self.ref.child("friend_request").child(self.user.username!).child((currentUser?.username!)!).setValue(true)
+                
+                self.friend()
             }
             
-            
-            
-        } else {
-          print("no user is signed in ")
         }
+
         
     }
 }
