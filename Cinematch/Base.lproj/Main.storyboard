@@ -2,7 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="4Mz-jQ-PzZ">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -272,7 +272,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="20" id="S9O-G9-VrD"/>
                                                         </constraints>
-                                                        <state key="normal" title="Button" image="plus" catalog="system"/>
+                                                        <state key="normal" title="Button" image="plus.app" catalog="system"/>
                                                         <connections>
                                                             <action selector="addButton:" destination="moC-AU-uiy" eventType="touchUpInside" id="TVG-hU-VNi"/>
                                                         </connections>
@@ -487,11 +487,14 @@
                     <connections>
                         <outlet property="collectionView" destination="P0c-Nz-CHP" id="W00-HQ-on7"/>
                         <outlet property="descriptionLabel" destination="Ypo-NR-X1o" id="k7j-HO-M7j"/>
+                        <outlet property="downButtonOutlet" destination="DNc-Fx-lRZ" id="YuZ-OO-eIC"/>
                         <outlet property="friendsLabel" destination="qxg-8v-bmO" id="csc-oF-bfb"/>
+                        <outlet property="likeButtonOutlet" destination="gUb-Ww-Y3G" id="a2b-XD-gIS"/>
                         <outlet property="posterView" destination="btG-fd-u0s" id="dLM-WM-533"/>
                         <outlet property="ratingLabel" destination="HFZ-Wr-a10" id="rVe-ua-fCf"/>
                         <outlet property="releaseLabel" destination="SXX-QC-b89" id="kc1-n4-rv6"/>
                         <outlet property="titleLabel" destination="adc-O5-TBI" id="Zq1-0d-CZK"/>
+                        <outlet property="watchlistButtonOutlet" destination="Yrs-k6-bnb" id="cq7-o7-umz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5ED-fv-bMx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1184,24 +1187,24 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="W7g-eO-cMP">
-                                <rect key="frame" x="30" y="220" width="354" height="608"/>
+                                <rect key="frame" x="0.0" y="220" width="414" height="608"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="4" id="ADy-Ng-aPn">
-                                    <size key="itemSize" width="115" height="150"/>
+                                    <size key="itemSize" width="120" height="170"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PosterCell" id="M4V-1y-D3X" customClass="PosterCollectionViewCell" customModule="Cinematch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="115" height="150"/>
+                                        <rect key="frame" x="10" y="0.0" width="120" height="170"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="qBp-5W-GLn">
-                                            <rect key="frame" x="0.0" y="0.0" width="115" height="150"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="120" height="170"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JVh-4T-Yfo">
-                                                    <rect key="frame" x="8" y="8" width="99" height="134"/>
+                                                    <rect key="frame" x="8" y="8" width="104" height="154"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="120" id="5Pt-Bf-r2Z"/>
                                                         <constraint firstAttribute="width" constant="80" id="Xm9-DX-JZp"/>
@@ -1238,15 +1241,15 @@
                         <viewLayoutGuide key="safeArea" id="mWt-gR-ehp"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="W7g-eO-cMP" firstAttribute="leading" secondItem="mWt-gR-ehp" secondAttribute="leading" id="0qV-JO-ZPl"/>
                             <constraint firstItem="jcJ-ei-7op" firstAttribute="leading" secondItem="mWt-gR-ehp" secondAttribute="leading" constant="30" id="5rj-h6-vWL"/>
                             <constraint firstItem="jcJ-ei-7op" firstAttribute="top" secondItem="mWt-gR-ehp" secondAttribute="top" constant="30" id="B8Y-Si-CRJ"/>
                             <constraint firstItem="W7g-eO-cMP" firstAttribute="top" secondItem="uDo-KO-7vg" secondAttribute="bottom" constant="0.5" id="BLc-iR-Bi8"/>
                             <constraint firstItem="uDo-KO-7vg" firstAttribute="centerX" secondItem="W7g-eO-cMP" secondAttribute="centerX" id="BP0-jM-bim"/>
-                            <constraint firstItem="mWt-gR-ehp" firstAttribute="trailing" secondItem="W7g-eO-cMP" secondAttribute="trailing" constant="30" id="DE5-jr-lW1"/>
+                            <constraint firstItem="mWt-gR-ehp" firstAttribute="trailing" secondItem="W7g-eO-cMP" secondAttribute="trailing" id="DE5-jr-lW1"/>
                             <constraint firstItem="W7g-eO-cMP" firstAttribute="bottom" secondItem="mWt-gR-ehp" secondAttribute="bottom" constant="15" id="E1r-mF-T50"/>
                             <constraint firstItem="tl5-d6-eNW" firstAttribute="leading" secondItem="CEY-v9-9dz" secondAttribute="trailing" constant="30" id="EHh-cG-EWm"/>
                             <constraint firstItem="uDo-KO-7vg" firstAttribute="top" secondItem="CEY-v9-9dz" secondAttribute="bottom" constant="27.5" id="EQJ-bG-k4N"/>
-                            <constraint firstItem="jcJ-ei-7op" firstAttribute="leading" secondItem="W7g-eO-cMP" secondAttribute="leading" id="HG1-mb-3QV"/>
                             <constraint firstItem="mWt-gR-ehp" firstAttribute="trailing" secondItem="tl5-d6-eNW" secondAttribute="trailing" constant="30" id="Stb-6K-BSq"/>
                             <constraint firstItem="uDo-KO-7vg" firstAttribute="leading" secondItem="mWt-gR-ehp" secondAttribute="leading" id="aLc-E7-4Vc"/>
                             <constraint firstItem="CEY-v9-9dz" firstAttribute="centerY" secondItem="jcJ-ei-7op" secondAttribute="centerY" id="lcI-XJ-Tuh"/>
@@ -1683,15 +1686,15 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="gGk-Yw-Dv8">
                                 <rect key="frame" x="0.0" y="259" width="414" height="554"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="yXa-0A-xND">
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="4" id="yXa-0A-xND">
                                     <size key="itemSize" width="120" height="170"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="profileCollectionViewCell" id="bmf-qP-IAg" customClass="ProfileCollectionViewCell" customModule="Cinematch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="120" height="170"/>
+                                        <rect key="frame" x="10" y="0.0" width="120" height="170"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Rqi-kI-k6P">
                                             <rect key="frame" x="0.0" y="0.0" width="120" height="170"/>
@@ -1725,6 +1728,7 @@
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <connections>
+                                            <outlet property="historyView" destination="ODB-1e-ieH" id="Toe-gN-XnY"/>
                                             <outlet property="moviePoster" destination="u78-Xt-RPa" id="aCs-QF-D5j"/>
                                         </connections>
                                     </collectionViewCell>
@@ -1783,6 +1787,7 @@
                         <outlet property="movieViewSegCtrl" destination="3ar-Y3-Tvr" id="5ap-DV-LqP"/>
                         <outlet property="profilePicture" destination="mn8-wm-YuU" id="Bqi-AU-MUa"/>
                         <outlet property="usernameTextLabel" destination="Y6F-1b-XlB" id="oFq-Js-AY6"/>
+                        <segue destination="moC-AU-uiy" kind="presentation" identifier="profileDetailSegue" id="cEx-qP-MRH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VFh-Pt-r9d" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1822,15 +1827,15 @@
                                 <rect key="frame" x="0.0" y="207" width="414" height="601"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="LHp-Do-1zw">
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="4" id="LHp-Do-1zw">
                                     <size key="itemSize" width="120" height="170"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="friendProfileViewCell" id="QoH-7T-LTR" customClass="FriendProfileViewCell" customModule="Cinematch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="120" height="170"/>
+                                        <rect key="frame" x="10" y="0.0" width="120" height="170"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="ekX-eN-sL6">
                                             <rect key="frame" x="0.0" y="0.0" width="120" height="170"/>
@@ -1941,10 +1946,8 @@
     <inferredMetricsTieBreakers>
         <segue reference="Xdh-iM-jPJ"/>
         <segue reference="b2g-nQ-9BZ"/>
-        <segue reference="tSa-yd-FV7"/>
-        <segue reference="Ugq-qH-Kja"/>
         <segue reference="aEA-Ql-DFx"/>
-        <segue reference="Czo-BE-JNp"/>
+        <segue reference="hDE-lo-N0j"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="arrow.left" catalog="system" width="128" height="98"/>
@@ -1966,7 +1969,7 @@
         <image name="pencil.circle.fill" catalog="system" width="128" height="121"/>
         <image name="person.2.fill" catalog="system" width="128" height="80"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
-        <image name="plus" catalog="system" width="128" height="113"/>
+        <image name="plus.app" catalog="system" width="128" height="114"/>
         <image name="plus.circle.fill" catalog="system" width="128" height="121"/>
         <image name="square.and.arrow.up" catalog="system" width="115" height="128"/>
         <image name="square.grid.3x3" catalog="system" width="128" height="112"/>

@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 import TMDBSwift
+import Koloda
+import Firebase
 extension Array where Element: Equatable {
     mutating func addAll(array: [Element]) {
         for item in array{
@@ -23,6 +25,10 @@ extension Array where Element: Equatable {
         remove(at: index)
     }
     
+}
+struct MovieFB {
+    var id: Int
+    var opinion: Opinion
 }
 enum Opinion {
     case like
@@ -49,28 +55,31 @@ class Movie:Equatable{
     var friends: [User]?
     var duration:String?
     var posterImg: UIImage?
-    
-    func setVars(id:Int){
-        self.id = id
-        MovieMDB.movie(movieID: id, language: "en"){
-            apiReturn, movie in
-            if let movie = movie{
-                self.title = movie.title
-                self.description = movie.overview
-                self.rating = String(movie.vote_average!)
-                self.release = movie.release_date
-                self.poster = movie.poster_path
-            }
+
+    static func addToList(direction: SwipeResultDirection, movie: Movie){
+        let ref = Database.database().reference()
+        //Movie.clearMovie(movie: movie)
+        var op:String?
+        if(direction == .right){
+            movie.opinion = .like
+            op = "l"
+            //CURRENT_USER.liked.append(movie)
+        }
+        else if(direction == .left){
+            movie.opinion = .dislike
+            op = "d"
+            //CURRENT_USER.disliked.append(movie)
+        }
+        else if(direction == .up){
+            movie.opinion = .watchlist
+            op = "w"
+            CURRENT_USER.watchlist.append(movie)
+        }
+        //CURRENT_USER.history.append(movie)
+        ref.child("movies").child(CURRENT_USER.username!).child(movie.id!.description).setValue(op!)
+        Movie.updateFromFB {
             
         }
-//        MovieMDB.credits(movieID: id){
-//            apiReturn, credits in
-//            if let credits = credits{
-//                for cast in credits.cast{
-//                    self.actors.append(cast.name)
-//                }
-//            }
-//        }
     }
     
     func setFromMovie(movie: MovieMDB){
@@ -101,7 +110,6 @@ class Movie:Equatable{
                     curr.id = rec.id
                     curr.release = rec.release_date
                     curr.friends = []
-                    movieList.append(curr)
                 }
                 completion(movieList)
             }
@@ -122,60 +130,100 @@ class Movie:Equatable{
                     curr.id = m.id
                     curr.release = m.release_date
                     curr.friends = []
-                    //works but only loads one movie at a time
-//                    MovieMDB.credits(movieID: m.id){
-//                        apiReturn, credits in
-//                        if let credits = credits{
-//                            for cast in credits.cast{
-//                                curr.actors.append(cast.name)
-//                            }
-//                        }
-//                        movieList.append(curr)
-//                        completion(movieList)
-//                    }
-                    movieList.append(curr)
+                    if(!CURRENT_USER.history.contains(curr)){
+                        movieList.append(curr)
+                    }
                 }
                 completion(movieList)
-                
             }
         }
     }
-    
-    static func clearMovie(movie: Movie){
-        CURRENT_USER.liked.remove(object: movie)
-        CURRENT_USER.disliked.remove(object: movie)
-        CURRENT_USER.watchlist.remove(object: movie)
+    static func getMoviesForUser(username: String, completion: @escaping(_ movieList: [MovieFB]) -> ()){
+        let ref = Database.database().reference()
+        var movieList:[MovieFB] = []
+        ref.child("movies").child(username).observeSingleEvent(of: .value) { (snapshot) in
+            for m in snapshot.children {
+                let movieData:DataSnapshot = m as! DataSnapshot
+                var currentOP: Opinion?
+                if((movieData.value as! String) == "l"){
+                    currentOP = .like
+                }
+                if((movieData.value as! String) == "w"){
+                    currentOP = .watchlist
+                }
+                if((movieData.value as! String) == "d"){
+                    currentOP = .dislike
+                }
+                let movie: MovieFB = MovieFB(id: Int(movieData.key)!, opinion: currentOP!)
+                movieList.append(movie)
+            }
+            completion(movieList)
+        }
+    }
+    static func getMovieFromFB(movieFB: MovieFB, completion: @escaping(_ movie: Movie) -> ()){
+        MovieMDB.movie(movieID: movieFB.id, language: "en"){
+              apiReturn, movie in
+              if let movie = movie{
+                let curr = Movie()
+                curr.title = movie.title
+                curr.description = movie.overview
+                curr.poster = movie.poster_path
+                curr.rating = movie.vote_average!.description
+                curr.id = movie.id
+                curr.release = movie.release_date
+                curr.friends = []
+                curr.opinion = movieFB.opinion
+                if(curr.poster == nil){
+                    curr.posterImg = UIImage(named: "no-image")
+                }
+                else{
+                    let url = URL(string: "https://image.tmdb.org/t/p/original" + curr.poster!)!
+                    DispatchQueue.global().async {
+                        if let data = try? Data(contentsOf: url) {
+                            if let image = UIImage(data: data) {
+                                DispatchQueue.main.async {
+                                    curr.posterImg = image
+                                }
+                            }
+                        }
+                    }
+                }
+                completion(curr)
+              }
+            }
+    }
+    static func getUserListsFromMovies(movieList: [Movie]){
+        for movie in movieList{
+            switch movie.opinion {
+            case .like:
+                CURRENT_USER.liked.append(movie)
+            case .watchlist:
+                CURRENT_USER.watchlist.append(movie)
+            case .dislike:
+                CURRENT_USER.disliked.append(movie)
+            default:
+                break
+            }
+            CURRENT_USER.history.append(movie)
+        }
+    }
+    static func updateFromFB(completion: @escaping() -> ()){
+        var userMovies: [Movie] = []
+        CURRENT_USER.watchlist = []
+        CURRENT_USER.disliked = []
+        CURRENT_USER.liked = []
+        CURRENT_USER.history = []
+        Movie.getMoviesForUser(username: CURRENT_USER.username!) { (userHist) in
+            for x in userHist{
+                Movie.getMovieFromFB(movieFB: x) { (movie) in
+                    userMovies.append(movie)
+                    if(userMovies.count == userHist.count){
+                        Movie.getUserListsFromMovies(movieList: userMovies)
+                        print("done")
+                        completion()
+                    }
+                }
+            }
+        }
     }
 }
-
-class SampleMovies{
-    static func getMovies() -> [Movie]{
-        var movieList:[Movie] = []
-        let blackPanther = Movie()
-        blackPanther.description = "King T'Challa returns home from America to the reclusive, technologically advanced African nation of Wakanda to serve as his country's new leader. However, T'Challa soon finds that he is challenged for the throne by factions within his own country as well as without. Using powers reserved to Wakandan kings, T'Challa assumes the Black Panther mantel to join with girlfriend Nakia, the queen-mother, his princess-kid sister, members of the Dora Milaje (the Wakandan 'special forces') and an American secret agent, to prevent Wakanda from being dragged into a world war."
-        blackPanther.title = "Black Panther"
-        blackPanther.id = 284054
-        blackPanther.poster = "/uxzzxijgPIY7slzFvMotPv8wjKA.jpg"
-        blackPanther.rating = "3.7"
-        blackPanther.release = "2018"
-        //blackPanther.actors = ["Chadwick Boseman","Michael B. Jordan","Lupita Nyong'o","Danai Gurira"]
-        blackPanther.duration = "2h 15m"
-        blackPanther.friends = [otherUser1, otherUser2]
-        movieList.append(blackPanther)
-        let mulan = Movie()
-        mulan.description = "When the Emperor of China issues a decree that one man per family must serve in the Imperial Chinese Army to defend the country from Huns, Hua Mulan, the eldest daughter of an honored warrior, steps in to take the place of her ailing father. She is spirited, determined and quick on her feet. Disguised as a man by the name of Hua Jun, she is tested every step of the way and must harness her innermost strength and embrace her true potential."
-        mulan.title = "Mulan"
-        mulan.id = 337401
-        mulan.poster = "/aKx1ARwG55zZ0GpRvU2WrGrCG9o.jpg"
-        mulan.rating = "3.7"
-        mulan.release = "2020"
-        //mulan.actors = ["Liu Yifei","Jet Li","Tzi Ma","Donnie Yen"]
-        mulan.duration = "1h 55m"
-        mulan.friends = [otherUser3]
-        movieList.append(mulan)
-        return movieList
-    }
-    
-    
-}
-

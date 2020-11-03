@@ -6,36 +6,44 @@
 //
 
 import UIKit
+import Koloda
 import FirebaseDatabase
-
-// tiny protocol to update profile picture from settings view
 protocol updateProfilePicture {
     func updateProfilePicture(image: UIImage)
 }
-
-class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource, updateProfilePicture {
-    var ref: DatabaseReference!
+class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource, SwipeDelegate, updateProfilePicture {
+    func buttonTapped(direction: SwipeResultDirection, index: Int) {
+        Movie.addToList(direction: direction, movie: movieData[index])
+        collectionView.reloadData()
+    }
+    
+    func reload() {
+        collectionView.reloadData()
+    }
+    
     @IBOutlet weak var profilePicture: UIImageView!
     @IBOutlet weak var usernameTextLabel: UILabel!
     @IBOutlet weak var fullNameTextLabel: UILabel!
     @IBOutlet weak var bioTextLabel: UILabel!
     @IBOutlet weak var movieViewSegCtrl: UISegmentedControl!
     @IBOutlet weak var collectionView: UICollectionView!
-    
-    var currentUser = CURRENT_USER
-    let PROFILE_CELL_IDENTIFIER = "profileCollectionViewCell"
-    
-    let userMovieData = [CURRENT_USER.liked, CURRENT_USER.watchlist]
-    
+    var movieData: [Movie] = []
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+        currentUser = CURRENT_USER
+        usernameTextLabel.text = currentUser.username
+        fullNameTextLabel.text = currentUser.name
+        bioTextLabel.text = currentUser.bio
+        profilePicture.image = currentUser.profilePicture
+        profilePicture.layer.cornerRadius = 100 / 2 // fix
+        
         collectionView.delegate = self
         collectionView.dataSource = self
     }
-    
+    var currentUser: User!
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        collectionView.reloadData()
         currentUser = CURRENT_USER // kind of weird, but for some reason default sarab info will show up if this line is not here - figure out later
     
         renderViews()
@@ -66,29 +74,70 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
            let nextVC = segue.destination as? SettingsViewController {
             nextVC.delegate = self
         }
+        if(segue.identifier == "profileDetailSegue"){
+            let index:Int = sender as! Int
+            if let detailViewController = segue.destination as? MovieDetailViewController{
+                detailViewController.delegate = self
+                detailViewController.movie = movieData[index]
+                detailViewController.currentIndex = index
+            }
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return userMovieData[movieViewSegCtrl.selectedSegmentIndex].count
+        switch movieViewSegCtrl.selectedSegmentIndex {
+        case 0:
+            return currentUser.liked.count
+        case 1:
+            return currentUser.history.count
+        default:
+            return 0
+        }
     }
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "profileDetailSegue", sender: indexPath.row)
+    }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier:PROFILE_CELL_IDENTIFIER, for:indexPath) as! ProfileCollectionViewCell
-        let cellData = userMovieData[movieViewSegCtrl.selectedSegmentIndex][indexPath.row]
-        cell.moviePoster.load(url: URL(string: "https://image.tmdb.org/t/p/original" + (cellData.poster!))!)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier:"profileCollectionViewCell", for:indexPath) as! ProfileCollectionViewCell
+        switch movieViewSegCtrl.selectedSegmentIndex {
+        case 0:
+            cell.historyView.isHidden = true
+            movieData = currentUser.liked
+        case 1:
+            cell.historyView.isHidden = false
+            movieData = currentUser.history.reversed()
+            switch movieData[indexPath.row].opinion {
+            case .like:
+                cell.historyView.image = UIImage(systemName: "hand.thumbsup.fill")
+                cell.historyView.tintColor = .systemGreen
+            case .dislike:
+                cell.historyView.image = UIImage(systemName: "hand.thumbsdown.fill")
+                cell.historyView.tintColor = .systemRed
+            case .watchlist:
+                cell.historyView.image = UIImage(systemName: "plus.app.fill")
+                cell.historyView.tintColor = .systemBlue
+            default:
+                print("No opinion")
+            }
+        default:
+            break
+        }
+        if(movieData[indexPath.row].posterImg == nil){
+            if(movieData[indexPath.row].poster == nil){
+                cell.moviePoster.backgroundColor = .white
+                cell.moviePoster.image = UIImage(named: "no-image")
+                movieData[indexPath.row].posterImg = UIImage(named: "no-image")
+            }
+            else{
+                cell.moviePoster.load(url: URL(string: "https://image.tmdb.org/t/p/original" + movieData[indexPath.row].poster!)!)
+            }
+        }
+        else{
+            cell.moviePoster.image = movieData[indexPath.row].posterImg!
+        }
         
         return cell
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
     @IBAction func movieViewSelected(_ sender: Any) {
         self.collectionView.reloadData()
     }
