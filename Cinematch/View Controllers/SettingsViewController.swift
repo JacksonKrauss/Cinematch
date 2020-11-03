@@ -11,21 +11,17 @@ import Firebase
 class SettingsViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var nameTextField: UITextField!
-    
     @IBOutlet weak var usernameTextField: UITextField!
-    
     @IBOutlet weak var bioTextField: UITextField!
-    
     @IBOutlet weak var emailTextField: UITextField!
-    
     @IBOutlet weak var privacySegControl: UISegmentedControl!
-    
     @IBOutlet weak var appearanceSegControl: UISegmentedControl!
-    
     @IBOutlet weak var profileImage: UIImageView!
     
     let ref = Database.database().reference()
     let storageRef = Storage.storage().reference()
+    
+    var delegate: UIViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +30,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        // set the current user fields for this view controller
         super.viewWillAppear(animated)
         nameTextField.text = CURRENT_USER.name
         usernameTextField.text = CURRENT_USER.username
@@ -84,8 +81,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         let userRef = ref.child("user_info").child(CURRENT_USER.username!)
         
         if username == CURRENT_USER.username {
-            // just update children
-            // if email changes, update email in sign in
+            // updated values do not include username
             var updateUserValues: [String:String] = [:]
             if name != CURRENT_USER.name {
                 updateUserValues.updateValue(name, forKey: "name")
@@ -135,10 +131,11 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
                   print(error)
                 }
             }
+            saveProfilePictureToStorage()
             userRef.updateChildValues(updateUserValues)
         } else {
-            print("in else")
-            // have to create new node
+            // updated values do include username
+            // have to create new node in firebase database
             var userValues:[String:String] = [:]
             
             userValues.updateValue(name, forKey: "name")
@@ -191,13 +188,14 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
             userRef.removeValue()
             
             ref.child("user_info").child(username).setValue(userValues)
+            saveProfilePictureToStorage()
             
             CURRENT_USER.username = username
         }
     }
     
+    // user wants to edit profile picture with photos from photo library
     @IBAction func editImagePressed(_ sender: Any) {
-        print("Editing Image")
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
             let imagePicker = UIImagePickerController()
             imagePicker.delegate = self
@@ -207,6 +205,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         }
     }
     
+    // user has selected a photo, updates photo for settings view
     func imagePickerController(_ picker: UIImagePickerController,
           didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
 
@@ -217,43 +216,50 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
             } else {
                 self.profileImage.contentMode = .scaleAspectFill
             }
-            
-            CURRENT_USER.profilePicture = profileImage.image
-            
-            let profileRef = storageRef.child("profile_pictures/" + CURRENT_USER.username!)
-            
-            profileRef.delete() {
-                error in
-                if let error = error {
-                    guard let errorCode = (error as NSError?)?.code else {
-                        return
-                    }
-                    guard let err = StorageErrorCode(rawValue: errorCode) else {
-                        return
-                    }
-                    switch err {
-                    case .objectNotFound:
-                        print("Correct error returned")
-                        break
-                    default:
-                        print("Uh oh, some other error returned")
-                        return
-                    }
-                }
-            }
-            
-            if let uploadData = profileImage.image!.pngData() {
-                profileRef.putData(uploadData, metadata: nil) {
-                    metadata, error in
-                    if error != nil {
-                        print(error)
-                    }
-                }
-            }
-            
         }
         
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    // save the selected profile picture to firebase storage
+    func saveProfilePictureToStorage() {
+        CURRENT_USER.profilePicture = profileImage.image
+        
+        // if the profile picture already exists, delete it
+        let profileRef = storageRef.child("profile_pictures/" + CURRENT_USER.username!)
+        profileRef.delete() {
+            error in
+            if let error = error {
+                guard let errorCode = (error as NSError?)?.code else {
+                    return
+                }
+                guard let err = StorageErrorCode(rawValue: errorCode) else {
+                    return
+                }
+                switch err {
+                case .objectNotFound:
+                    print("Correct error returned")
+                    break
+                default:
+                    print("Uh oh, some other error returned")
+                    return
+                }
+            }
+        }
+        
+        // upload the new profile picture (resized smaller if needed) to firebase storage
+        if let uploadData = profileImage.image!.resized(toWidth: 200.0)?.pngData() {
+            profileRef.putData(uploadData, metadata: nil) {
+                metadata, error in
+                if error != nil {
+                    print(error)
+                }
+            }
+        }
+        
+        // update profile picture in profile view
+        let otherVC = delegate as! updateProfilePicture
+        otherVC.updateProfilePicture(image: CURRENT_USER.profilePicture!)
     }
     
     @IBAction func logoutPressed(_ sender: Any) {
@@ -263,7 +269,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
                             email: "defaultEmail@email.com",
                             privacy: UserPrivacy.everyone,
                             visualMode: VisualMode.light,
-                            profilePicture: UIImage(imageLiteralResourceName: "Popcorn Logo"),
+                            profilePicture: UIImage(named: "Popcorn Logo")!,
                             liked: [],
                             disliked: [],
                             watchlist: [],
@@ -274,6 +280,19 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
             print("Error signing out: %@", signOutError)
         }
         
+        // segue goes back to login/signup screen
         self.performSegue(withIdentifier: "unwindToStartView", sender: self)
+    }
+}
+
+extension UIImage {
+    // function to resize image smaller if it is too big in firebase storage
+    func resized(toWidth width: CGFloat, isOpaque: Bool = true) -> UIImage? {
+        let canvas = CGSize(width: width, height: CGFloat(ceil(width/size.width * size.height)))
+        let format = imageRendererFormat
+        format.opaque = isOpaque
+        return UIGraphicsImageRenderer(size: canvas, format: format).image {
+            _ in draw(in: CGRect(origin: .zero, size: canvas))
+        }
     }
 }
