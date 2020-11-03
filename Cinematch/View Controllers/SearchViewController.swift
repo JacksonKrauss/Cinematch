@@ -28,11 +28,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
         movie.id = moviesData[index].id
         Movie.addToList(direction: direction, movie: movie)
     }
-    
-    @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var searchTypeSegCtrl: UISegmentedControl!
-    @IBOutlet weak var searchTableView: UITableView!
-    
     var usersData:[[String:Any]] = []
     var moviesData:[MovieMDB] = []
     var page = 1
@@ -40,13 +35,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     var currentQuery = ""
     var imageCache = NSCache<NSString, UIImage>()
     var startPeople = false
-    
+    let ref = Database.database().reference()
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var searchTypeSegCtrl: UISegmentedControl!
     @IBOutlet weak var searchTableView: UITableView!
-    
-    func reload() {}
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         searchTableView.dataSource = self

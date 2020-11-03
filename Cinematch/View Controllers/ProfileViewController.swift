@@ -8,7 +8,10 @@
 import UIKit
 import Koloda
 import FirebaseDatabase
-class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource, SwipeDelegate {
+protocol updateProfilePicture {
+    func updateProfilePicture(image: UIImage)
+}
+class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource, SwipeDelegate, updateProfilePicture {
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
         Movie.addToList(direction: direction, movie: movieData[index])
         collectionView.reloadData()
@@ -27,17 +30,17 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
     var movieData: [Movie] = []
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        usernameTextLabel.text = CURRENT_USER.username
-        fullNameTextLabel.text = CURRENT_USER.name
-        bioTextLabel.text = CURRENT_USER.bio
-        profilePicture.image = CURRENT_USER.profilePicture
+        currentUser = CURRENT_USER
+        usernameTextLabel.text = currentUser.username
+        fullNameTextLabel.text = currentUser.name
+        bioTextLabel.text = currentUser.bio
+        profilePicture.image = currentUser.profilePicture
         profilePicture.layer.cornerRadius = 100 / 2 // fix
         
         collectionView.delegate = self
         collectionView.dataSource = self
     }
-    
+    var currentUser: User!
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionView.reloadData()
@@ -71,14 +74,22 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
            let nextVC = segue.destination as? SettingsViewController {
             nextVC.delegate = self
         }
+        if(segue.identifier == "profileDetailSegue"){
+            let index:Int = sender as! Int
+            if let detailViewController = segue.destination as? MovieDetailViewController{
+                detailViewController.delegate = self
+                detailViewController.movie = movieData[index]
+                detailViewController.currentIndex = index
+            }
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch movieViewSegCtrl.selectedSegmentIndex {
         case 0:
-            return CURRENT_USER.liked.count
+            return currentUser.liked.count
         case 1:
-            return CURRENT_USER.history.count
+            return currentUser.history.count
         default:
             return 0
         }
@@ -91,10 +102,10 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
         switch movieViewSegCtrl.selectedSegmentIndex {
         case 0:
             cell.historyView.isHidden = true
-            movieData = CURRENT_USER.liked
+            movieData = currentUser.liked
         case 1:
             cell.historyView.isHidden = false
-            movieData = CURRENT_USER.history.reversed()
+            movieData = currentUser.history.reversed()
             switch movieData[indexPath.row].opinion {
             case .like:
                 cell.historyView.image = UIImage(systemName: "hand.thumbsup.fill")
@@ -129,16 +140,6 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
     }
     @IBAction func movieViewSelected(_ sender: Any) {
         self.collectionView.reloadData()
-    }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if(segue.identifier == "profileDetailSegue"){
-            let index:Int = sender as! Int
-            if let detailViewController = segue.destination as? MovieDetailViewController{
-                detailViewController.delegate = self
-                detailViewController.movie = movieData[index]
-                detailViewController.currentIndex = index
-            }
-        }
     }
     
 }
