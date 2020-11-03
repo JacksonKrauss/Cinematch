@@ -54,13 +54,14 @@ class SignUpViewController: UIViewController {
         Auth.auth().createUser(withEmail: email, password: password) {
             user, error in
             if error == nil {
+                // cannot use snapshot init because snapshot does not exist
                 CURRENT_USER = User(name: name,
                                     username: username,
                                     bio: "",
                                     email: email,
                                     privacy: UserPrivacy.friends,
                                     visualMode: VisualMode.light,
-                                    profilePicture: UIImage(named: "profileCurrent")!,
+                                    profilePicture: UIImage(named: "Popcorn Logo")!,
                                     liked:[],
                                     disliked: [],
                                     watchlist: [],

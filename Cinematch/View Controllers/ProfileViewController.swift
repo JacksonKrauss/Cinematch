@@ -8,14 +8,18 @@
 import UIKit
 import FirebaseDatabase
 
-class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource {
+// tiny protocol to update profile picture from settings view
+protocol updateProfilePicture {
+    func updateProfilePicture(image: UIImage)
+}
+
+class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource, updateProfilePicture {
     var ref: DatabaseReference!
     @IBOutlet weak var profilePicture: UIImageView!
     @IBOutlet weak var usernameTextLabel: UILabel!
     @IBOutlet weak var fullNameTextLabel: UILabel!
     @IBOutlet weak var bioTextLabel: UILabel!
     @IBOutlet weak var movieViewSegCtrl: UISegmentedControl!
-    // ask about making a consistent class for pfp
     @IBOutlet weak var collectionView: UICollectionView!
     
     var currentUser = CURRENT_USER
@@ -25,16 +29,6 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        ref = Database.database().reference()
-        
-        ref.child("user_info").child(self.currentUser.username!).observe(.value) { (snapshot) in
-            let updatedUser = User(snapshot, self.currentUser.username!)
-            CURRENT_USER = updatedUser
-            self.currentUser = updatedUser
-            
-            self.renderViews()
-        }
                 
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -42,10 +36,16 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        currentUser = CURRENT_USER // kind of weird, but for some reason default sarab info will show up if this line is not here - figure out later
+    
         renderViews()
         
-        profilePicture.image = currentUser.profilePicture
+        // make the profile picture fit in the circle
+        if profilePicture.frame.width > profilePicture.frame.height {
+            profilePicture.contentMode = .scaleAspectFit
+        } else {
+            profilePicture.contentMode = .scaleAspectFill
+        }
     }
     
     func renderViews() {
@@ -56,6 +56,18 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
         profilePicture.layer.cornerRadius = 100 / 2 // fix
     }
     
+    // function to update profile picture from settings view
+    func updateProfilePicture(image: UIImage) {
+        profilePicture.image = image
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "settingsSegue",
+           let nextVC = segue.destination as? SettingsViewController {
+            nextVC.delegate = self
+        }
+    }
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return userMovieData[movieViewSegCtrl.selectedSegmentIndex].count
     }

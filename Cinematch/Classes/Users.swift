@@ -108,8 +108,9 @@ struct User: Equatable {
         
         self.name = dataDictionary["name"] as? String
         self.username = username
+        self.email = dataDictionary["email"] as? String
         self.bio = dataDictionary["bio"] as? String
-        self.profilePicture = UIImage(named: "image-placeholder") // not consistent
+        self.profilePicture = UIImage(named: "image-placeholder") // placeholder needed before image set manually
         self.remoteProfilePath = dataDictionary["profile_path"] as? String
     }
     
