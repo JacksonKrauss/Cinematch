@@ -61,6 +61,7 @@ class MovieDetailViewController: UIViewController, UICollectionViewDelegate, UIC
         collectionView.dataSource = self
     }
     override func viewWillAppear(_ animated: Bool) {
+        print(movie?.title)
         self.titleLabel.text = self.movie?.title
         self.descriptionLabel.text = self.movie?.description
         self.releaseLabel.text = self.movie?.release

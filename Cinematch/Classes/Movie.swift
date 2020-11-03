@@ -81,6 +81,22 @@ class Movie:Equatable{
             
         }
     }
+    
+    func setFromMovie(movie: MovieMDB){
+        self.id = movie.id
+        self.title = movie.title
+        self.description = movie.overview
+        self.rating = String(movie.vote_average!)
+        self.release = movie.release_date
+        self.poster = movie.poster_path
+        
+        //populate from the user/ other source
+        self.actors = []
+        self.friends = []
+        //opinion
+        //self.duration = movie.runtime
+    }
+    
     static func getRecommended(page: Int, id: Int, completion: @escaping(_ movieList: [Movie]) -> ()){
         var movieList:[Movie] = []
         MovieMDB.recommendations(movieID: id, page: page, language: "en") { (ClientReturn, movies: [MovieMDB]?) in
@@ -94,14 +110,12 @@ class Movie:Equatable{
                     curr.id = rec.id
                     curr.release = rec.release_date
                     curr.friends = []
-                    if(!CURRENT_USER.history.contains(curr)){
-                        movieList.append(curr)
-                    }
                 }
                 completion(movieList)
             }
         }
     }
+    
     static func getMovies(page: Int,completion: @escaping (_ movieList: [Movie]) -> ()){
         var movieList:[Movie] = []
         MovieMDB.popular(language: "en", page: page){

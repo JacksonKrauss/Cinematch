@@ -7,6 +7,7 @@
 
 import UIKit
 import Koloda
+import FirebaseDatabase
 class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource, SwipeDelegate {
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
         Movie.addToList(direction: direction, movie: movieData[index])
@@ -22,7 +23,6 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
     @IBOutlet weak var fullNameTextLabel: UILabel!
     @IBOutlet weak var bioTextLabel: UILabel!
     @IBOutlet weak var movieViewSegCtrl: UISegmentedControl!
-    // ask about making a consistent class for pfp
     @IBOutlet weak var collectionView: UICollectionView!
     var movieData: [Movie] = []
     override func viewDidLoad() {
@@ -41,9 +41,38 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionView.reloadData()
-        profilePicture.image = CURRENT_USER.profilePicture
+        currentUser = CURRENT_USER // kind of weird, but for some reason default sarab info will show up if this line is not here - figure out later
+    
+        renderViews()
+        
+        // make the profile picture fit in the circle
+        if profilePicture.frame.width > profilePicture.frame.height {
+            profilePicture.contentMode = .scaleAspectFit
+        } else {
+            profilePicture.contentMode = .scaleAspectFill
+        }
     }
     
+    func renderViews() {
+        usernameTextLabel.text = currentUser.username
+        fullNameTextLabel.text = currentUser.name
+        bioTextLabel.text = currentUser.bio
+        profilePicture.image = currentUser.profilePicture
+        profilePicture.layer.cornerRadius = 100 / 2 // fix
+    }
+    
+    // function to update profile picture from settings view
+    func updateProfilePicture(image: UIImage) {
+        profilePicture.image = image
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "settingsSegue",
+           let nextVC = segue.destination as? SettingsViewController {
+            nextVC.delegate = self
+        }
+    }
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch movieViewSegCtrl.selectedSegmentIndex {
         case 0:
