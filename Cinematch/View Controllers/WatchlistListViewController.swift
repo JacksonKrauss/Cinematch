@@ -41,8 +41,9 @@ class WatchlistListViewController: UIViewController, UITableViewDelegate,UITable
             searchBar.resignFirstResponder()
     }
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
-        Movie.addToList(direction: direction, movie: filteredMovies[index])
-        self.tableView.reloadData()
+        Movie.addToList(direction: direction, movie: filteredMovies[index]){
+            self.tableView.reloadData()
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

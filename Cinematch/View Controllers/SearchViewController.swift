@@ -18,7 +18,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
         let movie = Movie()
         movie.setFromMovie(movie:  moviesData[index])
-        Movie.addToList(direction: direction, movie: movie)
+        Movie.addToList(direction: direction, movie: movie){
+            
+        }
     }
     var usersData:[[String:Any]] = []
     var moviesData:[MovieMDB] = []
