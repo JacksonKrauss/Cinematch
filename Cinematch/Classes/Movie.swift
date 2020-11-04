@@ -56,7 +56,7 @@ class Movie:Equatable{
     var duration:String?
     var posterImg: UIImage?
 
-    static func addToList(direction: SwipeResultDirection, movie: Movie){
+    static func addToList(direction: SwipeResultDirection, movie: Movie, completion: @escaping() -> ()){
         let ref = Database.database().reference()
         var op:String?
         if(direction == .right){
@@ -73,7 +73,7 @@ class Movie:Equatable{
         }
         ref.child("movies").child(CURRENT_USER.username!).child(movie.id!.description).setValue(op!)
         Movie.updateFromFB {
-            
+            completion()
         }
     }
     

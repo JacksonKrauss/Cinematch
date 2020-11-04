@@ -18,7 +18,9 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
             self.kolodaView.swipe(direction)
         }
         else{
-            Movie.addToList(direction: direction, movie: movies[index])
+            Movie.addToList(direction: direction, movie: movies[index]){
+                
+            }
         }
         Movie.updateFromFB {
             
@@ -42,7 +44,6 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
             Movie.getMovies(page: self.page) { (list) in
                 self.movies = list
                 self.kolodaView.reloadData()
-                //print(self.movies)
             }
         }
         self.kolodaView.reloadData()

@@ -13,12 +13,14 @@ protocol updateProfilePicture {
 }
 class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource, SwipeDelegate, updateProfilePicture {
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
-        Movie.addToList(direction: direction, movie: movieData[index])
-        collectionView.reloadData()
+        Movie.addToList(direction: direction, movie: movieData[index]){
+            self.collectionView.reloadData()
+        }
+        
     }
     
     func reload() {
-        collectionView.reloadData()
+        //collectionView.reloadData()
     }
     
     @IBOutlet weak var profilePicture: UIImageView!
@@ -43,9 +45,8 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
     var currentUser: User!
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        collectionView.reloadData()
         currentUser = CURRENT_USER // kind of weird, but for some reason default sarab info will show up if this line is not here - figure out later
-    
+        collectionView.reloadData()
         renderViews()
         
         // make the profile picture fit in the circle
@@ -87,9 +88,9 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch movieViewSegCtrl.selectedSegmentIndex {
         case 0:
-            return currentUser.liked.count
+            return CURRENT_USER.liked.count
         case 1:
-            return currentUser.history.count
+            return CURRENT_USER.history.count
         default:
             return 0
         }
@@ -102,10 +103,10 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
         switch movieViewSegCtrl.selectedSegmentIndex {
         case 0:
             cell.historyView.isHidden = true
-            movieData = currentUser.liked
+            movieData = CURRENT_USER.liked
         case 1:
             cell.historyView.isHidden = false
-            movieData = currentUser.history.reversed()
+            movieData = CURRENT_USER.history.reversed()
             switch movieData[indexPath.row].opinion {
             case .like:
                 cell.historyView.image = UIImage(systemName: "hand.thumbsup.fill")

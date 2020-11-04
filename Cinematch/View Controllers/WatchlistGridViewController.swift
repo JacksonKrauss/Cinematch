@@ -41,8 +41,9 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
     }
     @IBOutlet weak var searchBar: UISearchBar!
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
-        Movie.addToList(direction: direction, movie: filteredMovies[index])
-        collectionView.reloadData()
+        Movie.addToList(direction: direction, movie: filteredMovies[index]) {
+            self.collectionView.reloadData()
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
