@@ -60,8 +60,10 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         ref.child("friends").child(CURRENT_USER.username!).child(user.username!).observeSingleEvent(of: .value) { (snapshot) in
             let friendValue = snapshot.value
             if let value = friendValue {
-                if value as! Bool == true {
-                    self.friend()
+                if !(value is NSNull) {
+                    if value as! Bool == true {
+                        self.friend()
+                    }
                 }
             }
         }
@@ -70,7 +72,7 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         fullNameTextLabel.text = user.name
         bioTextLabel.text = user.bio
         userMoviesData = user.liked
-        loadProfilePicture(user.remoteProfilePath ?? "")
+        loadProfilePicture()
         
         ref.child("movies").child(user.username!).observeSingleEvent(of: .value, with: { (snapshot) in
             Movie.getMoviesForUser(username: self.user.username!) { (moviesFBList) in
@@ -93,14 +95,14 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         self.userIsFriend = false
     }
     
-    func loadProfilePicture(_ picturePath:String) {
+    func loadProfilePicture() {
         // Get a reference to the storage service using the default Firebase App
         let storage = Storage.storage()
 
         // Create a storage reference from our storage service
         let storageRef = storage.reference()
         // Reference to an image file in Firebase Storage
-        let reference = storageRef.child(picturePath)
+        let reference = storageRef.child("profile_pictures/" + user.username!)
 
         // Placeholder image
         let placeholderImage = UIImage(named: "image-placeholder")
