@@ -31,6 +31,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     var imageCache = NSCache<NSString, UIImage>()
     var startPeople = false
     let ref = Database.database().reference()
+    let storageRef = Storage.storage().reference()
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var searchTypeSegCtrl: UISegmentedControl!
     @IBOutlet weak var searchTableView: UITableView!
@@ -113,22 +114,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
                 {
                     self.usersData.append(user)
                 }
-                
-//                if ((user.name?.lowercased().contains(self.currentQuery.lowercased())) != nil) {
-//                    self.usersData.append(user)
-//                }
-                
-                
-//                if let userObj = userSnap.value as? [String: Any] {
-//                    if let name = userObj["name"] as? String {
-//                        if (name.lowercased().contains(self.currentQuery.lowercased())) {
-//
-//                            let user = User(userSnap, userSnap.key)
-//
-//                            self.usersData.append(user)
-//                        }
-//                    }
-//                }
             
             }
             self.searchTableView?.reloadData()
@@ -232,7 +217,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
             cell.nameLabel?.text = currentPerson.name
             cell.usernameLabel?.text = currentPerson.username
             cell.profilePicImageView.backgroundColor = .gray
-            cell.profilePicImageView.image = UIImage(named: "no-image")
+            //cell.profilePicImageView.image = UIImage(named: "no-image")
+            let placeholderImage = UIImage(named: "image-placeholder")
+            let reference = storageRef.child(currentPerson.remoteProfilePath ?? "")
+            cell.profilePicImageView?.sd_setImage(with: reference, placeholderImage: placeholderImage)
+            
             cell.profilePicImageView.layer.cornerRadius = cell.profilePicImageView.frame.height / 2
             return cell
         default:
