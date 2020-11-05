@@ -13,7 +13,6 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
     
     var ref: DatabaseReference!
     
-    var currentUsername:String? = nil
     var currentUser:User? = nil
     
     var friendListData:[User] = []
@@ -36,21 +35,7 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
         super.viewDidLoad()
         
         ref = Database.database().reference()
-        
-        if Auth.auth().currentUser != nil {
-            let currentUser = Auth.auth().currentUser!
-            ref.child("uid").child(currentUser.uid).observeSingleEvent(of: .value) { [self] (snapshot) in
-                self.currentUsername = snapshot.value as? String
-                fetchFriends(self.currentUsername!)
-            }
-            
-            
-            
-        } else {
-          print("no user is signed in ")
-        }
-        
-        
+        fetchFriends(CURRENT_USER.username!)
         
         numFriendsLabel.text = "You have " + String(friendListData.count) + " friends"
         
@@ -160,7 +145,7 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
             cell.profilePicture.layer.cornerRadius = 78.5 / 2 // fix
             cell.positionInList = indexPath.row
             
-            cell.loadProfilePicture(cellData.remoteProfilePath ?? "")
+            cell.loadProfilePicture("profile_pictures/" + cellData.username!)
             
             return cell;
         }
@@ -173,7 +158,7 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
             cell.profilePicture.layer.cornerRadius = 78.5 / 2 // fix
             cell.positionInList = indexPath.row
             
-            cell.loadProfilePicture(cellData.remoteProfilePath ?? "")
+            cell.loadProfilePicture("profile_pictures/" + cellData.username!)
             cell.currentUser = self.currentUser
             cell.friendRequestUser = cellData
 

@@ -79,9 +79,7 @@ struct User: Equatable {
     var disliked:[Movie] = []
     var watchlist:[Movie] = []
     var history:[Movie] = []
-    
-    var remoteProfilePath:String?
-    
+        
     init() {
         // all default values
     }
@@ -111,7 +109,6 @@ struct User: Equatable {
         self.email = dataDictionary["email"] as? String
         self.bio = dataDictionary["bio"] as? String
         self.profilePicture = UIImage(named: "image-placeholder") // placeholder needed before image set manually
-        self.remoteProfilePath = dataDictionary["profile_path"] as? String
     }
     
     // no getters/setters, directly read/update vars instead
