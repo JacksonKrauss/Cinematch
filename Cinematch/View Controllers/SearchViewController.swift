@@ -110,11 +110,15 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
                 
                 if !self.currentQuery.isEmpty,
                    let name = user.name,
-                   name.lowercased().contains(self.currentQuery.lowercased())
-                {
-                    self.usersData.append(user)
+                   let username = user.username
+                   {
+                    let query = self.currentQuery.lowercased()
+                    if name.lowercased().contains(query) ||
+                        username.lowercased().contains(query)
+                    {
+                        self.usersData.append(user)
+                    }
                 }
-            
             }
             self.searchTableView?.reloadData()
         }
