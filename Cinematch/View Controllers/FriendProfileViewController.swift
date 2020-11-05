@@ -21,6 +21,8 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     
     var user:User = User()
     var userMoviesData:[Movie] = []
+    var numMoviesUpdated = 0
+    var expectedNumMoviesUpdated = 0
     var userIsFriend = false
     
     var ref: DatabaseReference!
@@ -35,6 +37,23 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         profilePicture.layer.cornerRadius = 125 / 2 // fix this jank
         
         ref = Database.database().reference()
+    }
+    
+    func updateFriendMovies(_ moviesFB:[MovieFB]) {
+        userMoviesData.removeAll()
+        var i = 0
+        for mFB in moviesFB {
+            i += 1
+            Movie.getMovieFromFB(movieFB: mFB) { (m) in
+                self.userMoviesData.append(m)
+                self.numMoviesUpdated += 1
+                
+                if self.numMoviesUpdated == self.expectedNumMoviesUpdated {
+                    self.collectionView.reloadData()
+                }
+            }
+            
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,6 +71,16 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         bioTextLabel.text = user.bio
         userMoviesData = user.liked
         loadProfilePicture(user.remoteProfilePath ?? "")
+        
+        ref.child("movies").child(user.username!).observeSingleEvent(of: .value, with: { (snapshot) in
+            Movie.getMoviesForUser(username: self.user.username!) { (moviesFBList) in
+                let moviesFB = moviesFBList.filter({ (movie) -> Bool in
+                    return movie.opinion != Opinion.like
+                })
+                self.expectedNumMoviesUpdated = moviesFB.count
+                self.updateFriendMovies(moviesFB)
+            }
+        })
     }
     
     func friend() {

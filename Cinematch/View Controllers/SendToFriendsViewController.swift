@@ -8,12 +8,16 @@
 import UIKit
 
 class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+    
+    // usersList replaced the default OTHER_USERS hardcoded data
+    var usersList:[User] = []
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        filteredUsers = OTHER_USERS.filter { (user: User) -> Bool in
+        filteredUsers = usersList.filter { (user: User) -> Bool in
             return (user.name!.lowercased().contains(searchBar.text!.lowercased()) || user.username!.lowercased().contains(searchBar.text!.lowercased()))
         }
         if(searchText.isEmpty){
-            filteredUsers = OTHER_USERS
+            filteredUsers = usersList
         }
         tableView.reloadData()
     }
@@ -26,7 +30,7 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
     }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
             searchBar.showsCancelButton = false
-            filteredUsers = OTHER_USERS
+            filteredUsers = usersList
             tableView.reloadData()
             searchBar.text = ""
             searchBar.resignFirstResponder()
@@ -69,7 +73,7 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
         tableView.allowsMultipleSelection = true
         searchBar.delegate = self
         self.selectedUsers = []
-        self.filteredUsers = OTHER_USERS
+        self.filteredUsers = usersList
         // Do any additional setup after loading the view.
     }
 }
