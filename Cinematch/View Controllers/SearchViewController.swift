@@ -10,10 +10,13 @@ import Koloda
 import TMDBSwift
 import Firebase
 
-class SearchViewController: UIViewController, UITableViewDataSource, UISearchBarDelegate, UITableViewDelegate {
+class SearchViewController: UIViewController, UITableViewDataSource, UISearchBarDelegate, UITableViewDelegate, SwipeDelegate {
     
-    let ref = Database.database().reference()
+    func reload() {
+    }
     
+    var usersData:[User] = []
+
     var usersData:[User] = []
     var moviesData:[MovieMDB] = []
     var page = 1
@@ -21,13 +24,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     var currentQuery = ""
     var imageCache = NSCache<NSString, UIImage>()
     var startPeople = false
-    
+    let ref = Database.database().reference()
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var searchTypeSegCtrl: UISegmentedControl!
     @IBOutlet weak var searchTableView: UITableView!
-    
-    func reload() {}
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         searchTableView.dataSource = self
@@ -241,6 +242,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
                 //get the movie in form
                 let movie = Movie()
                 movie.setFromMovie(movie:  moviesData[index!])
+                detailViewController.delegate = self
                 detailViewController.movie = movie
                 detailViewController.currentIndex = index
             }

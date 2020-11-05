@@ -8,29 +8,23 @@
 import UIKit
 import Koloda
 import TMDBSwift
+import Firebase
 class SwipeScreenViewController: UIViewController,SwipeDelegate {
     func reload() {
-        
     }
     
     func buttonTapped(direction: SwipeResultDirection, index:Int) {
-        Movie.clearMovie(movie: movies[index])
         if(index==kolodaView.currentCardIndex){
             self.kolodaView.swipe(direction)
         }
-        else if(direction == .right){
-            CURRENT_USER.liked.append(movies[index])
-            movies[index].opinion = .like
+        else{
+            Movie.addToList(direction: direction, movie: movies[index]){
+                
+            }
         }
-        else if(direction == .left){
-            CURRENT_USER.disliked.append(movies[index])
-            movies[index].opinion = .dislike
+        Movie.updateFromFB {
+            
         }
-        else if(direction == .up){
-            CURRENT_USER.watchlist.append(movies[index])
-            movies[index].opinion = .watchlist
-        }
-        
     }
     
     @IBOutlet weak var friendLabel: UILabel!
@@ -39,16 +33,20 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var kolodaView: KolodaView!
     var page = 1
+    let ref = Database.database().reference()
     var movies: [Movie] = []
     override func viewDidLoad() {
         super.viewDidLoad()
         kolodaView.dataSource = self
         kolodaView.delegate = self
         TMDBConfig.apikey = "da04189f6c8bb1116ff3c217c908b776"
-        Movie.getMovies(page: page) { (list) in
-            self.movies = list
-            self.kolodaView.reloadData()
+        Movie.updateFromFB{
+            Movie.getMovies(page: self.page) { (list) in
+                self.movies = list
+                self.kolodaView.reloadData()
+            }
         }
+        self.kolodaView.reloadData()
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "detailSegue"){
@@ -132,10 +130,12 @@ extension SwipeScreenViewController: KolodaViewDataSource {
         return OverlayView()
     }
     func koloda(_ koloda: KolodaView, didSwipeCardAt index: Int, in direction: SwipeResultDirection) {
-        Movie.clearMovie(movie: movies[index])
+        //Movie.clearMovie(movie: movies[index])
+        var op: String?
         if(direction == .right){
-            CURRENT_USER.liked.append(movies[index])
+            op = "l"
             movies[index].opinion = .like
+            //CURRENT_USER.liked.append(movies[index])
             Movie.getRecommended(page: 1, id: movies[index].id!) { (list) in
                 self.movies.addAll(array: list)
                 print("adding \(list)")
@@ -143,14 +143,19 @@ extension SwipeScreenViewController: KolodaViewDataSource {
             }
         }
         else if(direction == .left){
-            CURRENT_USER.disliked.append(movies[index])
+            op = "d"
             movies[index].opinion = .dislike
+            //CURRENT_USER.disliked.append(movies[index])
         }
         else if(direction == .up){
-            CURRENT_USER.watchlist.append(movies[index])
+            op = "w"
             movies[index].opinion = .watchlist
+            //CURRENT_USER.watchlist.append(movies[index])
         }
-        CURRENT_USER.history.append(movies[index])
+        self.ref.child("movies").child(CURRENT_USER.username!).child(movies[index].id!.description).setValue(op!)
+        Movie.updateFromFB{
+        }
+        //CURRENT_USER.history.append(movies[index])
         if(index == movies.endIndex-1){
             self.descriptionLabel.text = ""
             self.titleLabel.text = ""

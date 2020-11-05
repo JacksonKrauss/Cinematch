@@ -41,21 +41,9 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
     }
     @IBOutlet weak var searchBar: UISearchBar!
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
-        let movie = filteredMovies[index]
-        Movie.clearMovie(movie: filteredMovies[index])
-        if(direction == .right){
-            CURRENT_USER.liked.append(movie)
-            movie.opinion = .like
+        Movie.addToList(direction: direction, movie: filteredMovies[index]) {
+            self.collectionView.reloadData()
         }
-        else if(direction == .left){
-            CURRENT_USER.disliked.append(movie)
-            movie.opinion = .dislike
-        }
-        else if(direction == .up){
-            CURRENT_USER.watchlist.append(movie)
-            movie.opinion = .watchlist
-        }
-        collectionView.reloadData()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
