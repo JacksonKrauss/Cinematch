@@ -8,10 +8,11 @@
 import UIKit
 import Koloda
 import FirebaseDatabase
-protocol updateProfilePicture {
+protocol updateProfile {
     func updateProfilePicture(image: UIImage)
+    func updateProfileTextFields(username: String, name: String, bio: String)
 }
-class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource, SwipeDelegate, updateProfilePicture {
+class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource, SwipeDelegate, updateProfile {
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
         Movie.addToList(direction: direction, movie: movieData[index]){
             self.collectionView.reloadData()
@@ -65,9 +66,15 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
         profilePicture.layer.cornerRadius = 100 / 2 // fix
     }
     
-    // function to update profile picture from settings view
+    // function to update profile settings from settings view
     func updateProfilePicture(image: UIImage) {
         profilePicture.image = image
+    }
+    
+    func updateProfileTextFields(username: String, name: String, bio: String) {
+        usernameTextLabel.text = username
+        fullNameTextLabel.text = name
+        bioTextLabel.text = bio
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
