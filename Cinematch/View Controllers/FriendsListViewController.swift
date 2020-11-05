@@ -39,10 +39,6 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
         
         if Auth.auth().currentUser != nil {
             let currentUser = Auth.auth().currentUser!
-            
-            print("user signed in. email: ")
-            
-            
             ref.child("uid").child(currentUser.uid).observeSingleEvent(of: .value) { [self] (snapshot) in
                 self.currentUsername = snapshot.value as? String
                 fetchFriends(self.currentUsername!)
@@ -73,11 +69,9 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
             self.friendListData = []
             for f in snapshot.children {
                 let friend:DataSnapshot = f as! DataSnapshot
-                print(friend.key)
                 if(friend.value as! Bool == true) {
                 self.ref.child("user_info").child(friend.key).observeSingleEvent(of: .value) { (snapshot) in
                     self.friendListData.append(User(snapshot, friend.key))
-                    print("called")
                     
                     self.friendListCollectionView.reloadData()
                     self.numFriendsLabel.text = "You have " + String(self.friendListData.count) + " friends"
@@ -90,10 +84,8 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
         
         ref.child("friend_request").child(username).observe(.value) { (snapshot) in
             self.friendRequestData = []
-            print("observed change")
             for f in snapshot.children {
                 let friend:DataSnapshot = f as! DataSnapshot
-                print(friend.key)
                 if(friend.value as! Bool == true) {
                 
                     self.ref.child("user_info").child(friend.key).observe(.value) { (snapshot) in
@@ -113,7 +105,6 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
         if kind == UICollectionView.elementKindSectionHeader {
              let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SectionHeader
             sectionHeader.label.text = (indexPath.section == 1) ? "Requests" : ""
-            print("indexPath: " + String(indexPath.section))
              return sectionHeader
         } else { //No footer in this case but can add option for that
              return UICollectionReusableView()
