@@ -9,8 +9,17 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
-
-class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource {
+import Koloda
+class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource, SwipeDelegate {
+    func buttonTapped(direction: SwipeResultDirection, index: Int) {
+        Movie.addToList(direction: direction, movie: userMoviesData[index]){
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func reload() {
+    }
+    
     @IBOutlet weak var profilePicture: UIImageView!
     @IBOutlet weak var usernameTextLabel: UILabel!
     @IBOutlet weak var fullNameTextLabel: UILabel!
@@ -131,6 +140,19 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         // Pass the selected object to the new view controller.
     }
     */
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "friendMovieDetail", sender: indexPath.row)
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "friendMovieDetail"{
+            let index:Int = sender as! Int
+            if let detailViewController = segue.destination as? MovieDetailViewController{
+                detailViewController.delegate = self
+                detailViewController.movie = userMoviesData[index]
+                detailViewController.currentIndex = index
+            }
+        }
+    }
 
     @IBAction func changeFriendStatus(_ sender: Any) {
         // add to friend requests
