@@ -160,7 +160,7 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
             cell.profilePicture.layer.cornerRadius = 78.5 / 2 // fix
             cell.positionInList = indexPath.row
             
-            cell.loadProfilePicture(cellData.remoteProfilePath ?? "")
+            cell.loadProfilePicture("profile_pictures/" + cellData.username!)
             
             return cell;
         }
@@ -173,7 +173,7 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
             cell.profilePicture.layer.cornerRadius = 78.5 / 2 // fix
             cell.positionInList = indexPath.row
             
-            cell.loadProfilePicture(cellData.remoteProfilePath ?? "")
+            cell.loadProfilePicture("profile_pictures/" + cellData.username!)
             cell.currentUser = self.currentUser
             cell.friendRequestUser = cellData
 
