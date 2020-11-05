@@ -213,15 +213,16 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
         //PERSON CELL
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: "PersonCell", for: indexPath) as! PeopleSearchTableViewCell
+            //user data
             let currentPerson = usersData[indexPath.row]
             cell.nameLabel?.text = currentPerson.name
             cell.usernameLabel?.text = currentPerson.username
+            
+            //image settings
             cell.profilePicImageView.backgroundColor = .gray
-            //cell.profilePicImageView.image = UIImage(named: "no-image")
             let placeholderImage = UIImage(named: "image-placeholder")
             let reference = storageRef.child(currentPerson.remoteProfilePath ?? "")
             cell.profilePicImageView?.sd_setImage(with: reference, placeholderImage: placeholderImage)
-            
             cell.profilePicImageView.layer.cornerRadius = cell.profilePicImageView.frame.height / 2
             return cell
         default:
