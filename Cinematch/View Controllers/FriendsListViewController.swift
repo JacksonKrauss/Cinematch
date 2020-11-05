@@ -13,7 +13,6 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
     
     var ref: DatabaseReference!
     
-    var currentUsername:String? = nil
     var currentUser:User? = nil
     
     var friendListData:[User] = []
@@ -36,21 +35,7 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
         super.viewDidLoad()
         
         ref = Database.database().reference()
-        
-        if Auth.auth().currentUser != nil {
-            let currentUser = Auth.auth().currentUser!
-            ref.child("uid").child(currentUser.uid).observeSingleEvent(of: .value) { [self] (snapshot) in
-                self.currentUsername = snapshot.value as? String
-                fetchFriends(self.currentUsername!)
-            }
-            
-            
-            
-        } else {
-          print("no user is signed in ")
-        }
-        
-        
+        fetchFriends(CURRENT_USER.username!)
         
         numFriendsLabel.text = "You have " + String(friendListData.count) + " friends"
         
