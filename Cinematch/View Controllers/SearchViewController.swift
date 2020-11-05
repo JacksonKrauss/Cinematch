@@ -16,13 +16,14 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     }
     
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
-        let movie = Movie()
-        movie.setFromMovie(movie:  moviesData[index])
-        Movie.addToList(direction: direction, movie: movie){
-            
-        }
+            let movie = Movie()
+            movie.setFromMovie(movie:  moviesData[index])
+            Movie.addToList(direction: direction, movie: movie){
+                
+            }
     }
-    var usersData:[[String:Any]] = []
+    
+    var usersData:[User] = []
     var moviesData:[MovieMDB] = []
     var page = 1
     var hitEnd = false
@@ -100,17 +101,34 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     func loadUsers() {
         
         usersData = []
-    
+            
         ref.child("user_info").observe(.value) {snapshot in
-            for user in snapshot.children.allObjects as! [DataSnapshot] {
+            for userSnap in snapshot.children.allObjects as! [DataSnapshot] {
                 
-                if let userObj = user.value as? [String: Any] {
-                    if let name = userObj["name"] as? String {
-                        if (name.lowercased().contains(self.currentQuery.lowercased())) {
-                            self.usersData.append(userObj)
-                        }
-                    }
+                let user = User(userSnap, userSnap.key)
+                
+                if !self.currentQuery.isEmpty,
+                   let name = user.name,
+                   name.lowercased().contains(self.currentQuery.lowercased())
+                {
+                    self.usersData.append(user)
                 }
+                
+//                if ((user.name?.lowercased().contains(self.currentQuery.lowercased())) != nil) {
+//                    self.usersData.append(user)
+//                }
+                
+                
+//                if let userObj = userSnap.value as? [String: Any] {
+//                    if let name = userObj["name"] as? String {
+//                        if (name.lowercased().contains(self.currentQuery.lowercased())) {
+//
+//                            let user = User(userSnap, userSnap.key)
+//
+//                            self.usersData.append(user)
+//                        }
+//                    }
+//                }
             
             }
             self.searchTableView?.reloadData()
@@ -211,8 +229,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: "PersonCell", for: indexPath) as! PeopleSearchTableViewCell
             let currentPerson = usersData[indexPath.row]
-            cell.nameLabel?.text = currentPerson["name"] as? String
-            cell.usernameLabel?.text = currentPerson["bio"] as? String
+            cell.nameLabel?.text = currentPerson.name
+            cell.usernameLabel?.text = currentPerson.username
             cell.profilePicImageView.backgroundColor = .gray
             cell.profilePicImageView.image = UIImage(named: "no-image")
             cell.profilePicImageView.layer.cornerRadius = cell.profilePicImageView.frame.height / 2
@@ -239,7 +257,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
             let indexPath = searchTableView.indexPathForSelectedRow
             let selectedUser = usersData[indexPath!.row]
             let destination = segue.destination as! FriendProfileViewController
-            
+            destination.user = selectedUser
             //Get real user
             //destination.user = selectedUser
         }
