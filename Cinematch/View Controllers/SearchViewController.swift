@@ -221,8 +221,15 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
             //image settings
             cell.profilePicImageView.backgroundColor = .gray
             let placeholderImage = UIImage(named: "image-placeholder")
-            let reference = storageRef.child(currentPerson.remoteProfilePath ?? "")
+            let path = "profile_pictures/\(currentPerson.username ?? "")"
+            print("path", path)
+            let reference = storageRef.child(path)
             cell.profilePicImageView?.sd_setImage(with: reference, placeholderImage: placeholderImage)
+            if (cell.profilePicImageView?.bounds.size.width)! > (cell.profilePicImageView?.bounds.size.height)! {
+                cell.profilePicImageView?.contentMode = .scaleAspectFit
+            } else {
+                cell.profilePicImageView?.contentMode = .scaleAspectFill
+            }
             cell.profilePicImageView.layer.cornerRadius = cell.profilePicImageView.frame.height / 2
             return cell
         default:
