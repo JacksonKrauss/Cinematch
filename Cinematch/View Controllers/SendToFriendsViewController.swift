@@ -76,4 +76,8 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
         self.filteredUsers = usersList
         // Do any additional setup after loading the view.
     }
+    // code to enable tapping on the background to remove software keyboard
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
 }
