@@ -192,6 +192,9 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
             
             CURRENT_USER.username = username
         }
+        
+        let otherVC = delegate as! updateProfile
+        otherVC.updateProfileTextFields(username: username, name: name, bio: bio)
     }
     
     // user wants to edit profile picture with photos from photo library
@@ -258,7 +261,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         }
         
         // update profile picture in profile view
-        let otherVC = delegate as! updateProfilePicture
+        let otherVC = delegate as! updateProfile
         otherVC.updateProfilePicture(image: CURRENT_USER.profilePicture!)
     }
     
