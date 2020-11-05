@@ -15,8 +15,14 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     func reload() {
     }
     
-    var usersData:[User] = []
-
+    func buttonTapped(direction: SwipeResultDirection, index: Int) {
+            let movie = Movie()
+            movie.setFromMovie(movie:  moviesData[index])
+            Movie.addToList(direction: direction, movie: movie){
+                
+            }
+    }
+    
     var usersData:[User] = []
     var moviesData:[MovieMDB] = []
     var page = 1
