@@ -82,6 +82,11 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         bioTextLabel.text = user.bio
         userMoviesData = user.liked
         loadProfilePicture()
+        if self.profilePicture.frame.width > self.profilePicture.frame.height {
+            self.profilePicture.contentMode = .scaleAspectFit
+        } else {
+            self.profilePicture.contentMode = .scaleAspectFill
+        }
         
         ref.child("movies").child(user.username!).observeSingleEvent(of: .value, with: { (snapshot) in
             Movie.getMoviesForUser(username: self.user.username!) { (moviesFBList) in

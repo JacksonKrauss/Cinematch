@@ -29,10 +29,7 @@ class FriendRequestViewCell: UICollectionViewCell {
         
         addFriend.isUserInteractionEnabled = true
         rejectFriend.isUserInteractionEnabled = true
-        //now you need a tap gesture recognizer
-        //note that target and action point to what happens when the action is recognized.
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(gestureRecognizer:)))
-        //Add the recognizer to your view.
         addFriend.addGestureRecognizer(tapRecognizer)
         
         let removeTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTappedRemove(gestureRecognizer:)))
@@ -64,5 +61,11 @@ class FriendRequestViewCell: UICollectionViewCell {
 
         // Load the image using SDWebImage
         profilePicture.sd_setImage(with: reference, placeholderImage: placeholderImage)
+        
+        if self.profilePicture.frame.width > self.profilePicture.frame.height {
+            self.profilePicture.contentMode = .scaleAspectFit
+        } else {
+            self.profilePicture.contentMode = .scaleAspectFill
+        }
     }
 }
