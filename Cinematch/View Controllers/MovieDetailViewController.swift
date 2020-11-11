@@ -28,12 +28,14 @@ class MovieDetailViewController: UIViewController, UICollectionViewDelegate, UIC
     var movie: Movie?
     var delegate: SwipeDelegate?
     var currentIndex: Int?
+    var trailerLink: String?
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var releaseLabel: UILabel!
     @IBOutlet weak var ratingLabel: UILabel!
     @IBOutlet weak var posterView: UIImageView!
     @IBOutlet weak var friendsLabel: UILabel!
     @IBOutlet weak var watchlistButtonOutlet: UIButton!
+    @IBOutlet weak var trailerButtonOutlet: UIButton!
     @IBOutlet weak var downButtonOutlet: UIButton!
     @IBOutlet weak var likeButtonOutlet: UIButton!
     @IBOutlet weak var descriptionLabel: UILabel!
@@ -55,19 +57,8 @@ class MovieDetailViewController: UIViewController, UICollectionViewDelegate, UIC
     @IBAction func shareButton(_ sender: Any) {
     }
     @IBAction func trailerButton(_ sender: Any) {
-        MovieMDB.videos(movieID: movie!.id, language: "en"){
-        apiReturn, videos in
-        if let videos = videos{
-          for i in videos {
-            if(i.site == "YouTube" && i.type == "Trailer")
-            {
-                UIApplication.shared.open(URL(string: "https://www.youtube.com/watch?v=\(i.key!)")!) { sucess in
-                }
-                break
-            }
-          }
+        UIApplication.shared.open(URL(string: trailerLink!)!) { sucess in
         }
-      }
     }
     
     override func viewDidLoad() {
@@ -115,6 +106,22 @@ class MovieDetailViewController: UIViewController, UICollectionViewDelegate, UIC
         else{
             posterView.image = movie!.posterImg!
         }
+        MovieMDB.videos(movieID: movie!.id, language: "en"){
+            apiReturn, videos in
+            if let videos = videos{
+                for i in videos {
+                    if(i.site == "YouTube" && i.type == "Trailer")
+                    {
+                        self.trailerLink = "https://www.youtube.com/watch?v=\(i.key!)"
+                        self.trailerButtonOutlet.isHidden = false
+                        break
+                    }
+                }
+            }
+            if(videos!.isEmpty){
+                self.trailerButtonOutlet.isHidden = true
+            }
+        }
         
     }
     override func viewWillDisappear(_ animated: Bool) {
@@ -139,19 +146,19 @@ class MovieDetailViewController: UIViewController, UICollectionViewDelegate, UIC
         case .watchlist:
             watchlistButtonOutlet.setImage(UIImage(systemName: "plus.app.fill"), for: .normal)
         default:
-            print("no opinion")
+            break
         }
     }
     
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

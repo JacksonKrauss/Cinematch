@@ -504,6 +504,7 @@
                         <outlet property="ratingLabel" destination="HFZ-Wr-a10" id="rVe-ua-fCf"/>
                         <outlet property="releaseLabel" destination="SXX-QC-b89" id="kc1-n4-rv6"/>
                         <outlet property="titleLabel" destination="adc-O5-TBI" id="Zq1-0d-CZK"/>
+                        <outlet property="trailerButtonOutlet" destination="0X5-Ua-RUi" id="MGT-zz-gUw"/>
                         <outlet property="watchlistButtonOutlet" destination="Yrs-k6-bnb" id="cq7-o7-umz"/>
                     </connections>
                 </viewController>
