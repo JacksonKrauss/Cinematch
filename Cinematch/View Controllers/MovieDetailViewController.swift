@@ -54,6 +54,21 @@ class MovieDetailViewController: UIViewController, UICollectionViewDelegate, UIC
     }
     @IBAction func shareButton(_ sender: Any) {
     }
+    @IBAction func trailerButton(_ sender: Any) {
+        MovieMDB.videos(movieID: movie!.id, language: "en"){
+        apiReturn, videos in
+        if let videos = videos{
+          for i in videos {
+            if(i.site == "YouTube" && i.type == "Trailer")
+            {
+                UIApplication.shared.open(URL(string: "https://www.youtube.com/watch?v=\(i.key!)")!) { sucess in
+                }
+                break
+            }
+          }
+        }
+      }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
