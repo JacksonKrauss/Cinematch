@@ -26,16 +26,17 @@ class DetailTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
         }
         else{
             cell.actorLabel.text = DetailTableViewCell.movieTable!.friends![indexPath.row].username
+            cell.characterLabel.isHidden = true
             switch DetailTableViewCell.movieTable!.friends![indexPath.row].opinion {
             case .like:
-                cell.characterLabel.text = "Liked"
-                cell.characterLabel.textColor = .systemGreen
+                //cell.characterLabel.text = "Liked"
+                cell.actorLabel.textColor = .systemGreen
             case .dislike:
-                cell.characterLabel.text = "Disliked"
-                cell.characterLabel.textColor = .systemRed
+                //cell.characterLabel.text = "Disliked"
+                cell.actorLabel.textColor = .systemRed
             case .watchlist:
-                cell.characterLabel.text = "Watchlist"
-                cell.characterLabel.textColor = .systemBlue
+                //cell.characterLabel.text = "Watchlist"
+                cell.actorLabel.textColor = .systemBlue
             }
             
         }
