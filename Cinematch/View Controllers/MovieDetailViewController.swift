@@ -121,9 +121,13 @@ class MovieDetailViewController: UIViewController, UICollectionViewDelegate, UIC
                 self.trailerButtonOutlet.isHidden = true
             }
         }
+        print(self.movie!.id!)
         Movie.checkFriendOpinion(id: movie!.id!) { (friendMovies) in
             self.movie!.friends = friendMovies
-            self.friendsLabel.text = "\(self.movie!.friends!.count) of your friends liked this movie"
+            let moviesFB = friendMovies.filter({ (movie) -> Bool in
+                return movie.opinion == Opinion.like
+            })
+            self.friendsLabel.text = "\(moviesFB.count) of your friends liked this movie"
         }
         
         
