@@ -19,19 +19,8 @@ class MovieDetailViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "detailCell", for: indexPath) as! DetailTableViewCell
+        cell.index = indexPath.row
         if indexPath.row == 0{
-            
-            
-    //        MovieMDB.credits(movieID: movie!.id){
-    //            apiReturn, credits in
-    //            if let credits = credits{
-    //                for cast in credits.cast{
-    //                    self.movie!.actors.append(Actor(actorName: cast.name, characterName: cast.character))
-    //                }
-    //                cell.movie = self.movie
-    //                cell.titleLabel.text = "Actors"
-    //            }
-    //        }
             cell.titleLabel.text = "Actors"
             return cell
         }
@@ -93,6 +82,7 @@ class MovieDetailViewController: UIViewController, UITableViewDelegate, UITableV
         self.releaseLabel.text = self.movie?.release
         self.ratingLabel.text = self.movie?.rating
         movie!.actors = []
+        DetailTableViewCell.movieTable = self.movie
         setButtonImages()
         if(movie!.posterImg == nil){
             if(movie!.poster == nil){
@@ -141,6 +131,8 @@ class MovieDetailViewController: UIViewController, UITableViewDelegate, UITableV
             })
             self.friendsLabel.text = "\(moviesFB.count) of your friends liked this movie"
         }
+        self.tableView.reloadData()
+        
         
         
     }
