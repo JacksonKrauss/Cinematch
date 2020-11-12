@@ -13,7 +13,7 @@ class DetailTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
             return DetailTableViewCell.movieTable!.actors.count/2
         }
         else{
-            return 10
+            return DetailTableViewCell.movieTable!.friends!.count
         }
         
     }
@@ -25,8 +25,19 @@ class DetailTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
             cell.characterLabel.text = DetailTableViewCell.movieTable!.actors[indexPath.row].characterName
         }
         else{
-            cell.actorLabel.text = "hi"
-            cell.characterLabel.text = "bye"
+            cell.actorLabel.text = DetailTableViewCell.movieTable!.friends![indexPath.row].username
+            switch DetailTableViewCell.movieTable!.friends![indexPath.row].opinion {
+            case .like:
+                cell.characterLabel.text = "Liked"
+                cell.characterLabel.textColor = .systemGreen
+            case .dislike:
+                cell.characterLabel.text = "Disliked"
+                cell.characterLabel.textColor = .systemRed
+            case .watchlist:
+                cell.characterLabel.text = "Watchlist"
+                cell.characterLabel.textColor = .systemBlue
+            }
+            
         }
         return cell
     }
@@ -43,9 +54,13 @@ class DetailTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
                 for cast in credits.cast{
                     DetailTableViewCell.movieTable!.actors.append(Actor(actorName: cast.name, characterName: cast.character))
                 }
-                self.collectionView.delegate = self
-                self.collectionView.dataSource = self
-                print(DetailTableViewCell.movieTable!.actors.count)
+                Movie.checkFriendOpinion(id: DetailTableViewCell.movieTable!.id!) { (friendMovies) in
+                    DetailTableViewCell.movieTable!.friends = friendMovies
+                    self.collectionView.delegate = self
+                    self.collectionView.dataSource = self
+                    print(DetailTableViewCell.movieTable!.actors.count)
+                    print(DetailTableViewCell.movieTable!.friends!.count)
+                }
             }
         }
         
