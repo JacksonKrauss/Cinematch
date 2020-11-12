@@ -26,7 +26,10 @@ extension Array where Element: Equatable {
     }
     
 }
-struct MovieFB {
+struct MovieFB: Equatable {
+    static func == (lhs: MovieFB, rhs: MovieFB) -> Bool {
+        return lhs.id == rhs.id
+    }
     var id: Int
     var opinion: Opinion
 }
@@ -237,42 +240,22 @@ class Movie:Equatable{
             }
         }
     }
-    func getFriendsOpinions(id: Int, completion: @escaping() -> ()){
-        let ref = Database.database().reference()
-        var friends2:[String] = []
-        ref.child("friends").child(CURRENT_USER.username!).observeSingleEvent(of: .value) { (snapshot) in
-            for f in snapshot.children {
-                let friend:DataSnapshot = f as! DataSnapshot
-                if(friend.value as! Bool == true) {
-                    friends2.append(friend.key)
-//                        if movieSnap.hasChild(id.description){
-//                            print("there")
-//                            let op = movieSnap.value(forKey: id.description)
-//                            if((op as! String) == "l"){
-//                                self.friends!.append(FriendMovie(username: friend.key, opinion: .like))
-//                            }
-//                            if((op as! String) == "w"){
-//                                self.friends!.append(FriendMovie(username: friend.key, opinion: .watchlist))
-//                            }
-//                            if((op as! String) == "d"){
-//                                self.friends!.append(FriendMovie(username: friend.key, opinion: .dislike))
-//                            }
-//                        }
+    static func checkFriendOpinion(id: Int, completion: @escaping(_ movieList: [FriendMovie]) -> ()){
+        var friendOp: [FriendMovie] = []
+        getFriends { (friendsList) in
+            for f in friendsList{
+                getMoviesForUser(username: f) { (movieList) in
+                    let index = movieList.firstIndex(of: MovieFB(id: id, opinion: .like))
+                    if(index != nil){
+                        friendOp.append(FriendMovie(username: f, opinion: movieList[index!].opinion))
+                    }
+                    if(f == friendsList.last){
+                        completion(friendOp)
                     }
                 }
             }
-        for x in friends2{
-            ref.child("movies").child(x).observeSingleEvent(of: .value) { (movieSnap) in
-                print(movieSnap)
-                for m in movieSnap.children{
-                    let movieData:DataSnapshot = m as! DataSnapshot
-                    if(movieData.key==id.description){
-                        print("here")
-                    }
-                }
+            
         }
-        }
-        completion()
-
     }
+    
 }

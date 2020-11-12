@@ -121,9 +121,11 @@ class MovieDetailViewController: UIViewController, UICollectionViewDelegate, UIC
                 self.trailerButtonOutlet.isHidden = true
             }
         }
-//        movie!.getFriendsOpinions(id: movie!.id!) {
-//            self.friendsLabel.text = "\(self.movie!.friends!.count) of your friends liked this movie"
-//        }
+        Movie.checkFriendOpinion(id: movie!.id!) { (friendMovies) in
+            self.movie!.friends = friendMovies
+            self.friendsLabel.text = "\(self.movie!.friends!.count) of your friends liked this movie"
+        }
+        
         
     }
     override func viewWillDisappear(_ animated: Bool) {
