@@ -30,6 +30,10 @@ struct MovieFB {
     var id: Int
     var opinion: Opinion
 }
+struct FriendMovie {
+    var username: String
+    var opinion: Opinion
+}
 enum Opinion {
     case like
     case dislike
@@ -52,7 +56,7 @@ class Movie:Equatable{
     var actors: [Actor] = []
     var id: Int?
     var opinion: Opinion?
-    var friends: [User]?
+    var friends: [FriendMovie]?
     var duration:String?
     var posterImg: UIImage?
 
@@ -232,5 +236,43 @@ class Movie:Equatable{
                 completion()
             }
         }
+    }
+    func getFriendsOpinions(id: Int, completion: @escaping() -> ()){
+        let ref = Database.database().reference()
+        var friends2:[String] = []
+        ref.child("friends").child(CURRENT_USER.username!).observeSingleEvent(of: .value) { (snapshot) in
+            for f in snapshot.children {
+                let friend:DataSnapshot = f as! DataSnapshot
+                if(friend.value as! Bool == true) {
+                    friends2.append(friend.key)
+//                        if movieSnap.hasChild(id.description){
+//                            print("there")
+//                            let op = movieSnap.value(forKey: id.description)
+//                            if((op as! String) == "l"){
+//                                self.friends!.append(FriendMovie(username: friend.key, opinion: .like))
+//                            }
+//                            if((op as! String) == "w"){
+//                                self.friends!.append(FriendMovie(username: friend.key, opinion: .watchlist))
+//                            }
+//                            if((op as! String) == "d"){
+//                                self.friends!.append(FriendMovie(username: friend.key, opinion: .dislike))
+//                            }
+//                        }
+                    }
+                }
+            }
+        for x in friends2{
+            ref.child("movies").child(x).observeSingleEvent(of: .value) { (movieSnap) in
+                print(movieSnap)
+                for m in movieSnap.children{
+                    let movieData:DataSnapshot = m as! DataSnapshot
+                    if(movieData.key==id.description){
+                        print("here")
+                    }
+                }
+        }
+        }
+        completion()
+
     }
 }

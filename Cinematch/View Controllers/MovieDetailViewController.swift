@@ -71,7 +71,6 @@ class MovieDetailViewController: UIViewController, UICollectionViewDelegate, UIC
         self.descriptionLabel.text = self.movie?.description
         self.releaseLabel.text = self.movie?.release
         self.ratingLabel.text = self.movie?.rating
-        self.friendsLabel.text = "\(movie!.friends!.count) of your friends liked this movie"
         movie!.actors = []
         setButtonImages()
         MovieMDB.credits(movieID: movie!.id){
@@ -122,6 +121,9 @@ class MovieDetailViewController: UIViewController, UICollectionViewDelegate, UIC
                 self.trailerButtonOutlet.isHidden = true
             }
         }
+//        movie!.getFriendsOpinions(id: movie!.id!) {
+//            self.friendsLabel.text = "\(self.movie!.friends!.count) of your friends liked this movie"
+//        }
         
     }
     override func viewWillDisappear(_ animated: Bool) {
