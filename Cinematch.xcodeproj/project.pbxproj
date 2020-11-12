@@ -21,6 +21,7 @@
 		4306D46A252E1FE3004FDB48 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4306D469252E1FE3004FDB48 /* Assets.xcassets */; };
 		4306D46D252E1FE3004FDB48 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4306D46B252E1FE3004FDB48 /* LaunchScreen.storyboard */; };
 		43372AD62530CD2800657725 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 43372AD52530CD2800657725 /* GoogleService-Info.plist */; };
+		43416970255DAC190013625B /* DetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4341696F255DAC190013625B /* DetailTableViewCell.swift */; };
 		436171C32530BD360045BC67 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436171C22530BD360045BC67 /* LoginViewController.swift */; };
 		436171C62530BD420045BC67 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436171C52530BD420045BC67 /* SignUpViewController.swift */; };
 		436171C92530C1FB0045BC67 /* SwipeScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436171C82530C1FB0045BC67 /* SwipeScreenViewController.swift */; };
@@ -59,6 +60,7 @@
 		4306D46C252E1FE3004FDB48 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4306D46E252E1FE3004FDB48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43372AD52530CD2800657725 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		4341696F255DAC190013625B /* DetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewCell.swift; sourceTree = "<group>"; };
 		436171C22530BD360045BC67 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		436171C52530BD420045BC67 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		436171C82530C1FB0045BC67 /* SwipeScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeScreenViewController.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				F10785CA253ED1B300834262 /* MovieSearchTableViewCell.swift */,
 				43E9F1F4253D2F1C00B52C4A /* WatchlistTableViewCell.swift */,
 				43FE4F7A2548FCAB004996DC /* ActorCollectionViewCell.swift */,
+				4341696F255DAC190013625B /* DetailTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -308,6 +311,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43416970255DAC190013625B /* DetailTableViewCell.swift in Sources */,
 				436171C62530BD420045BC67 /* SignUpViewController.swift in Sources */,
 				436171DB2530C7200045BC67 /* WatchlistGridViewController.swift in Sources */,
 				2746923E253E733C00F2D306 /* FriendRequestViewCell.swift in Sources */,
