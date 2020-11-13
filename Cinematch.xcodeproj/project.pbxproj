@@ -21,6 +21,7 @@
 		4306D46A252E1FE3004FDB48 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4306D469252E1FE3004FDB48 /* Assets.xcassets */; };
 		4306D46D252E1FE3004FDB48 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4306D46B252E1FE3004FDB48 /* LaunchScreen.storyboard */; };
 		43372AD62530CD2800657725 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 43372AD52530CD2800657725 /* GoogleService-Info.plist */; };
+		433F758E255E00D9008E68BF /* FriendOpCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433F758D255E00D9008E68BF /* FriendOpCollectionViewCell.swift */; };
 		43416970255DAC190013625B /* DetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4341696F255DAC190013625B /* DetailTableViewCell.swift */; };
 		436171C32530BD360045BC67 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436171C22530BD360045BC67 /* LoginViewController.swift */; };
 		436171C62530BD420045BC67 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436171C52530BD420045BC67 /* SignUpViewController.swift */; };
@@ -60,6 +61,7 @@
 		4306D46C252E1FE3004FDB48 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4306D46E252E1FE3004FDB48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43372AD52530CD2800657725 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		433F758D255E00D9008E68BF /* FriendOpCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendOpCollectionViewCell.swift; sourceTree = "<group>"; };
 		4341696F255DAC190013625B /* DetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewCell.swift; sourceTree = "<group>"; };
 		436171C22530BD360045BC67 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		436171C52530BD420045BC67 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 				F10785CA253ED1B300834262 /* MovieSearchTableViewCell.swift */,
 				43E9F1F4253D2F1C00B52C4A /* WatchlistTableViewCell.swift */,
 				43FE4F7A2548FCAB004996DC /* ActorCollectionViewCell.swift */,
+				433F758D255E00D9008E68BF /* FriendOpCollectionViewCell.swift */,
 				4341696F255DAC190013625B /* DetailTableViewCell.swift */,
 			);
 			path = Cells;
@@ -335,6 +338,7 @@
 				43FE4F7B2548FCAB004996DC /* ActorCollectionViewCell.swift in Sources */,
 				F13506B8253D97CB00EA1439 /* SearchViewController.swift in Sources */,
 				436171CF2530C2980045BC67 /* SendToFriendsViewController.swift in Sources */,
+				433F758E255E00D9008E68BF /* FriendOpCollectionViewCell.swift in Sources */,
 				4306D460252E1FE0004FDB48 /* SceneDelegate.swift in Sources */,
 				436171C92530C1FB0045BC67 /* SwipeScreenViewController.swift in Sources */,
 				43E9F1F8253D38A700B52C4A /* SendToFriendTableViewCell.swift in Sources */,

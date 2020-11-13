@@ -19,28 +19,33 @@ class DetailTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "actorCell", for: indexPath) as! ActorCollectionViewCell
+        
         if(index! == 0){
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "actorCell", for: indexPath) as! ActorCollectionViewCell
             cell.actorLabel.text = DetailTableViewCell.movieTable!.actors[indexPath.row].actorName
             cell.characterLabel.text = DetailTableViewCell.movieTable!.actors[indexPath.row].characterName
+            return cell
         }
         else{
-            cell.actorLabel.text = DetailTableViewCell.movieTable!.friends![indexPath.row].username
-            cell.characterLabel.isHidden = true
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "friendOpCell", for: indexPath) as! FriendOpCollectionViewCell
+            cell.nameLabel.text = DetailTableViewCell.movieTable!.friends![indexPath.row].username
             switch DetailTableViewCell.movieTable!.friends![indexPath.row].opinion {
             case .like:
                 //cell.characterLabel.text = "Liked"
-                cell.actorLabel.textColor = .systemGreen
+                cell.opinionImageView.image = UIImage(systemName: "hand.thumbsup")
+                cell.opinionImageView.tintColor = .systemGreen
             case .dislike:
                 //cell.characterLabel.text = "Disliked"
-                cell.actorLabel.textColor = .systemRed
+                cell.opinionImageView.image = UIImage(systemName: "hand.thumbsdown")
+                cell.opinionImageView.tintColor = .systemRed
             case .watchlist:
                 //cell.characterLabel.text = "Watchlist"
-                cell.actorLabel.textColor = .systemBlue
+                cell.opinionImageView.image = UIImage(systemName: "plus.app")
+                cell.opinionImageView.tintColor = .systemBlue
             }
-            
+            return cell
         }
-        return cell
+        
     }
     static var movieTable: Movie?
     var index: Int?
