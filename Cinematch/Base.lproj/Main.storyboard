@@ -1656,8 +1656,8 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </imageView>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="3ar-Y3-Tvr">
-                                <rect key="frame" x="20" y="208" width="374" height="32"/>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="3ar-Y3-Tvr">
+                                <rect key="frame" x="20" y="204" width="374" height="23"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="31" id="Da6-XJ-eU9"/>
                                 </constraints>
@@ -1667,6 +1667,7 @@
                                 </segments>
                                 <connections>
                                     <action selector="movieViewSelected:" destination="TC2-so-mho" eventType="valueChanged" id="QGU-wr-zLK"/>
+                                    <action selector="selectCollection:" destination="TC2-so-mho" eventType="valueChanged" id="hIi-Ms-hfP"/>
                                 </connections>
                             </segmentedControl>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sO7-qv-0El">
@@ -1683,8 +1684,8 @@
                                     <segue destination="8UG-JJ-1Xx" kind="presentation" identifier="settingsSegue" id="UHt-aj-VPe"/>
                                 </connections>
                             </button>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="gGk-Yw-Dv8">
-                                <rect key="frame" x="0.0" y="259" width="414" height="554"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="gGk-Yw-Dv8">
+                                <rect key="frame" x="0.0" y="288" width="414" height="525"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="4" id="yXa-0A-xND">
                                     <size key="itemSize" width="120" height="170"/>
@@ -1757,6 +1758,11 @@
                                     </label>
                                 </subviews>
                             </stackView>
+                            <searchBar contentMode="redraw" text="" id="psu-Ad-pXg">
+                                <rect key="frame" x="20" y="234" width="374" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="PSU-gM-Nj8"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1765,16 +1771,19 @@
                             <constraint firstItem="gGk-Yw-Dv8" firstAttribute="leading" secondItem="PSU-gM-Nj8" secondAttribute="leading" id="6df-sF-oh3"/>
                             <constraint firstItem="sO7-qv-0El" firstAttribute="top" secondItem="PSU-gM-Nj8" secondAttribute="top" constant="10" id="Bp7-fJ-wfl"/>
                             <constraint firstItem="gGk-Yw-Dv8" firstAttribute="trailing" secondItem="PSU-gM-Nj8" secondAttribute="trailing" id="CXv-Xw-FuW"/>
+                            <constraint firstItem="gGk-Yw-Dv8" firstAttribute="top" secondItem="psu-Ad-pXg" secondAttribute="bottom" id="GLy-7f-Grv"/>
                             <constraint firstItem="PSU-gM-Nj8" firstAttribute="trailing" secondItem="sO7-qv-0El" secondAttribute="trailing" constant="20" id="IxH-8y-Rfo"/>
                             <constraint firstItem="6dx-J2-rOX" firstAttribute="leading" secondItem="mn8-wm-YuU" secondAttribute="trailing" constant="10" id="P98-3l-Niv"/>
                             <constraint firstItem="PSU-gM-Nj8" firstAttribute="trailing" secondItem="6dx-J2-rOX" secondAttribute="trailing" constant="30" id="S1s-AK-yXG"/>
+                            <constraint firstItem="psu-Ad-pXg" firstAttribute="top" secondItem="3ar-Y3-Tvr" secondAttribute="bottom" symbolic="YES" id="UDM-de-faV"/>
                             <constraint firstItem="3ar-Y3-Tvr" firstAttribute="trailing" secondItem="PSU-gM-Nj8" secondAttribute="trailing" constant="-20" id="VNs-2H-NqU"/>
                             <constraint firstItem="3ar-Y3-Tvr" firstAttribute="top" secondItem="mn8-wm-YuU" secondAttribute="bottom" constant="20" id="YeM-Uq-VSl"/>
                             <constraint firstItem="PSU-gM-Nj8" firstAttribute="bottom" secondItem="gGk-Yw-Dv8" secondAttribute="bottom" id="aaK-fP-jfu"/>
+                            <constraint firstItem="psu-Ad-pXg" firstAttribute="top" secondItem="mn8-wm-YuU" secondAttribute="bottom" constant="46" id="dBe-ps-dMD"/>
                             <constraint firstItem="3ar-Y3-Tvr" firstAttribute="leading" secondItem="PSU-gM-Nj8" secondAttribute="leading" constant="20" id="dXP-i0-Ozb"/>
                             <constraint firstItem="mn8-wm-YuU" firstAttribute="top" secondItem="PSU-gM-Nj8" secondAttribute="top" constant="44" id="dao-CY-gPt"/>
-                            <constraint firstItem="gGk-Yw-Dv8" firstAttribute="top" secondItem="3ar-Y3-Tvr" secondAttribute="bottom" constant="20" id="dkm-Nf-O8m"/>
                             <constraint firstItem="6dx-J2-rOX" firstAttribute="top" secondItem="mn8-wm-YuU" secondAttribute="top" id="mEP-q6-5uv"/>
+                            <constraint firstItem="psu-Ad-pXg" firstAttribute="top" secondItem="3ar-Y3-Tvr" secondAttribute="bottom" constant="20" id="rmV-9G-7YS"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" id="JJo-Of-DlJ">
@@ -1786,6 +1795,7 @@
                         <outlet property="fullNameTextLabel" destination="ahD-Ua-ZUD" id="q5E-00-Gdv"/>
                         <outlet property="movieViewSegCtrl" destination="3ar-Y3-Tvr" id="5ap-DV-LqP"/>
                         <outlet property="profilePicture" destination="mn8-wm-YuU" id="Bqi-AU-MUa"/>
+                        <outlet property="searchBar" destination="psu-Ad-pXg" id="z1l-3S-JY0"/>
                         <outlet property="usernameTextLabel" destination="Y6F-1b-XlB" id="oFq-Js-AY6"/>
                         <segue destination="moC-AU-uiy" kind="presentation" identifier="profileDetailSegue" id="cEx-qP-MRH"/>
                     </connections>
@@ -1952,10 +1962,10 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Xdh-iM-jPJ"/>
+        <segue reference="Rsf-4k-jvu"/>
         <segue reference="b2g-nQ-9BZ"/>
         <segue reference="aEA-Ql-DFx"/>
-        <segue reference="pmq-7O-gy8"/>
+        <segue reference="cEx-qP-MRH"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="121"/>
