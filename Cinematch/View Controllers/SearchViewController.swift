@@ -45,6 +45,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
         searchTypeSegCtrl.selectedSegmentIndex = startPeople == true ? 1 : 0
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setColors(CURRENT_USER.visualMode, self.view)
+    }
+    
     @IBAction func filterSelected(_ sender: Any) {
         // table view needs to be updated
         searchTableView.reloadData()

@@ -99,6 +99,7 @@ class WatchlistListViewController: UIViewController, UITableViewDelegate,UITable
     override func viewWillAppear(_ animated: Bool) {
         filteredMovies = CURRENT_USER.watchlist
         tableView.reloadData()
+        setColors(CURRENT_USER.visualMode, self.view)
     }
     override func viewDidAppear(_ animated: Bool) {
         tableView.reloadData()

@@ -11,6 +11,7 @@ import FirebaseDatabase
 protocol updateProfile {
     func updateProfilePicture(image: UIImage)
     func updateProfileTextFields(username: String, name: String, bio: String)
+    func updateProfileColors()
 }
 class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource, SwipeDelegate, updateProfile {
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
@@ -49,6 +50,7 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
         currentUser = CURRENT_USER // kind of weird, but for some reason default sarab info will show up if this line is not here - figure out later
         collectionView.reloadData()
         renderViews()
+        setColors(CURRENT_USER.visualMode, self.view)
         
         // make the profile picture fit in the circle
         if profilePicture.frame.width > profilePicture.frame.height {
@@ -75,6 +77,10 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
         usernameTextLabel.text = username
         fullNameTextLabel.text = name
         bioTextLabel.text = bio
+    }
+    
+    func updateProfileColors() {
+        setColors(CURRENT_USER.visualMode, self.view)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -97,6 +97,8 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
                 self.updateFriendMovies(moviesFB)
             }
         })
+        
+        setColors(CURRENT_USER.visualMode, self.view)
     }
     
     func friend() {

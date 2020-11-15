@@ -82,6 +82,7 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
     override func viewWillAppear(_ animated: Bool) {
         filteredMovies = CURRENT_USER.watchlist
         collectionView.reloadData()
+        setColors(CURRENT_USER.visualMode, self.view)
     }
     override func viewDidAppear(_ animated: Bool) {
         collectionView.reloadData()

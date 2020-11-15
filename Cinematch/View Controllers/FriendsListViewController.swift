@@ -45,6 +45,11 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
         self.friendListCollectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setColors(CURRENT_USER.visualMode, self.view)
+    }
+    
     func fetchFriends(_ username:String) {
         ref.child("user_info").child(username).observeSingleEvent(of: .value) { (snapshot) in
             self.currentUser = User(snapshot, username)

@@ -100,7 +100,7 @@ class MovieDetailViewController: UIViewController, UICollectionViewDelegate, UIC
         else{
             posterView.image = movie!.posterImg!
         }
-        
+        setColors(CURRENT_USER.visualMode, self.view)
     }
     override func viewWillDisappear(_ animated: Bool) {
         self.delegate?.reload()
