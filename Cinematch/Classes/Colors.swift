@@ -14,6 +14,8 @@ var darkModeTextOrHighlight = UIColor(named: "DarkModeTextOrHighlight")
 var textFieldBackground = UIColor(named: "TextFieldBackground")
 
 func setColors(_ visualMode:VisualMode, _ view:UIView) {
+    UITabBar.appearance().barTintColor = UIColor.clear
+    
     view.backgroundColor = visualMode == VisualMode.light ? UIColor.white : darkModeBackground
     
     view.subviews.forEach { (view) in
