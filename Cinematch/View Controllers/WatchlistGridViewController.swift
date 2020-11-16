@@ -54,7 +54,7 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PosterCell", for: indexPath) as! PosterCollectionViewCell
         if(filteredMovies[indexPath.row].posterImg == nil){
             if(filteredMovies[indexPath.row].poster == nil){
-                cell.posterImageView.backgroundColor = .white
+//                cell.posterImageView.backgroundColor = .white
                 cell.posterImageView.image = UIImage(named: "no-image")
                 filteredMovies[indexPath.row].posterImg = UIImage(named: "no-image")
             }
@@ -66,6 +66,10 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
             cell.posterImageView.image = filteredMovies[indexPath.row].posterImg!
         }
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        cell.backgroundColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.white : darkModeBackground
     }
     
     @IBOutlet weak var collectionView: UICollectionView!

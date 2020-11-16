@@ -246,6 +246,26 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
         }
     }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        tableView.separatorColor = CURRENT_USER.visualMode == VisualMode.light ? darkModeTextOrHighlight : UIColor.white
+        switch searchTypeSegCtrl.selectedSegmentIndex {
+        //MOVIE CELL
+        case 0:
+            let cell = cell as! MovieSearchTableViewCell
+            cell.backgroundColor = UIColor.clear
+            cell.moviePosterImageView.backgroundColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.white : darkModeBackground
+            cell.movieTitleLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
+            cell.movieReleaseLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
+        case 1:
+            let cell = cell as! PeopleSearchTableViewCell
+            cell.backgroundColor = UIColor.clear
+            cell.nameLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
+            cell.usernameLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
+        default:
+            print("Error in search view controller")
+        }
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "movieSearchSegue" {
             if let detailViewController = segue.destination as? MovieDetailViewController{

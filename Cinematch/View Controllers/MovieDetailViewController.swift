@@ -24,6 +24,13 @@ class MovieDetailViewController: UIViewController, UICollectionViewDelegate, UIC
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let cell = cell as! ActorCollectionViewCell
+        cell.backgroundColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.white : darkModeBackground
+        cell.actorLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
+        cell.characterLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
+    }
+    
     @IBOutlet weak var collectionView: UICollectionView!
     var movie: Movie?
     var delegate: SwipeDelegate?
@@ -37,6 +44,7 @@ class MovieDetailViewController: UIViewController, UICollectionViewDelegate, UIC
     @IBOutlet weak var downButtonOutlet: UIButton!
     @IBOutlet weak var likeButtonOutlet: UIButton!
     @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var lineView: UIView!
     @IBAction func likeButton(_ sender: Any) {
         self.delegate?.buttonTapped(direction: .right, index: currentIndex!)
         movie!.opinion = .like
@@ -64,6 +72,7 @@ class MovieDetailViewController: UIViewController, UICollectionViewDelegate, UIC
         self.titleLabel.text = self.movie?.title
         self.descriptionLabel.text = self.movie?.description
         self.releaseLabel.text = self.movie?.release
+        self.releaseLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.secondaryLabel : UIColor.secondaryLabel.inverse()
         self.ratingLabel.text = self.movie?.rating
         self.friendsLabel.text = "\(movie!.friends!.count) of your friends liked this movie"
         movie!.actors = []
@@ -101,6 +110,7 @@ class MovieDetailViewController: UIViewController, UICollectionViewDelegate, UIC
             posterView.image = movie!.posterImg!
         }
         setColors(CURRENT_USER.visualMode, self.view)
+        self.lineView.backgroundColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.black : UIColor.white
     }
     override func viewWillDisappear(_ animated: Bool) {
         self.delegate?.reload()

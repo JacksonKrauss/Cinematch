@@ -54,13 +54,13 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        titleLabel.textColor = UIColor.label
         setColors(CURRENT_USER.visualMode, self.view)
-        titleLabel.textColor = UIColor(named: "DarkModeSegSelect")
         if CURRENT_USER.visualMode == VisualMode.light {
-            watchlistImage.tintColor = UIColor(named: "DarkModeSegSelect")
-            dislikeImage.tintColor = UIColor(named: "DarkModeSegSelect")
-            likeImage.tintColor = UIColor(named: "DarkModeSegSelect")
-            separatorView.backgroundColor = UIColor(named: "DarkModeSegSelect")
+            watchlistImage.tintColor = darkModeTextOrHighlight
+            dislikeImage.tintColor = darkModeTextOrHighlight
+            likeImage.tintColor = darkModeTextOrHighlight
+            separatorView.backgroundColor = darkModeTextOrHighlight
         } else {
             watchlistImage.tintColor = UIColor.white
             dislikeImage.tintColor = UIColor.white

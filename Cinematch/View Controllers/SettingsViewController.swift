@@ -38,8 +38,6 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         default:
             print("Error")
         }
-        
-//        let otherVC = delegate as! updateProfile
     }
     
     override func viewWillAppear(_ animated: Bool) {
