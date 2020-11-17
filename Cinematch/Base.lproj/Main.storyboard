@@ -1083,13 +1083,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Watchlist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iel-Vy-txd">
-                                <rect key="frame" x="30" y="118" width="92" height="27.5"/>
+                                <rect key="frame" x="30" y="118" width="92" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="iFC-Kx-YGI"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dSM-uB-oB2">
-                                <rect key="frame" x="354" y="117" width="30" height="30"/>
+                                <rect key="frame" x="354" y="118" width="30" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="1jR-Or-M6l"/>
                                     <constraint firstAttribute="width" constant="30" id="pRb-WK-Neh"/>
@@ -1102,7 +1105,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LnQ-ii-U2A">
-                                <rect key="frame" x="294" y="117" width="30" height="30"/>
+                                <rect key="frame" x="294" y="118" width="30" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="30" id="WO6-eS-Pt1"/>
                                     <constraint firstAttribute="height" constant="30" id="vFx-Ff-nA2"/>
@@ -1113,8 +1116,8 @@
                                     <action selector="switchToList:" destination="6bk-7N-32k" eventType="touchUpInside" id="AAf-nG-Zt9"/>
                                 </connections>
                             </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="150" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="teV-PQ-XnD">
-                                <rect key="frame" x="0.0" y="175.5" width="414" height="637.5"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="150" estimatedRowHeight="-1" sectionHeaderHeight="44" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="teV-PQ-XnD">
+                                <rect key="frame" x="0.0" y="178" width="414" height="635"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <searchBar key="tableHeaderView" contentMode="redraw" id="6H1-6y-T6f">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
@@ -1264,7 +1267,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="W7g-eO-cMP">
-                                <rect key="frame" x="0.0" y="220" width="414" height="608"/>
+                                <rect key="frame" x="0.0" y="219.5" width="414" height="608.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="4" id="ADy-Ng-aPn">
                                     <size key="itemSize" width="120" height="170"/>
@@ -1321,7 +1324,7 @@
                             <constraint firstItem="W7g-eO-cMP" firstAttribute="leading" secondItem="mWt-gR-ehp" secondAttribute="leading" id="0qV-JO-ZPl"/>
                             <constraint firstItem="jcJ-ei-7op" firstAttribute="leading" secondItem="mWt-gR-ehp" secondAttribute="leading" constant="30" id="5rj-h6-vWL"/>
                             <constraint firstItem="jcJ-ei-7op" firstAttribute="top" secondItem="mWt-gR-ehp" secondAttribute="top" constant="30" id="B8Y-Si-CRJ"/>
-                            <constraint firstItem="W7g-eO-cMP" firstAttribute="top" secondItem="uDo-KO-7vg" secondAttribute="bottom" constant="0.5" id="BLc-iR-Bi8"/>
+                            <constraint firstItem="W7g-eO-cMP" firstAttribute="top" secondItem="uDo-KO-7vg" secondAttribute="bottom" id="BLc-iR-Bi8"/>
                             <constraint firstItem="uDo-KO-7vg" firstAttribute="centerX" secondItem="W7g-eO-cMP" secondAttribute="centerX" id="BP0-jM-bim"/>
                             <constraint firstItem="mWt-gR-ehp" firstAttribute="trailing" secondItem="W7g-eO-cMP" secondAttribute="trailing" id="DE5-jr-lW1"/>
                             <constraint firstItem="W7g-eO-cMP" firstAttribute="bottom" secondItem="mWt-gR-ehp" secondAttribute="bottom" constant="15" id="E1r-mF-T50"/>
@@ -1343,7 +1346,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lyu-Ex-C2c" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5843" y="-1867"/>
+            <point key="canvasLocation" x="5506" y="-1483"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="TiK-g6-8kd">
