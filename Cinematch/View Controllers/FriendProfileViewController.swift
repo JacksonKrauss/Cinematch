@@ -10,6 +10,7 @@ import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
 import Koloda
+
 class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource, SwipeDelegate {
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
         Movie.addToList(direction: direction, movie: userMoviesData[index]){
@@ -25,6 +26,8 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     @IBOutlet weak var fullNameTextLabel: UILabel!
     @IBOutlet weak var bioTextLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    @IBOutlet weak var privateView: UIView!
     @IBOutlet weak var friendStatusButton: UIButton!
     let FRIEND_PROFILE_CELL_IDENTIFIER = "friendProfileViewCell"
     
@@ -33,7 +36,8 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     var numMoviesUpdated = 0
     var expectedNumMoviesUpdated = 0
     var userIsFriend = false
-    
+    var usersAreFriends = false
+    var privacy: UserPrivacy!
     var ref: DatabaseReference!
     
     
@@ -69,10 +73,11 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         ref.child("friends").child(CURRENT_USER.username!).child(user.username!).observeSingleEvent(of: .value) { (snapshot) in
             let friendValue = snapshot.value
             if let value = friendValue {
-                if !(value is NSNull) {
-                    if value as! Bool == true {
-                        self.friend()
-                    }
+                if (!(value is NSNull) && (value as! Bool == true)) {
+                    self.usersAreFriends = true
+                    self.friend()
+                } else {
+                    self.unfriend()
                 }
             }
         }
@@ -81,6 +86,7 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         fullNameTextLabel.text = user.name
         bioTextLabel.text = user.bio
         userMoviesData = user.liked
+        privacy = user.privacy
         loadProfilePicture()
         if self.profilePicture.frame.width > self.profilePicture.frame.height {
             self.profilePicture.contentMode = .scaleAspectFit
@@ -102,11 +108,33 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     func friend() {
         self.friendStatusButton.setTitle("Unfriend", for: .normal)
         self.userIsFriend = true
+        updatePrivacy()
     }
     
     func unfriend() {
         self.friendStatusButton.setTitle("Friend", for: .normal)
         self.userIsFriend = false
+        self.usersAreFriends = false
+        updatePrivacy()
+    }
+    
+    func updatePrivacy() {
+        var display = false
+        if (privacy == UserPrivacy.everyone){
+            display = true
+        } else if (privacy == UserPrivacy.friends && usersAreFriends){
+            display = true
+        }
+                
+        if (display) {
+            print("priv DISPLAY")
+            privateView.isHidden = true
+            collectionView.isHidden = false
+        } else {
+            print("priv HIDE")
+            privateView.isHidden = false
+            collectionView.isHidden = true
+        }
     }
     
     func loadProfilePicture() {
