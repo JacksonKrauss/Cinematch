@@ -35,7 +35,6 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
         super.viewDidLoad()
         
         ref = Database.database().reference()
-        fetchFriends(CURRENT_USER.username!)
         
         numFriendsLabel.text = "You have " + String(friendListData.count) + " friends"
         
@@ -48,6 +47,7 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setColors(CURRENT_USER.visualMode, self.view)
+        fetchFriends(CURRENT_USER.username!)
     }
     
     func fetchFriends(_ username:String) {
@@ -65,9 +65,10 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
                     
                     self.friendListCollectionView.reloadData()
                     self.numFriendsLabel.text = "You have " + String(self.friendListData.count) + " friends"
+                    self.friendListCollectionView.reloadData()
                 }
                 }
-                
+                self.friendListCollectionView.reloadData()
             }
             
         }

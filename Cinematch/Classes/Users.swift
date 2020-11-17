@@ -14,7 +14,19 @@ enum UserPrivacy {
     case friends
     case everyone
 }
-
+func getFriends(completion: @escaping(_ friendList: [String]) -> ()){
+    let ref = Database.database().reference()
+    var friendListData:[String] = []
+    ref.child("friends").child(CURRENT_USER.username!).observeSingleEvent(of: .value) { (snapshot) in
+        for f in snapshot.children {
+            let friend:DataSnapshot = f as! DataSnapshot
+            if(friend.value as! Bool == true) {
+                friendListData.append(friend.key)
+            }
+        }
+        completion(friendListData)
+    }
+}
 func privacyToString(privacy: UserPrivacy) -> String {
     switch privacy {
     case .me:

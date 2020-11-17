@@ -11,6 +11,13 @@ import FirebaseAuth
 import FirebaseStorage
 import Koloda
 
+enum FriendStatus {
+    case Friend
+    case Requested
+    case RequestedMe  // pressing "friend" should accept friend request
+    case NotFriend
+}
+
 class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource, SwipeDelegate {
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
         Movie.addToList(direction: direction, movie: userMoviesData[index]){
@@ -35,6 +42,10 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     var userMoviesData:[Movie] = []
     var numMoviesUpdated = 0
     var expectedNumMoviesUpdated = 0
+    
+    // default to not a friend
+    var userFriendStatus:FriendStatus = FriendStatus.NotFriend
+    
     var userIsFriend = false
     var usersAreFriends = false
     var privacy: UserPrivacy!
@@ -70,6 +81,7 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        print("friend profile view will appear")
         ref.child("friends").child(CURRENT_USER.username!).child(user.username!).observeSingleEvent(of: .value) { (snapshot) in
             let friendValue = snapshot.value
             if let value = friendValue {
@@ -77,7 +89,7 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
                     self.usersAreFriends = true
                     self.friend()
                 } else {
-                    self.unfriend()
+                    self.notFriend()
                 }
             }
         }
@@ -105,6 +117,7 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         })
         
         setColors(CURRENT_USER.visualMode, self.view)
+        self.queryFriendInformation()
     }
     
     func friend() {
@@ -116,12 +129,24 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
             self.friendStatusButton.setTitleColor(UIColor.label, for: .normal)
             self.friendStatusButton.backgroundColor = darkModeTextOrHighlight
         }
+        self.userFriendStatus = FriendStatus.Friend
+    }
+    
+    func requested() {
+        self.friendStatusButton.setTitle("Cancel Request", for: .normal)
+        self.userFriendStatus = FriendStatus.Requested
         self.userIsFriend = true
         updatePrivacy()
     }
     
-    func unfriend() {
+    func requestedMe() {
+        self.friendStatusButton.setTitle("Accept Request", for: .normal)
+        self.userFriendStatus = FriendStatus.RequestedMe
+    }
+    
+    func notFriend() {
         self.friendStatusButton.setTitle("Friend", for: .normal)
+        self.userFriendStatus = FriendStatus.NotFriend
         self.userIsFriend = false
         self.usersAreFriends = false
         updatePrivacy()
@@ -197,6 +222,76 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
             }
         }
     }
+    
+    func queryFriendInformation() {
+        // first check if they are confirmed friends
+        ref.child("friends").child(CURRENT_USER.username!).child(user.username!).observeSingleEvent(of: .value) { (snapshot) in
+            let friendValue = snapshot.value
+            if let value = friendValue {
+                if !(value is NSNull) {
+                    if value as! Bool == true {
+                        self.friend()
+                    } else if value as! Bool == false {
+                        self.queryRequestInformation()
+                    } else {
+                        print("Invalid state reached when fetching friend boolean!")
+                    }
+                } else {
+                    self.queryRequestInformation()
+                }
+            }
+        }
+    }
+    
+    func queryRequestInformation() {
+        // the user is not a friend
+        // check if i requested them
+        ref.child("friend_request").child(user.username!).child(CURRENT_USER.username!).observeSingleEvent(of: .value) { (snapshot) in
+            let requestValue = snapshot.value
+            if let value = requestValue {
+                if !(value is NSNull) {
+                    if value as! Bool == true {
+                        print("i requested")
+                        self.requested()
+                    } else if value as! Bool == false {
+                        print("i did not request")
+                        self.notFriend()
+                    } else {
+                        print("Invalid state reached when fetching friend request boolean!")
+                    }
+                    self.checkIfUserRequestedMe()
+                } else {
+                    print("i did not request")
+                    self.notFriend()
+                    self.checkIfUserRequestedMe()
+                }
+            }
+        }
+        
+    }
+    
+    func checkIfUserRequestedMe() {
+        // check if they requested me
+        ref.child("friend_request").child(CURRENT_USER.username!).child(user.username!).observeSingleEvent(of: .value) { (snapshot) in
+            let requestValue = snapshot.value
+            if let value = requestValue {
+                if !(value is NSNull) {
+                    if value as! Bool == true {
+                        print("they requested")
+                        self.requestedMe()
+                    } else if value as! Bool == false {
+                        print("they did not request")
+                        self.notFriend()
+                    } else {
+                        print("Invalid state reached when fetching friend request boolean!")
+                    }
+                } else {
+                    print("they did not request")
+                    self.notFriend()
+                }
+            }
+        }
+    }
 
     @IBAction func changeFriendStatus(_ sender: Any) {
         // add to friend requests
@@ -207,17 +302,33 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         
         ref.child("user_info").child(currentUsername!).observeSingleEvent(of: .value) { (snapshot) in
             currentUser = User(snapshot, currentUsername!)
-            if self.userIsFriend {
+            if self.userFriendStatus == FriendStatus.Friend {
                 // remove friend
                 self.ref.child("friends").child(currentUsername!).child(self.user.username!).setValue(false)
                 self.ref.child("friends").child(self.user.username!).child(currentUsername!).setValue(false)
                 
-                self.unfriend()
-            } else {
+                self.notFriend()
+            } else if self.userFriendStatus == FriendStatus.Requested {
+                // cancel friend request
+                self.ref.child("friend_request").child(self.user.username!).child((currentUser?.username!)!).setValue(false)
+                
+                self.notFriend()
+            } else if self.userFriendStatus == FriendStatus.NotFriend {
                 // add friend
                 self.ref.child("friend_request").child(self.user.username!).child((currentUser?.username!)!).setValue(true)
                 
+                self.requested()
+            } else if self.userFriendStatus == FriendStatus.RequestedMe {
+                // add friend
+                self.ref.child("friends").child(currentUsername!).child(self.user.username!).setValue(true)
+                self.ref.child("friends").child(self.user.username!).child(currentUsername!).setValue(true)
+                // remove pending friend request
+                self.ref.child("friend_request").child(self.user.username!).child((currentUser?.username!)!).setValue(false)
+                self.ref.child("friend_request").child((currentUser?.username!)!).child(self.user.username!).setValue(false)
+                
                 self.friend()
+            } else {
+                print("Error: userFriendStatus is an invalid value! Value: " + String(reflecting: self.userFriendStatus))
             }
             
         }
