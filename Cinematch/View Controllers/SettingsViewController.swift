@@ -83,6 +83,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
               let username = usernameTextField.text,
               let bio = bioTextField.text,
               let email = emailTextField.text
+            
         else {
             return
         }
@@ -138,10 +139,14 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
             }
             
             if email != CURRENT_USER.email {
-                updateUserValues.updateValue(email, forKey: "email")
-                CURRENT_USER.email = email
+                
                 Auth.auth().currentUser?.updateEmail(to: email) { error in
-                  print(error)
+                    if error == nil {
+                        CURRENT_USER.email = email
+                        updateUserValues.updateValue(email, forKey: "email")
+                    } else {
+                        print(error)
+                    }
                 }
             }
             saveProfilePictureToStorage()
