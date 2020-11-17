@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="4Mz-jQ-PzZ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="4Mz-jQ-PzZ">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -323,7 +323,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="40" id="eKd-wH-FBs"/>
                                                         </constraints>
-                                                        <state key="normal" title="Button" image="play.rectangle" catalog="system"/>
+                                                        <state key="normal" image="play.rectangle" catalog="system"/>
                                                         <connections>
                                                             <action selector="trailerButton:" destination="moC-AU-uiy" eventType="touchUpInside" id="Zqt-ev-coR"/>
                                                         </connections>
@@ -1095,7 +1095,7 @@
                                     <constraint firstAttribute="width" constant="30" id="pRb-WK-Neh"/>
                                 </constraints>
                                 <color key="tintColor" red="0.18823529410000001" green="0.18823529410000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <state key="normal" title="Button" image="square.grid.3x3" catalog="system"/>
+                                <state key="normal" image="square.grid.3x3" catalog="system"/>
                                 <connections>
                                     <action selector="switchToGrid:" destination="6bk-7N-32k" eventType="touchUpInside" id="ke4-Bd-ZTo"/>
                                     <segue destination="PoF-ex-XRM" kind="show" animates="NO" id="fPl-ww-XAw"/>
@@ -1108,7 +1108,7 @@
                                     <constraint firstAttribute="height" constant="30" id="vFx-Ff-nA2"/>
                                 </constraints>
                                 <color key="tintColor" name="AccentColor"/>
-                                <state key="normal" title="Button" image="list.dash" catalog="system"/>
+                                <state key="normal" image="list.dash" catalog="system"/>
                                 <connections>
                                     <action selector="switchToList:" destination="6bk-7N-32k" eventType="touchUpInside" id="AAf-nG-Zt9"/>
                                 </connections>
@@ -1240,7 +1240,7 @@
                                     <constraint firstAttribute="height" constant="30" id="zZN-RE-93p"/>
                                 </constraints>
                                 <color key="tintColor" red="0.18823529410000001" green="0.18823529410000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <state key="normal" title="Button" image="list.dash" catalog="system"/>
+                                <state key="normal" image="list.dash" catalog="system"/>
                                 <connections>
                                     <action selector="listButton:" destination="PoF-ex-XRM" eventType="touchUpInside" id="RRv-2V-5hE"/>
                                 </connections>
@@ -1252,7 +1252,7 @@
                                     <constraint firstAttribute="height" constant="30" id="FLK-43-jbQ"/>
                                 </constraints>
                                 <color key="tintColor" name="AccentColor"/>
-                                <state key="normal" title="Button" image="square.grid.3x3" catalog="system"/>
+                                <state key="normal" image="square.grid.3x3" catalog="system"/>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Watchlist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jcJ-ei-7op">
                                 <rect key="frame" x="30" y="118" width="92" height="30"/>
@@ -1755,7 +1755,7 @@
                                     <constraint firstAttribute="height" constant="30" id="ess-DY-Ukc"/>
                                 </constraints>
                                 <color key="tintColor" red="0.18823529411764706" green="0.18823529411764706" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <state key="normal" title="Button" image="gearshape" catalog="system">
+                                <state key="normal" image="gearshape" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="medium"/>
                                 </state>
                                 <connections>
@@ -2090,7 +2090,7 @@
         <segue reference="Rsf-4k-jvu"/>
         <segue reference="b2g-nQ-9BZ"/>
         <segue reference="aEA-Ql-DFx"/>
-        <segue reference="cEx-qP-MRH"/>
+        <segue reference="Czo-BE-JNp"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="121"/>
