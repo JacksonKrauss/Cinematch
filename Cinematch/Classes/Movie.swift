@@ -26,8 +26,15 @@ extension Array where Element: Equatable {
     }
     
 }
-struct MovieFB {
+struct MovieFB: Equatable {
+    static func == (lhs: MovieFB, rhs: MovieFB) -> Bool {
+        return lhs.id == rhs.id
+    }
     var id: Int
+    var opinion: Opinion
+}
+struct FriendMovie {
+    var username: String
     var opinion: Opinion
 }
 enum Opinion {
@@ -52,7 +59,7 @@ class Movie:Equatable{
     var actors: [Actor] = []
     var id: Int?
     var opinion: Opinion?
-    var friends: [User]?
+    var friends: [FriendMovie]?
     var duration:String?
     var posterImg: UIImage?
 
@@ -233,4 +240,22 @@ class Movie:Equatable{
             }
         }
     }
+    static func checkFriendOpinion(id: Int, completion: @escaping(_ movieList: [FriendMovie]) -> ()){
+        var friendOp: [FriendMovie] = []
+        getFriends { (friendsList) in
+            for f in friendsList{
+                getMoviesForUser(username: f) { (movieList) in
+                    let index = movieList.firstIndex(of: MovieFB(id: id, opinion: .like))
+                    if(index != nil){
+                        friendOp.append(FriendMovie(username: f, opinion: movieList[index!].opinion))
+                    }
+                    if(f == friendsList.last){
+                        completion(friendOp)
+                    }
+                }
+            }
+            
+        }
+    }
+    
 }
