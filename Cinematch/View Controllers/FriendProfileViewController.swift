@@ -33,6 +33,8 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     @IBOutlet weak var fullNameTextLabel: UILabel!
     @IBOutlet weak var bioTextLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    @IBOutlet weak var privateView: UIView!
     @IBOutlet weak var friendStatusButton: UIButton!
     let FRIEND_PROFILE_CELL_IDENTIFIER = "friendProfileViewCell"
     
@@ -44,6 +46,9 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     // default to not a friend
     var userFriendStatus:FriendStatus = FriendStatus.NotFriend
     
+    var userIsFriend = false
+    var usersAreFriends = false
+    var privacy: UserPrivacy!
     var ref: DatabaseReference!
     
     
@@ -77,10 +82,23 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     
     override func viewWillAppear(_ animated: Bool) {
         print("friend profile view will appear")
+        ref.child("friends").child(CURRENT_USER.username!).child(user.username!).observeSingleEvent(of: .value) { (snapshot) in
+            let friendValue = snapshot.value
+            if let value = friendValue {
+                if (!(value is NSNull) && (value as! Bool == true)) {
+                    self.usersAreFriends = true
+                    self.friend()
+                } else {
+                    self.notFriend()
+                }
+            }
+        }
+        
         usernameTextLabel.text = user.username
         fullNameTextLabel.text = user.name
         bioTextLabel.text = user.bio
         userMoviesData = user.liked
+        privacy = user.privacy
         loadProfilePicture()
         if self.profilePicture.frame.width > self.profilePicture.frame.height {
             self.profilePicture.contentMode = .scaleAspectFit
@@ -109,6 +127,8 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     func requested() {
         self.friendStatusButton.setTitle("Cancel Request", for: .normal)
         self.userFriendStatus = FriendStatus.Requested
+        self.userIsFriend = true
+        updatePrivacy()
     }
     
     func requestedMe() {
@@ -119,6 +139,28 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     func notFriend() {
         self.friendStatusButton.setTitle("Friend", for: .normal)
         self.userFriendStatus = FriendStatus.NotFriend
+        self.userIsFriend = false
+        self.usersAreFriends = false
+        updatePrivacy()
+    }
+    
+    func updatePrivacy() {
+        var display = false
+        if (privacy == UserPrivacy.everyone){
+            display = true
+        } else if (privacy == UserPrivacy.friends && usersAreFriends){
+            display = true
+        }
+                
+        if (display) {
+            print("priv DISPLAY")
+            privateView.isHidden = true
+            collectionView.isHidden = false
+        } else {
+            print("priv HIDE")
+            privateView.isHidden = false
+            collectionView.isHidden = true
+        }
     }
     
     func loadProfilePicture() {
