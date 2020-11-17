@@ -57,6 +57,13 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
         selectedUsers?.remove(object: filteredUsers[indexPath.row])
         print("removed")
     }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        tableView.separatorColor = CURRENT_USER.visualMode == VisualMode.light ? darkModeTextOrHighlight : UIColor.white
+        let cell = cell as! SendToFriendTableViewCell
+        cell.backgroundColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.white : darkModeBackground
+        cell.nameLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
+        cell.userLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
+    }
 
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
@@ -76,6 +83,11 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
         self.filteredUsers = usersList
         // Do any additional setup after loading the view.
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setColors(CURRENT_USER.visualMode, self.view)
+    }
+
     // code to enable tapping on the background to remove software keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)

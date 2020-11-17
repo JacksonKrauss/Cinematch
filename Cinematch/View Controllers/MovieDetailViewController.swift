@@ -31,6 +31,14 @@ class MovieDetailViewController: UIViewController, UITableViewDelegate, UITableV
 
     }
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let cell = cell as! ActorCollectionViewCell
+        cell.backgroundColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.white : darkModeBackground
+        cell.actorLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
+        cell.characterLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
+    }
+    
+    @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var tableView: UITableView!
     
     var movie: Movie?
@@ -47,6 +55,7 @@ class MovieDetailViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var downButtonOutlet: UIButton!
     @IBOutlet weak var likeButtonOutlet: UIButton!
     @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var lineView: UIView!
     @IBAction func likeButton(_ sender: Any) {
         self.delegate?.buttonTapped(direction: .right, index: currentIndex!)
         movie!.opinion = .like
@@ -80,6 +89,7 @@ class MovieDetailViewController: UIViewController, UITableViewDelegate, UITableV
         self.titleLabel.text = self.movie?.title
         self.descriptionLabel.text = self.movie?.description
         self.releaseLabel.text = self.movie?.release
+        self.releaseLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.secondaryLabel : UIColor.secondaryLabel.inverse()
         self.ratingLabel.text = self.movie?.rating
         movie!.actors = []
         DetailTableViewCell.movieTable = self.movie
@@ -107,6 +117,8 @@ class MovieDetailViewController: UIViewController, UITableViewDelegate, UITableV
         else{
             posterView.image = movie!.posterImg!
         }
+        setColors(CURRENT_USER.visualMode, self.view)
+        self.lineView.backgroundColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.black : UIColor.white
         MovieMDB.videos(movieID: movie!.id, language: "en"){
             apiReturn, videos in
             if let videos = videos{
@@ -132,9 +144,6 @@ class MovieDetailViewController: UIViewController, UITableViewDelegate, UITableV
             self.friendsLabel.text = "\(moviesFB.count) of your friends liked this movie"
         }
         self.tableView.reloadData()
-        
-        
-        
     }
     override func viewWillDisappear(_ animated: Bool) {
         self.delegate?.reload()

@@ -116,11 +116,19 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
             }
         })
         
+        setColors(CURRENT_USER.visualMode, self.view)
         self.queryFriendInformation()
     }
     
     func friend() {
         self.friendStatusButton.setTitle("Unfriend", for: .normal)
+        if (CURRENT_USER.visualMode == VisualMode.light) {
+            self.friendStatusButton.setTitleColor(UIColor.white, for: .normal)
+            self.friendStatusButton.backgroundColor = darkModeBackground
+        } else {
+            self.friendStatusButton.setTitleColor(UIColor.label, for: .normal)
+            self.friendStatusButton.backgroundColor = darkModeTextOrHighlight
+        }
         self.userFriendStatus = FriendStatus.Friend
     }
     

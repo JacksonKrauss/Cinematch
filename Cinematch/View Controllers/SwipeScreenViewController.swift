@@ -32,6 +32,10 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
     @IBOutlet weak var starView: UIImageView!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var kolodaView: KolodaView!
+    @IBOutlet weak var watchlistImage: UIImageView!
+    @IBOutlet weak var dislikeImage: UIImageView!
+    @IBOutlet weak var likeImage: UIImageView!
+    @IBOutlet weak var separatorView: UIView!
     var page = 1
     let ref = Database.database().reference()
     var movies: [Movie] = []
@@ -47,6 +51,22 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
             }
         }
         self.kolodaView.reloadData()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        titleLabel.textColor = UIColor.label
+        setColors(CURRENT_USER.visualMode, self.view)
+        if CURRENT_USER.visualMode == VisualMode.light {
+            watchlistImage.tintColor = darkModeTextOrHighlight
+            dislikeImage.tintColor = darkModeTextOrHighlight
+            likeImage.tintColor = darkModeTextOrHighlight
+            separatorView.backgroundColor = darkModeTextOrHighlight
+        } else {
+            watchlistImage.tintColor = UIColor.white
+            dislikeImage.tintColor = UIColor.white
+            likeImage.tintColor = UIColor.white
+            separatorView.backgroundColor = UIColor.white
+        }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "detailSegue"){

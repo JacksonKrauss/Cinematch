@@ -45,6 +45,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
         searchTypeSegCtrl.selectedSegmentIndex = startPeople == true ? 1 : 0
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setColors(CURRENT_USER.visualMode, self.view)
+    }
+    
     @IBAction func filterSelected(_ sender: Any) {
         // table view needs to be updated
         searchTableView.reloadData()
@@ -238,6 +243,26 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
             return cell
         default:
             return UITableViewCell()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        tableView.separatorColor = CURRENT_USER.visualMode == VisualMode.light ? darkModeTextOrHighlight : UIColor.white
+        switch searchTypeSegCtrl.selectedSegmentIndex {
+        //MOVIE CELL
+        case 0:
+            let cell = cell as! MovieSearchTableViewCell
+            cell.backgroundColor = UIColor.clear
+            cell.moviePosterImageView.backgroundColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.white : darkModeBackground
+            cell.movieTitleLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
+            cell.movieReleaseLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
+        case 1:
+            let cell = cell as! PeopleSearchTableViewCell
+            cell.backgroundColor = UIColor.clear
+            cell.nameLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
+            cell.usernameLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
+        default:
+            print("Error in search view controller")
         }
     }
     
