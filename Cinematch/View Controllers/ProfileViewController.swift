@@ -8,14 +8,16 @@
 import UIKit
 import Koloda
 import FirebaseDatabase
+
 protocol updateProfile {
     func updateProfilePicture(image: UIImage)
     func updateProfileTextFields(username: String, name: String, bio: String)
     func updateProfileColors()
 }
-class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource, SwipeDelegate, updateProfile {
+
+class ProfileViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UISearchBarDelegate, SwipeDelegate, updateProfile {
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
-        Movie.addToList(direction: direction, movie: movieData[index]){
+        Movie.addToList(direction: direction, movie: filteredMovies[index]){
             self.collectionView.reloadData()
         }
         
@@ -30,8 +32,11 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
     @IBOutlet weak var fullNameTextLabel: UILabel!
     @IBOutlet weak var bioTextLabel: UILabel!
     @IBOutlet weak var movieViewSegCtrl: UISegmentedControl!
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var collectionView: UICollectionView!
-    var movieData: [Movie] = []
+//    var likedMovies: [Movie]!
+//    var historyMovies: [Movie]!
+    var filteredMovies: [Movie]!
     override func viewDidLoad() {
         super.viewDidLoad()
         currentUser = CURRENT_USER
@@ -40,6 +45,8 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
         bioTextLabel.text = currentUser.bio
         profilePicture.image = currentUser.profilePicture
         profilePicture.layer.cornerRadius = 100 / 2 // fix
+        
+        searchBar.delegate = self
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -54,10 +61,12 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
         
         // make the profile picture fit in the circle
         if profilePicture.frame.width > profilePicture.frame.height {
-            profilePicture.contentMode = .scaleAspectFit
+            profilePicture.contentMode = .scaleToFill
         } else {
             profilePicture.contentMode = .scaleAspectFill
         }
+        
+        filteredMovies = CURRENT_USER.liked
     }
     
     func renderViews() {
@@ -92,35 +101,52 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
             let index:Int = sender as! Int
             if let detailViewController = segue.destination as? MovieDetailViewController{
                 detailViewController.delegate = self
-                detailViewController.movie = movieData[index]
+                detailViewController.movie = filteredMovies[index]
                 detailViewController.currentIndex = index
             }
         }
     }
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    @IBAction func selectCollection(_ sender: Any) {
         switch movieViewSegCtrl.selectedSegmentIndex {
         case 0:
-            return CURRENT_USER.liked.count
+            if (searchBar.text!.isEmpty) {
+                filteredMovies = CURRENT_USER.liked
+            } else {
+                filteredMovies = CURRENT_USER.liked.filter { (movie: Movie) -> Bool in
+                    return (movie.title!.lowercased().contains(searchBar.text!.lowercased()))
+                    
+                }
+            }
         case 1:
-            return CURRENT_USER.history.count
+            if (searchBar.text!.isEmpty) {
+                filteredMovies = CURRENT_USER.history.reversed()
+            } else {
+                filteredMovies = CURRENT_USER.history.filter { (movie: Movie) -> Bool in
+                    return (movie.title!.lowercased().contains(searchBar.text!.lowercased()))
+                }.reversed()
+            }
         default:
-            return 0
+            break
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return filteredMovies.count
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         performSegue(withIdentifier: "profileDetailSegue", sender: indexPath.row)
     }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier:"profileCollectionViewCell", for:indexPath) as! ProfileCollectionViewCell
         switch movieViewSegCtrl.selectedSegmentIndex {
         case 0:
             cell.historyView.isHidden = true
-            movieData = CURRENT_USER.liked
         case 1:
             cell.historyView.isHidden = false
-            movieData = CURRENT_USER.history.reversed()
-            switch movieData[indexPath.row].opinion {
+            switch filteredMovies[indexPath.row].opinion {
             case .like:
                 cell.historyView.image = UIImage(systemName: "hand.thumbsup.fill")
                 cell.historyView.tintColor = .systemGreen
@@ -136,24 +162,84 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
         default:
             break
         }
-        if(movieData[indexPath.row].posterImg == nil){
-            if(movieData[indexPath.row].poster == nil){
+        
+        if(filteredMovies[indexPath.row].posterImg == nil){
+            if(filteredMovies[indexPath.row].poster == nil){
                 cell.moviePoster.backgroundColor = .white
                 cell.moviePoster.image = UIImage(named: "no-image")
-                movieData[indexPath.row].posterImg = UIImage(named: "no-image")
+                filteredMovies[indexPath.row].posterImg = UIImage(named: "no-image")
             }
             else{
-                cell.moviePoster.load(url: URL(string: "https://image.tmdb.org/t/p/original" + movieData[indexPath.row].poster!)!)
+                cell.moviePoster.load(url: URL(string: "https://image.tmdb.org/t/p/original" + filteredMovies[indexPath.row].poster!)!)
             }
         }
         else{
-            cell.moviePoster.image = movieData[indexPath.row].posterImg!
+            cell.moviePoster.image = filteredMovies[indexPath.row].posterImg!
         }
         
         return cell
     }
+    
     @IBAction func movieViewSelected(_ sender: Any) {
         self.collectionView.reloadData()
     }
     
+    // code to enable tapping on the background to remove software keyboard
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if (searchText.isEmpty) {
+            switch movieViewSegCtrl.selectedSegmentIndex {
+            case 0:
+                filteredMovies = CURRENT_USER.liked
+            case 1:
+                filteredMovies = CURRENT_USER.history.reversed()
+            default:
+                break
+            }
+        } else {
+            switch movieViewSegCtrl.selectedSegmentIndex {
+            case 0:
+                filteredMovies = CURRENT_USER.liked.filter { (movie: Movie) -> Bool in
+                    return (movie.title!.lowercased().contains(searchBar.text!.lowercased()))
+                    
+                }
+            case 1:
+                filteredMovies = CURRENT_USER.history.filter { (movie: Movie) -> Bool in
+                    return (movie.title!.lowercased().contains(searchBar.text!.lowercased()))
+                    
+                }.reversed()
+            default:
+                break
+            }
+        }
+        collectionView.reloadData()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        self.searchBar.showsCancelButton = true
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+        switch movieViewSegCtrl.selectedSegmentIndex {
+        case 0:
+            filteredMovies = CURRENT_USER.liked
+        case 1:
+            filteredMovies = CURRENT_USER.history.reversed()
+        default:
+            break
+        }
+        collectionView.reloadData()
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
+    }
 }
+
