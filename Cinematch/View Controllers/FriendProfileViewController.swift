@@ -273,13 +273,17 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
                         self.requestedMe()
                     } else if value as! Bool == false {
                         print("they did not request")
-                        self.notFriend()
+                        if self.userFriendStatus != FriendStatus.Requested {
+                            self.notFriend()
+                        }
                     } else {
                         print("Invalid state reached when fetching friend request boolean!")
                     }
                 } else {
                     print("they did not request")
-                    self.notFriend()
+                    if self.userFriendStatus != FriendStatus.Requested {
+                        self.notFriend()
+                    }
                 }
             }
         }
