@@ -45,6 +45,8 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setColors(CURRENT_USER.visualMode, self.view)
         fetchFriends(CURRENT_USER.username!)
     }
     
@@ -94,6 +96,7 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
         if kind == UICollectionView.elementKindSectionHeader {
              let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SectionHeader
             sectionHeader.label.text = (indexPath.section == 1) ? "Requests" : ""
+            sectionHeader.label.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
              return sectionHeader
         } else { //No footer in this case but can add option for that
              return UICollectionReusableView()
@@ -170,6 +173,17 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
         }
         print("Error: Unexpected state reached in FriendsListViewController!")
         return UICollectionViewCell()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.section == 0 {
+            let cell = cell as! FriendListViewCell
+            cell.nameLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
+        }
+        if indexPath.section == 1 {
+            let cell = cell as! FriendRequestViewCell
+            cell.nameLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
+        }
     }
 
     // MARK: - Navigation

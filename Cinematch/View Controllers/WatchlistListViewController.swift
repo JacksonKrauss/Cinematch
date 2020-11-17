@@ -54,7 +54,6 @@ class WatchlistListViewController: UIViewController, UITableViewDelegate,UITable
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell") as! WatchlistTableViewCell
         if(filteredMovies[indexPath.row].posterImg == nil){
             if(filteredMovies[indexPath.row].poster == nil){
-                cell.posterView.backgroundColor = .white
                 cell.posterView.image = UIImage(named: "no-image")
                 filteredMovies[indexPath.row].posterImg = UIImage(named: "no-image")
             }
@@ -69,6 +68,14 @@ class WatchlistListViewController: UIViewController, UITableViewDelegate,UITable
         cell.descriptionLabel.text = filteredMovies[indexPath.row].release
         cell.ratingLabel.text = filteredMovies[indexPath.row].rating
         return cell
+    }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        tableView.separatorColor = CURRENT_USER.visualMode == VisualMode.light ? darkModeTextOrHighlight : UIColor.white
+        let cell = cell as! WatchlistTableViewCell
+        cell.backgroundColor = UIColor.clear
+        cell.posterView.backgroundColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.white : darkModeBackground
+        cell.titleLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
+        cell.descriptionLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.secondaryLabel : UIColor.secondaryLabel.inverse()
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "detailSegue", sender: indexPath.row)
@@ -99,6 +106,7 @@ class WatchlistListViewController: UIViewController, UITableViewDelegate,UITable
     override func viewWillAppear(_ animated: Bool) {
         filteredMovies = CURRENT_USER.watchlist
         tableView.reloadData()
+        setColors(CURRENT_USER.visualMode, self.view)
     }
     override func viewDidAppear(_ animated: Bool) {
         tableView.reloadData()

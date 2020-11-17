@@ -29,6 +29,17 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         // Do any additional setup after loading the view.
     }
     
+    @IBAction func appearanceSelect(_ sender: Any) {
+        switch appearanceSegControl.selectedSegmentIndex {
+        case 0:
+            setColors(VisualMode.light, self.view)
+        case 1:
+            setColors(VisualMode.dark, self.view)
+        default:
+            print("Error")
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         // set the current user fields for this view controller
         super.viewWillAppear(animated)
@@ -54,6 +65,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
             break
         case .dark:
             appearanceSegControl.selectedSegmentIndex = 1
+            setColors(CURRENT_USER.visualMode, self.view)
             break
         }
         
@@ -123,6 +135,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
             }
             if selectedVisual != CURRENT_USER.visualMode {
                 updateUserValues.updateValue(visualToString(visualMode: selectedVisual), forKey: "visual_mode")
+                CURRENT_USER.visualMode = selectedVisual
             }
             
             if email != CURRENT_USER.email {
@@ -200,6 +213,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         
         let otherVC = delegate as! updateProfile
         otherVC.updateProfileTextFields(username: username, name: name, bio: bio)
+        otherVC.updateProfileColors()
     }
     
     // user wants to edit profile picture with photos from photo library
