@@ -22,9 +22,6 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
                 
             }
         }
-        Movie.updateFromFB {
-            
-        }
     }
     
     @IBOutlet weak var friendLabel: UILabel!
@@ -150,32 +147,15 @@ extension SwipeScreenViewController: KolodaViewDataSource {
         return OverlayView()
     }
     func koloda(_ koloda: KolodaView, didSwipeCardAt index: Int, in direction: SwipeResultDirection) {
-        //Movie.clearMovie(movie: movies[index])
-        var op: String?
-        if(direction == .right){
-            op = "l"
-            movies[index].opinion = .like
-            //CURRENT_USER.liked.append(movies[index])
-            Movie.getRecommended(page: 1, id: movies[index].id!) { (list) in
-                self.movies.addAll(array: list)
-                print("adding \(list)")
-                koloda.reloadData()
+        Movie.addToList(direction: direction, movie: movies[index]){
+            if(direction == .right){
+                Movie.getRecommended(page: 1, id: self.movies[index].id!) { (list) in
+                    self.movies.addAll(array: list)
+                    print("adding \(list)")
+                    koloda.reloadData()
+                }
             }
         }
-        else if(direction == .left){
-            op = "d"
-            movies[index].opinion = .dislike
-            //CURRENT_USER.disliked.append(movies[index])
-        }
-        else if(direction == .up){
-            op = "w"
-            movies[index].opinion = .watchlist
-            //CURRENT_USER.watchlist.append(movies[index])
-        }
-        self.ref.child("movies").child(CURRENT_USER.username!).child(movies[index].id!.description).setValue(op!)
-        Movie.updateFromFB{
-        }
-        //CURRENT_USER.history.append(movies[index])
         if(index == movies.endIndex-1){
             self.descriptionLabel.text = ""
             self.titleLabel.text = ""
