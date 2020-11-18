@@ -130,6 +130,21 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        moviesData = []
+        usersData = []
+        page = 1
+        hitEnd = false
+        
+        switch searchTypeSegCtrl.selectedSegmentIndex {
+            case 0:
+                self.loadMovies()
+                break
+            case 1:
+                self.loadUsers()
+                break
+            default:
+                break
+        }
         searchBar.resignFirstResponder()
     }
     

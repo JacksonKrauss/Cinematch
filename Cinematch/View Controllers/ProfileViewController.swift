@@ -24,7 +24,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func reload() {
-        //collectionView.reloadData()
+        collectionView.reloadData()
     }
     
     @IBOutlet weak var profilePicture: UIImageView!
@@ -90,6 +90,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     func updateProfileColors() {
         setColors(CURRENT_USER.visualMode, self.view)
+        collectionView.reloadData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -146,6 +147,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
             cell.historyView.isHidden = true
         case 1:
             cell.historyView.isHidden = false
+            cell.historyView.backgroundColor = .none
             switch filteredMovies[indexPath.row].opinion {
             case .like:
                 cell.historyView.image = UIImage(systemName: "hand.thumbsup.fill")
