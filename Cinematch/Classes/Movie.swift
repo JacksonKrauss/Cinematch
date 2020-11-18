@@ -254,7 +254,7 @@ class Movie:Equatable{
                     }
                 }
             }
-            
+            completion(friendOp)
         }
     }
     
