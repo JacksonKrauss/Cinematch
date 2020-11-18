@@ -583,19 +583,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="60" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="lVl-ok-3a5">
-                                <rect key="frame" x="30" y="61" width="354" height="747"/>
+                                <rect key="frame" x="0.0" y="61" width="414" height="747"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <searchBar key="tableHeaderView" contentMode="redraw" text="" id="vPC-Cb-sWu">
-                                    <rect key="frame" x="0.0" y="0.0" width="354" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </searchBar>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="friendCell" editingAccessoryType="checkmark" rowHeight="57" id="H2Z-1f-orv" customClass="SendToFriendTableViewCell" customModule="Cinematch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="72" width="354" height="57"/>
+                                        <rect key="frame" x="0.0" y="72" width="414" height="57"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="H2Z-1f-orv" id="4Wd-kn-MPb">
-                                            <rect key="frame" x="0.0" y="0.0" width="354" height="57"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="57"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W90-2m-U8M">
@@ -636,7 +636,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h6L-AP-ov0">
-                                <rect key="frame" x="338" y="15.5" width="46" height="30"/>
+                                <rect key="frame" x="368" y="15.5" width="46" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="0YK-xq-8ZJ"/>
                                     <constraint firstAttribute="width" constant="46" id="DMy-bS-cRf"/>
@@ -654,10 +654,10 @@
                             <constraint firstItem="lIS-U4-TlS" firstAttribute="bottom" secondItem="lVl-ok-3a5" secondAttribute="bottom" id="Iu1-h2-Wcn"/>
                             <constraint firstItem="h6L-AP-ov0" firstAttribute="trailing" secondItem="lVl-ok-3a5" secondAttribute="trailing" id="X2R-ak-ygL"/>
                             <constraint firstItem="lVl-ok-3a5" firstAttribute="top" secondItem="kqU-Wh-7XX" secondAttribute="bottom" constant="20" id="bxl-dX-llH"/>
-                            <constraint firstItem="lVl-ok-3a5" firstAttribute="leading" secondItem="lIS-U4-TlS" secondAttribute="leading" constant="30" id="cba-Sw-1h1"/>
+                            <constraint firstItem="lVl-ok-3a5" firstAttribute="leading" secondItem="lIS-U4-TlS" secondAttribute="leading" id="cba-Sw-1h1"/>
                             <constraint firstItem="kqU-Wh-7XX" firstAttribute="top" secondItem="lIS-U4-TlS" secondAttribute="top" constant="20" id="gGt-ea-c3x"/>
                             <constraint firstItem="kqU-Wh-7XX" firstAttribute="centerX" secondItem="Y3w-en-Evd" secondAttribute="centerX" id="jzw-fY-RdC"/>
-                            <constraint firstItem="lIS-U4-TlS" firstAttribute="trailing" secondItem="lVl-ok-3a5" secondAttribute="trailing" constant="30" id="zqW-i8-avB"/>
+                            <constraint firstItem="lIS-U4-TlS" firstAttribute="trailing" secondItem="lVl-ok-3a5" secondAttribute="trailing" id="zqW-i8-avB"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Sf2-hX-cmn"/>
@@ -2085,7 +2085,7 @@
         <segue reference="Rsf-4k-jvu"/>
         <segue reference="b2g-nQ-9BZ"/>
         <segue reference="tSa-yd-FV7"/>
-        <segue reference="Ugq-qH-Kja"/>
+        <segue reference="yGY-WE-pLS"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="121"/>
