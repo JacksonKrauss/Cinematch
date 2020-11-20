@@ -12,6 +12,7 @@ class LoginViewController: UIViewController {
 
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var errorLabel: UILabel!
     
     let ref = Database.database().reference()
     
@@ -26,6 +27,11 @@ class LoginViewController: UIViewController {
               username.count > 0,
               password.count > 0
         else {
+            if usernameTextField.text?.count == 0 {
+                errorLabel.text = "Username field is empty."
+            } else {
+                errorLabel.text = "Password field is empty."
+            }
             return
         }
         
@@ -47,7 +53,6 @@ class LoginViewController: UIViewController {
                             if error != nil {
                                 // error in getting profile picture
                                 CURRENT_USER.profilePicture = UIImage(named: "Popcorn Logo")!
-                                print("Error is \(error)")
                             } else {
                                 if let image = UIImage(data: data!) {
                                     // profile picture exists
@@ -57,12 +62,12 @@ class LoginViewController: UIViewController {
                                 }
                             }
                         }
-                        
                         self.performSegue(withIdentifier: "loginSegue", sender: nil)
                     }
                 }
             }
         })
+        errorLabel.text = "An error occurred when attempting to log in."
     }
     
     // programmatic back button

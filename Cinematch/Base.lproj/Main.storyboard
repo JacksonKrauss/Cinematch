@@ -193,6 +193,13 @@
                                     <action selector="backButtonDidPress:" destination="PTZ-ks-pJR" eventType="touchUpInside" id="usv-KX-kqh"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Og-7F-hHJ">
+                                <rect key="frame" x="20" y="708" width="364" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="2it-dY-saA"/>
                         <color key="backgroundColor" name="AccentColor"/>
@@ -208,6 +215,7 @@
                     <connections>
                         <outlet property="confirmPasswordTextField" destination="jQd-VV-qjb" id="h0J-Yd-Fs8"/>
                         <outlet property="emailTextField" destination="0N1-xr-wp8" id="D4a-G1-u49"/>
+                        <outlet property="errorLabel" destination="3Og-7F-hHJ" id="V2c-UB-YTm"/>
                         <outlet property="nameTextField" destination="WfE-ta-XXc" id="4zr-qY-GA6"/>
                         <outlet property="passwordTextField" destination="Oyk-Tp-fZI" id="veU-0b-RO6"/>
                         <outlet property="usernameTextField" destination="N6f-4z-NQK" id="HaB-Nk-wZa"/>
@@ -750,6 +758,13 @@
                                     <action selector="backButtonDidPress:" destination="HMS-ms-FN5" eventType="touchUpInside" id="RN9-D0-Md6"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W7E-pQ-gFi">
+                                <rect key="frame" x="30" y="487" width="354" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="jNU-hv-f0C"/>
                         <color key="backgroundColor" name="AccentColor"/>
@@ -763,6 +778,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="tnM-sr-mB8"/>
                     <connections>
+                        <outlet property="errorLabel" destination="W7E-pQ-gFi" id="Zc0-V0-f3U"/>
                         <outlet property="passwordTextField" destination="OuP-Zf-ytx" id="sFt-OJ-GFV"/>
                         <outlet property="usernameTextField" destination="44Y-A5-YO5" id="6Lo-9v-rQy"/>
                         <segue destination="OCb-ec-3HP" kind="show" identifier="loginSegue" id="aEA-Ql-DFx"/>
@@ -2120,7 +2136,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="Rsf-4k-jvu"/>
         <segue reference="b2g-nQ-9BZ"/>
-        <segue reference="aEA-Ql-DFx"/>
+        <segue reference="tSa-yd-FV7"/>
         <segue reference="pmq-7O-gy8"/>
     </inferredMetricsTieBreakers>
     <resources>

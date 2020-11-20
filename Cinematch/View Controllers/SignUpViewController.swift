@@ -15,6 +15,7 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var confirmPasswordTextField: UITextField!
+    @IBOutlet weak var errorLabel: UILabel!
     
     // the reference for the Firebase Database
     let ref = Database.database().reference()
@@ -38,6 +39,22 @@ class SignUpViewController: UIViewController {
               confirmedPassword.count > 0,
               password == confirmedPassword
         else {
+            var fieldStr = "field is empty."
+            if nameTextField.text?.count == 0 {
+                errorLabel.text = "Name \(fieldStr)"
+            } else if usernameTextField.text?.count == 0 {
+                errorLabel.text = "Username \(fieldStr)"
+            } else if emailTextField.text?.count == 0 {
+                errorLabel.text = "Email \(fieldStr)"
+            } else if passwordTextField.text?.count == 0 {
+                errorLabel.text = "Password \(fieldStr)"
+            } else if confirmPasswordTextField.text?.count == 0 {
+                errorLabel.text = "Confirm Password \(fieldStr)"
+            }
+            
+            if passwordTextField.text! != confirmPasswordTextField.text {
+                errorLabel.text = "Passwords do not match."
+            }
             return
         }
         
@@ -80,6 +97,7 @@ class SignUpViewController: UIViewController {
                 self.performSegue(withIdentifier: "signUpSegue", sender: nil)
             }
         }
+        errorLabel.text = "An error occured while attempting to sign in."
     }
     
     // programmatic back button 
