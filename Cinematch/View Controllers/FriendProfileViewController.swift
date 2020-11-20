@@ -46,8 +46,6 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     // default to not a friend
     var userFriendStatus:FriendStatus = FriendStatus.NotFriend
     
-    var userIsFriend = false
-    var usersAreFriends = false
     var privacy: UserPrivacy!
     var ref: DatabaseReference!
     
@@ -86,7 +84,6 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
             let friendValue = snapshot.value
             if let value = friendValue {
                 if (!(value is NSNull) && (value as! Bool == true)) {
-                    self.usersAreFriends = true
                     self.friend()
                 } else {
                     self.notFriend()
@@ -130,36 +127,37 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
             self.friendStatusButton.backgroundColor = darkModeTextOrHighlight
         }
         self.userFriendStatus = FriendStatus.Friend
+        updatePrivacy()
     }
     
     func requested() {
         self.friendStatusButton.setTitle("Cancel Request", for: .normal)
         self.userFriendStatus = FriendStatus.Requested
-        self.userIsFriend = true
         updatePrivacy()
     }
     
     func requestedMe() {
         self.friendStatusButton.setTitle("Accept Request", for: .normal)
         self.userFriendStatus = FriendStatus.RequestedMe
+        updatePrivacy()
     }
     
     func notFriend() {
         self.friendStatusButton.setTitle("Friend", for: .normal)
         self.userFriendStatus = FriendStatus.NotFriend
-        self.userIsFriend = false
-        self.usersAreFriends = false
         updatePrivacy()
     }
     
     func updatePrivacy() {
         var display = false
-        if (privacy == UserPrivacy.everyone){
+        if (user.name == CURRENT_USER.name) {
             display = true
-        } else if (privacy == UserPrivacy.friends && usersAreFriends){
+        } else if (privacy == UserPrivacy.everyone){
+            display = true
+        } else if (privacy == UserPrivacy.friends && userFriendStatus == FriendStatus.Friend){
             display = true
         }
-                
+    
         if (display) {
             print("priv DISPLAY")
             privateView.isHidden = true
