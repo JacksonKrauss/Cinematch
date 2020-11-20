@@ -47,7 +47,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         usernameTextField.text = CURRENT_USER.username
         bioTextField.text = CURRENT_USER.bio
         emailTextField.text = CURRENT_USER.email
-        
+                
         switch CURRENT_USER.privacy {
         case .me:
             privacySegControl.selectedSegmentIndex = 0
@@ -115,10 +115,12 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
                 break
             case 2:
                 selectedPrivacy = .everyone
+                break
             default:
                 selectedPrivacy = .friends
             }
             if selectedPrivacy != CURRENT_USER.privacy {
+                CURRENT_USER.privacy = selectedPrivacy
                 updateUserValues.updateValue(privacyToString(privacy: selectedPrivacy), forKey: "privacy")
             }
             
