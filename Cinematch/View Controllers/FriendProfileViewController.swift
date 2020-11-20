@@ -56,7 +56,8 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        profilePicture.layer.cornerRadius = 125 / 2 // fix this jank
+        profilePicture.layer.cornerRadius = profilePicture.frame.width / 2
+        assert(profilePicture.frame.width == profilePicture.frame.height)
         
         ref = Database.database().reference()
     }
@@ -79,7 +80,6 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("friend profile view will appear")
         ref.child("friends").child(CURRENT_USER.username!).child(user.username!).observeSingleEvent(of: .value) { (snapshot) in
             let friendValue = snapshot.value
             if let value = friendValue {
@@ -96,6 +96,7 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         bioTextLabel.text = user.bio
         userMoviesData = user.liked
         privacy = user.privacy
+        
         loadProfilePicture()
         if self.profilePicture.frame.width > self.profilePicture.frame.height {
             self.profilePicture.contentMode = .scaleAspectFit
@@ -115,6 +116,13 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         
         setColors(CURRENT_USER.visualMode, self.view)
         self.queryFriendInformation()
+        
+        // hide action button if this is your profile page
+        if user == CURRENT_USER {
+            friendStatusButton.isHidden = true
+        } else {
+            friendStatusButton.isHidden = false
+        }
     }
     
     func friend() {

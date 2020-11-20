@@ -80,7 +80,6 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
                 if(friend.value as! Bool == true) {
                 
                     self.ref.child("user_info").child(friend.key).observe(.value) { (snapshot) in
-                        self.friendRequestData = []
                         self.friendRequestData.append(User(snapshot, friend.key))
                         
                         self.friendListCollectionView.reloadData()
@@ -115,8 +114,6 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
         let availableWidth = view.frame.width - paddingSpace
         let widthPerItem = availableWidth / itemsPerRow
         
-        print("widthPerItem " + String(Float(widthPerItem)))
-        
         return (indexPath.section == 0) ? CGSize(width: widthPerItem, height: 110) : CGSize(width: widthPerItem, height: 150)
       }
       
@@ -135,7 +132,7 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
       }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+        return friendRequestData.isEmpty ? 1 : 2
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
