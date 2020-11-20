@@ -107,7 +107,7 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         ref.child("movies").child(user.username!).observeSingleEvent(of: .value, with: { (snapshot) in
             Movie.getMoviesForUser(username: self.user.username!) { (moviesFBList) in
                 let moviesFB = moviesFBList.filter({ (movie) -> Bool in
-                    return movie.opinion != Opinion.like
+                    return movie.opinion == Opinion.like
                 })
                 self.expectedNumMoviesUpdated = moviesFB.count
                 self.updateFriendMovies(moviesFB)
@@ -169,11 +169,11 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         }
     
         if (display) {
-            print("priv DISPLAY")
+            //print("priv DISPLAY")
             privateView.isHidden = true
             collectionView.isHidden = false
         } else {
-            print("priv HIDE")
+            //print("priv HIDE")
             privateView.isHidden = false
             collectionView.isHidden = true
         }
