@@ -193,6 +193,13 @@
                                     <action selector="backButtonDidPress:" destination="PTZ-ks-pJR" eventType="touchUpInside" id="usv-KX-kqh"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Og-7F-hHJ">
+                                <rect key="frame" x="20" y="708" width="364" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="2it-dY-saA"/>
                         <color key="backgroundColor" name="AccentColor"/>
@@ -208,6 +215,7 @@
                     <connections>
                         <outlet property="confirmPasswordTextField" destination="jQd-VV-qjb" id="h0J-Yd-Fs8"/>
                         <outlet property="emailTextField" destination="0N1-xr-wp8" id="D4a-G1-u49"/>
+                        <outlet property="errorLabel" destination="3Og-7F-hHJ" id="V2c-UB-YTm"/>
                         <outlet property="nameTextField" destination="WfE-ta-XXc" id="4zr-qY-GA6"/>
                         <outlet property="passwordTextField" destination="Oyk-Tp-fZI" id="veU-0b-RO6"/>
                         <outlet property="usernameTextField" destination="N6f-4z-NQK" id="HaB-Nk-wZa"/>
@@ -750,6 +758,13 @@
                                     <action selector="backButtonDidPress:" destination="HMS-ms-FN5" eventType="touchUpInside" id="RN9-D0-Md6"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W7E-pQ-gFi">
+                                <rect key="frame" x="30" y="487" width="354" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="jNU-hv-f0C"/>
                         <color key="backgroundColor" name="AccentColor"/>
@@ -763,6 +778,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="tnM-sr-mB8"/>
                     <connections>
+                        <outlet property="errorLabel" destination="W7E-pQ-gFi" id="Zc0-V0-f3U"/>
                         <outlet property="passwordTextField" destination="OuP-Zf-ytx" id="sFt-OJ-GFV"/>
                         <outlet property="usernameTextField" destination="44Y-A5-YO5" id="6Lo-9v-rQy"/>
                         <segue destination="OCb-ec-3HP" kind="show" identifier="loginSegue" id="aEA-Ql-DFx"/>
@@ -1813,6 +1829,35 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
+                            <view contentMode="scaleToFill" id="DN6-w7-tpE">
+                                <rect key="frame" x="0.0" y="278" width="414" height="120"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="iqO-Zk-bFC">
+                                        <rect key="frame" x="27.5" y="35" width="359" height="51"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yab-09-z1j">
+                                                <rect key="frame" x="0.0" y="0.0" width="359" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" systemColor="systemGrayColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Go head to the swipe screen to add some here!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZNL-RO-o9f">
+                                                <rect key="frame" x="0.0" y="30.5" width="359" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" systemColor="systemGrayColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="iqO-Zk-bFC" firstAttribute="top" secondItem="DN6-w7-tpE" secondAttribute="top" constant="35" id="YXE-M7-PFB"/>
+                                    <constraint firstItem="iqO-Zk-bFC" firstAttribute="centerX" secondItem="DN6-w7-tpE" secondAttribute="centerX" id="txz-Ct-pJc"/>
+                                    <constraint firstAttribute="bottom" secondItem="iqO-Zk-bFC" secondAttribute="bottom" constant="34" id="y1U-7J-WQp"/>
+                                </constraints>
+                            </view>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="3ar-Y3-Tvr">
                                 <rect key="frame" x="20" y="183" width="374" height="32"/>
                                 <constraints>
@@ -1870,6 +1915,8 @@
                         <outlet property="collectionView" destination="gGk-Yw-Dv8" id="dNp-Tb-MOI"/>
                         <outlet property="fullNameTextLabel" destination="ahD-Ua-ZUD" id="q5E-00-Gdv"/>
                         <outlet property="movieViewSegCtrl" destination="3ar-Y3-Tvr" id="5ap-DV-LqP"/>
+                        <outlet property="noMoviesLabel" destination="Yab-09-z1j" id="rr5-u9-uIR"/>
+                        <outlet property="noMoviesView" destination="DN6-w7-tpE" id="nVV-96-wBY"/>
                         <outlet property="profilePicture" destination="mn8-wm-YuU" id="Bqi-AU-MUa"/>
                         <outlet property="searchBar" destination="psu-Ad-pXg" id="z1l-3S-JY0"/>
                         <outlet property="usernameTextLabel" destination="Y6F-1b-XlB" id="oFq-Js-AY6"/>
@@ -2086,6 +2133,7 @@
         <segue reference="b2g-nQ-9BZ"/>
         <segue reference="tSa-yd-FV7"/>
         <segue reference="yGY-WE-pLS"/>
+        <segue reference="pmq-7O-gy8"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="121"/>

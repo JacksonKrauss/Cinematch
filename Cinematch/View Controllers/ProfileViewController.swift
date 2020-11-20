@@ -45,7 +45,10 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     @IBOutlet weak var movieViewSegCtrl: UISegmentedControl!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var collectionView: UICollectionView!
-//    var likedMovies: [Movie]!
+    @IBOutlet weak var noMoviesView: UIView!
+    @IBOutlet weak var noMoviesLabel: UILabel!
+    
+    //    var likedMovies: [Movie]!
 //    var historyMovies: [Movie]!
     var filteredMovies: [Movie]!
     override func viewDidLoad() {
@@ -78,6 +81,14 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
         
         filteredMovies = CURRENT_USER.liked
+        if filteredMovies.count == 0 {
+            collectionView.isHidden = true
+            noMoviesView.isHidden = false
+            noMoviesLabel.text = "You do not have any liked movies."
+        } else {
+            collectionView.isHidden = false
+            noMoviesView.isHidden = true
+        }
     }
     
     func renderViews() {
@@ -122,6 +133,15 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     @IBAction func selectCollection(_ sender: Any) {
         switch movieViewSegCtrl.selectedSegmentIndex {
         case 0:
+            if CURRENT_USER.liked.count == 0 {
+                collectionView.isHidden = true
+                noMoviesView.isHidden = false
+                noMoviesLabel.text = "You do not have any liked movies."
+                return
+            } else {
+                collectionView.isHidden = false
+                noMoviesView.isHidden = true
+            }
             if (searchBar.text!.isEmpty) {
                 filteredMovies = CURRENT_USER.liked
             } else {
@@ -131,6 +151,15 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
                 }
             }
         case 1:
+            if CURRENT_USER.history.count == 0 {
+                collectionView.isHidden = true
+                noMoviesView.isHidden = false
+                noMoviesLabel.text = "You do not have any movies in your history."
+                return
+            } else {
+                collectionView.isHidden = false
+                noMoviesView.isHidden = true
+            }
             if (searchBar.text!.isEmpty) {
                 filteredMovies = CURRENT_USER.history.reversed()
             } else {

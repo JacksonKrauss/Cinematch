@@ -46,8 +46,6 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     // default to not a friend
     var userFriendStatus:FriendStatus = FriendStatus.NotFriend
     
-    var userIsFriend = false
-    var usersAreFriends = false
     var privacy: UserPrivacy!
     var ref: DatabaseReference!
     
@@ -58,7 +56,8 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        profilePicture.layer.cornerRadius = 125 / 2 // fix this jank
+        profilePicture.layer.cornerRadius = profilePicture.frame.width / 2
+        assert(profilePicture.frame.width == profilePicture.frame.height)
         
         ref = Database.database().reference()
     }
@@ -81,12 +80,10 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("friend profile view will appear")
         ref.child("friends").child(CURRENT_USER.username!).child(user.username!).observeSingleEvent(of: .value) { (snapshot) in
             let friendValue = snapshot.value
             if let value = friendValue {
                 if (!(value is NSNull) && (value as! Bool == true)) {
-                    self.usersAreFriends = true
                     self.friend()
                 } else {
                     self.notFriend()
@@ -99,6 +96,7 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         bioTextLabel.text = user.bio
         userMoviesData = user.liked
         privacy = user.privacy
+        
         loadProfilePicture()
         if self.profilePicture.frame.width > self.profilePicture.frame.height {
             self.profilePicture.contentMode = .scaleAspectFit
@@ -118,6 +116,13 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         
         setColors(CURRENT_USER.visualMode, self.view)
         self.queryFriendInformation()
+        
+        // hide action button if this is your profile page
+        if user == CURRENT_USER {
+            friendStatusButton.isHidden = true
+        } else {
+            friendStatusButton.isHidden = false
+        }
     }
     
     func friend() {
@@ -127,39 +132,41 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
             self.friendStatusButton.backgroundColor = darkModeBackground
         } else {
             self.friendStatusButton.setTitleColor(UIColor.label, for: .normal)
-            self.friendStatusButton.backgroundColor = darkModeTextOrHighlight
+            self.friendStatusButton.backgroundColor = UIColor.white
         }
         self.userFriendStatus = FriendStatus.Friend
+        updatePrivacy()
+        self.queryFriendInformation()
     }
     
     func requested() {
         self.friendStatusButton.setTitle("Cancel Request", for: .normal)
         self.userFriendStatus = FriendStatus.Requested
-        self.userIsFriend = true
         updatePrivacy()
     }
     
     func requestedMe() {
         self.friendStatusButton.setTitle("Accept Request", for: .normal)
         self.userFriendStatus = FriendStatus.RequestedMe
+        updatePrivacy()
     }
     
     func notFriend() {
         self.friendStatusButton.setTitle("Friend", for: .normal)
         self.userFriendStatus = FriendStatus.NotFriend
-        self.userIsFriend = false
-        self.usersAreFriends = false
         updatePrivacy()
     }
     
     func updatePrivacy() {
         var display = false
-        if (privacy == UserPrivacy.everyone){
+        if (user.name == CURRENT_USER.name) {
             display = true
-        } else if (privacy == UserPrivacy.friends && usersAreFriends){
+        } else if (privacy == UserPrivacy.everyone){
+            display = true
+        } else if (privacy == UserPrivacy.friends && userFriendStatus == FriendStatus.Friend){
             display = true
         }
-                
+    
         if (display) {
             print("priv DISPLAY")
             privateView.isHidden = true

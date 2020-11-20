@@ -38,6 +38,10 @@ class MovieDetailViewController: UIViewController, UITableViewDelegate, UITableV
 //        cell.characterLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
 //    }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.white : darkModeBackground
+    }
+    
     @IBOutlet weak var tableView: UITableView!
     
     var movie: Movie?

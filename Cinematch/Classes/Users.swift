@@ -119,6 +119,7 @@ struct User: Equatable {
         self.name = dataDictionary["name"] as? String
         self.username = username
         self.email = dataDictionary["email"] as? String
+        self.privacy = stringToPrivacy(privacy: (dataDictionary["privacy"] as? String)!)
         self.bio = dataDictionary["bio"] as? String
         self.visualMode = stringToVisual(visualMode: (dataDictionary["visual_mode"] as? String)!)
         self.profilePicture = UIImage(named: "image-placeholder") // placeholder needed before image set manually
