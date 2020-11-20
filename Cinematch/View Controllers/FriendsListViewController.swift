@@ -42,12 +42,13 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
         friendListCollectionView.dataSource = self
         
         self.friendListCollectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        
+        fetchFriends(CURRENT_USER.username!)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setColors(CURRENT_USER.visualMode, self.view)
-        fetchFriends(CURRENT_USER.username!)
     }
     
     func fetchFriends(_ username:String) {
@@ -62,8 +63,6 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
                 if(friend.value as! Bool == true) {
                 self.ref.child("user_info").child(friend.key).observeSingleEvent(of: .value) { (snapshot) in
                     self.friendListData.append(User(snapshot, friend.key))
-                    
-                    self.friendListCollectionView.reloadData()
                     self.numFriendsLabel.text = "You have " + String(self.friendListData.count) + " friends"
                     self.friendListCollectionView.reloadData()
                 }
