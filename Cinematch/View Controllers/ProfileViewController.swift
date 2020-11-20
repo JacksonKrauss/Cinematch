@@ -24,7 +24,18 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func reload() {
-        //collectionView.reloadData()
+        switch movieViewSegCtrl.selectedSegmentIndex {
+        case 0:
+            filteredMovies = CURRENT_USER.liked
+        case 1:
+            filteredMovies = CURRENT_USER.history
+        default:
+            break
+        }
+        collectionView.reloadData()
+        searchBar.showsCancelButton = false
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
     }
     
     @IBOutlet weak var profilePicture: UIImageView!
@@ -101,6 +112,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     func updateProfileColors() {
         setColors(CURRENT_USER.visualMode, self.view)
+        collectionView.reloadData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -175,6 +187,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
             cell.historyView.isHidden = true
         case 1:
             cell.historyView.isHidden = false
+            cell.historyView.backgroundColor = .none
             switch filteredMovies[indexPath.row].opinion {
             case .like:
                 cell.historyView.image = UIImage(systemName: "hand.thumbsup.fill")
