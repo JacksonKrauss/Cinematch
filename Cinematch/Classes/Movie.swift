@@ -254,7 +254,10 @@ class Movie:Equatable{
                     }
                 }
             }
-            completion(friendOp)
+            if(friendsList.isEmpty){
+                completion(friendOp)
+            }
+            
         }
     }
     
