@@ -134,13 +134,9 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
             self.friendStatusButton.setTitleColor(UIColor.label, for: .normal)
             self.friendStatusButton.backgroundColor = UIColor.white
         }
-        self.queryFriendInformation()
-    }
-    
-    func friend() {
-        self.friendStatusButton.setTitle("Unfriend", for: .normal)
         self.userFriendStatus = FriendStatus.Friend
         updatePrivacy()
+        self.queryFriendInformation()
     }
     
     func requested() {
