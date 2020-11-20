@@ -117,6 +117,14 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         setColors(CURRENT_USER.visualMode, self.view)
         self.queryFriendInformation()
         
+        if (CURRENT_USER.visualMode == VisualMode.light) {
+            self.friendStatusButton.setTitleColor(UIColor.white, for: .normal)
+            self.friendStatusButton.backgroundColor = darkModeBackground
+        } else {
+            self.friendStatusButton.setTitleColor(UIColor.label, for: .normal)
+            self.friendStatusButton.backgroundColor = UIColor.white
+        }
+        
         // hide action button if this is your profile page
         if user == CURRENT_USER {
             friendStatusButton.isHidden = true
@@ -127,13 +135,6 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     
     func friend() {
         self.friendStatusButton.setTitle("Unfriend", for: .normal)
-        if (CURRENT_USER.visualMode == VisualMode.light) {
-            self.friendStatusButton.setTitleColor(UIColor.white, for: .normal)
-            self.friendStatusButton.backgroundColor = darkModeBackground
-        } else {
-            self.friendStatusButton.setTitleColor(UIColor.label, for: .normal)
-            self.friendStatusButton.backgroundColor = UIColor.white
-        }
         self.userFriendStatus = FriendStatus.Friend
         updatePrivacy()
         self.queryFriendInformation()
