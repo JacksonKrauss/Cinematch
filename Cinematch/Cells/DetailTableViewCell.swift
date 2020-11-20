@@ -47,6 +47,20 @@ class DetailTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
         }
         
     }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if (index! == 0) {
+            let actorCell = cell as! ActorCollectionViewCell
+            actorCell.backgroundColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.white : darkModeBackground
+            actorCell.actorLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
+            actorCell.characterLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
+        } else {
+            let friendCell = cell as! FriendOpCollectionViewCell
+            friendCell.backgroundColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.white : darkModeBackground
+            friendCell.nameLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
+        }
+    }
+    
     static var movieTable: Movie?
     var index: Int?
     @IBOutlet weak var titleLabel: UILabel!
@@ -69,10 +83,8 @@ class DetailTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
                 }
             }
         }
-        
-
-        
         // Initialization code
+        collectionView.backgroundColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.white : darkModeBackground
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
