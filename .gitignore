@@ -11,3 +11,4 @@ DerivedData/
 *.xccheckout
 Cinematch.xcodeproj/xcuserdata/*
 Cinematch.xcodeproj/project.xcworkspace/xcuserdata/*
+Podfile.lock
