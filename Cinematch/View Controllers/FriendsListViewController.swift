@@ -35,9 +35,7 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
         super.viewDidLoad()
         
         ref = Database.database().reference()
-        
-        numFriendsLabel.text = "You have " + String(friendListData.count) + " friends"
-        
+                
         friendListCollectionView.delegate = self
         friendListCollectionView.dataSource = self
         
@@ -51,6 +49,12 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
         setColors(CURRENT_USER.visualMode, self.view)
     }
     
+    func updateNumFriendsLabel() {
+        let friendsPlural = friendListData.count == 1 ? "" : "s"
+        
+        numFriendsLabel.text = "You have " + String(friendListData.count) + " friend" + friendsPlural
+    }
+    
     func fetchFriends(_ username:String) {
         ref.child("user_info").child(username).observeSingleEvent(of: .value) { (snapshot) in
             self.currentUser = User(snapshot, username)
@@ -61,15 +65,17 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
             for f in snapshot.children {
                 let friend:DataSnapshot = f as! DataSnapshot
                 if(friend.value as! Bool == true) {
-                self.ref.child("user_info").child(friend.key).observeSingleEvent(of: .value) { (snapshot) in
-                    self.friendListData.append(User(snapshot, friend.key))
-                    self.numFriendsLabel.text = "You have " + String(self.friendListData.count) + " friends"
-                    self.friendListCollectionView.reloadData()
+                    self.ref.child("user_info").child(friend.key).observeSingleEvent(of: .value) { (snapshot) in
+                        self.friendListData.append(User(snapshot, friend.key))
+                        self.updateNumFriendsLabel()
+                        self.friendListCollectionView.reloadData()
+                    }
                 }
-                }
+                self.updateNumFriendsLabel()
                 self.friendListCollectionView.reloadData()
             }
-            
+            self.updateNumFriendsLabel()
+            self.friendListCollectionView.reloadData()
         }
         
         ref.child("friend_request").child(username).observe(.value) { (snapshot) in
@@ -82,7 +88,7 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
                         self.friendRequestData.append(User(snapshot, friend.key))
                         
                         self.friendListCollectionView.reloadData()
-                }
+                    }
                 }
             }
             self.friendListCollectionView.reloadData()
