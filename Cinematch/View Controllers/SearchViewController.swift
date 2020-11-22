@@ -47,13 +47,15 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        searchTableView.reloadData()
         setColors(CURRENT_USER.visualMode, self.view)
     }
     
     @IBAction func filterSelected(_ sender: Any) {
         // table view needs to be updated
         searchTableView.reloadData()
-        clickSearchButton(self)
+        
+        search()
         
         switch searchTypeSegCtrl.selectedSegmentIndex {
             case 0:
@@ -64,24 +66,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
                 break
             default:
                 searchTableView.rowHeight = 166
-                break
-        }
-    }
-    
-    @IBAction func clickSearchButton(_ sender: Any) {
-        moviesData = []
-        usersData = []
-        page = 1
-        hitEnd = false
-        
-        switch searchTypeSegCtrl.selectedSegmentIndex {
-            case 0:
-                self.loadMovies()
-                break
-            case 1:
-                self.loadUsers()
-                break
-            default:
                 break
         }
     }
@@ -130,6 +114,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+       search()
+    }
+    
+    func search() {
         moviesData = []
         usersData = []
         page = 1
@@ -148,15 +136,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
         searchBar.resignFirstResponder()
     }
     
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        usersData = []
-        searchBar.text = ""
-        searchTableView.reloadData()
-        searchBar.resignFirstResponder()
-    }
-    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         currentQuery = searchText
+        if searchText == "" {
+            search()
+        }
     }
     
     // get count of table cells based on selected filter
@@ -246,7 +230,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
             cell.profilePicImageView.backgroundColor = .gray
             let placeholderImage = UIImage(named: "image-placeholder")
             let path = "profile_pictures/\(currentPerson.username ?? "")"
-            print("path", path)
             let reference = storageRef.child(path)
             cell.profilePicImageView?.sd_setImage(with: reference, placeholderImage: placeholderImage)
             if (cell.profilePicImageView?.bounds.size.width)! > (cell.profilePicImageView?.bounds.size.height)! {

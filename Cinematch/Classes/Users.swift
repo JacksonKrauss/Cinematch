@@ -114,7 +114,6 @@ struct User: Equatable {
     // if snapshot malformed, this init will return the same result as init()
     init(_ snapshot:DataSnapshot, _ username:String) {
         let dataDictionary = snapshot.value as! NSDictionary
-        print(type(of: dataDictionary))
         
         self.name = dataDictionary["name"] as? String
         self.username = username
