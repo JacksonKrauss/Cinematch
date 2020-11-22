@@ -169,11 +169,9 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         }
     
         if (display) {
-            //print("priv DISPLAY")
             privateView.isHidden = true
             collectionView.isHidden = false
         } else {
-            //print("priv HIDE")
             privateView.isHidden = false
             collectionView.isHidden = true
         }
