@@ -89,10 +89,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     }
     
     func loadUsers() {
-        
-        usersData = []
             
         ref.child("user_info").observe(.value) {snapshot in
+            self.usersData = []
             for userSnap in snapshot.children.allObjects as! [DataSnapshot] {
                 
                 let user = User(userSnap, userSnap.key)
