@@ -95,9 +95,10 @@ class SignUpViewController: UIViewController {
                     }
                   }
                 self.performSegue(withIdentifier: "signUpSegue", sender: nil)
+            } else {
+                self.errorLabel.text = "An error occured while attempting to sign in."
             }
         }
-        errorLabel.text = "An error occured while attempting to sign in."
     }
     
     // programmatic back button 

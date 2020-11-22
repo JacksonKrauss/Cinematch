@@ -38,6 +38,7 @@ class LoginViewController: UIViewController {
         ref.child("user_info").child(username).observeSingleEvent(of: .value, with: {
             snapshot in
             if !snapshot.exists() {
+                self.errorLabel.text = "An error occured while attempting to log in."
                 return
             }
             // if the username exists, log the user in with the associated email
@@ -63,11 +64,12 @@ class LoginViewController: UIViewController {
                             }
                         }
                         self.performSegue(withIdentifier: "loginSegue", sender: nil)
+                    } else {
+                        self.errorLabel.text = "An error occured while attempting to log in."
                     }
                 }
             }
         })
-        errorLabel.text = "An error occurred when attempting to log in."
     }
     
     // programmatic back button
