@@ -42,18 +42,21 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
         kolodaView.delegate = self
         TMDBConfig.apikey = "da04189f6c8bb1116ff3c217c908b776"
         Movie.updateFromFB{
-            Movie.getMovies(page: self.page) { (list) in
-                self.movies = list
-                Movie.updateQueueFB { (movieList) in
-                    for x in movieList{
-                        if(!self.movies.contains(x) || !CURRENT_USER.history.contains(x)){
-                            print("adding \(x.title!) to queue")
-                            self.movies.append(x)
-                        }
+            Movie.updateQueueFB { (movieList) in
+                for x in movieList{
+                    if(!self.movies.contains(x) || !CURRENT_USER.history.contains(x)){
+                        print("adding \(x.title!) to queue")
+                        self.movies.append(x)
                     }
-                    self.kolodaView.reloadData()
                 }
+                if(self.movies.isEmpty){
+                    Movie.getMovies(page: self.page) { (list) in
+                        self.movies = list
+                    }
+                }
+                self.kolodaView.reloadData()
             }
+
         }
         self.kolodaView.reloadData()
     }
@@ -156,11 +159,11 @@ extension SwipeScreenViewController: KolodaViewDataSource {
     }
     func koloda(_ koloda: KolodaView, didSwipeCardAt index: Int, in direction: SwipeResultDirection) {
         Movie.addToList(direction: direction, movie: movies[index]){
+            self.ref.child("queue").child(CURRENT_USER.username!).child(self.movies[index].description!).removeValue()
             if(direction == .right){
                 Movie.getRecommended(page: 1, id: self.movies[index].id!) { (list) in
                     for m in list{
                         if(!CURRENT_USER.history.contains(m)){
-                            print("Adding \(m.title)")
                             self.movies.append(m)
                             self.ref.child("queue").child(CURRENT_USER.username!).child(m.id!.description).setValue(CURRENT_USER.username!)
                         }
