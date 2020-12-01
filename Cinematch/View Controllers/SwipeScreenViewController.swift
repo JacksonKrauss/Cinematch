@@ -152,6 +152,9 @@ extension SwipeScreenViewController: KolodaViewDataSource {
                 Movie.getRecommended(page: 1, id: self.movies[index].id!) { (list) in
                     self.movies.addAll(array: list)
                     print("adding \(list)")
+                    for m in list{
+                        self.ref.child("queue").child(CURRENT_USER.username!).child(m.id!.description).setValue(CURRENT_USER.username!)
+                    }
                     koloda.reloadData()
                 }
             }
