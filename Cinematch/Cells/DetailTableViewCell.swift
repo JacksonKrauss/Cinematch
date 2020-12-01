@@ -39,6 +39,8 @@ class DetailTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
             case .watchlist:
                 cell.opinionImageView.image = UIImage(systemName: "plus.app.fill")
                 cell.opinionImageView.tintColor = .systemBlue
+            case .none:
+                cell.opinionImageView.isHidden = true
             }
             return cell
         }

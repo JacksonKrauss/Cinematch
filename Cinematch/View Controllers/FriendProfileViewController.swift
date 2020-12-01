@@ -67,7 +67,7 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         var i = 0
         for mFB in moviesFB {
             i += 1
-            Movie.getMovieFromFB(movieFB: mFB) { (m) in
+            Movie.getMovieFromFB(id: mFB.id, opinion: mFB.opinion,recommended: "") { (m) in
                 self.userMoviesData.append(m)
                 self.numMoviesUpdated += 1
                 

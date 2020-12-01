@@ -44,7 +44,15 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
         Movie.updateFromFB{
             Movie.getMovies(page: self.page) { (list) in
                 self.movies = list
-                self.kolodaView.reloadData()
+                Movie.updateQueueFB { (movieList) in
+                    for x in movieList{
+                        if(!self.movies.contains(x) || !CURRENT_USER.history.contains(x)){
+                            print("adding \(x.title!) to queue")
+                            self.movies.append(x)
+                        }
+                    }
+                    self.kolodaView.reloadData()
+                }
             }
         }
         self.kolodaView.reloadData()
@@ -150,10 +158,12 @@ extension SwipeScreenViewController: KolodaViewDataSource {
         Movie.addToList(direction: direction, movie: movies[index]){
             if(direction == .right){
                 Movie.getRecommended(page: 1, id: self.movies[index].id!) { (list) in
-                    self.movies.addAll(array: list)
-                    print("adding \(list)")
                     for m in list{
-                        self.ref.child("queue").child(CURRENT_USER.username!).child(m.id!.description).setValue(CURRENT_USER.username!)
+                        if(!CURRENT_USER.history.contains(m)){
+                            print("Adding \(m.title)")
+                            self.movies.append(m)
+                            self.ref.child("queue").child(CURRENT_USER.username!).child(m.id!.description).setValue(CURRENT_USER.username!)
+                        }
                     }
                     koloda.reloadData()
                 }
