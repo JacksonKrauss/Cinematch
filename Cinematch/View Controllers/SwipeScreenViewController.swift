@@ -159,7 +159,9 @@ extension SwipeScreenViewController: KolodaViewDataSource {
     }
     func koloda(_ koloda: KolodaView, didSwipeCardAt index: Int, in direction: SwipeResultDirection) {
         Movie.addToList(direction: direction, movie: movies[index]){
-            self.ref.child("queue").child(CURRENT_USER.username!).child(self.movies[index].description!).removeValue()
+            self.ref.child("queue").child(CURRENT_USER.username!).child(self.movies[index].id!.description).removeValue { (error: Error?, DatabaseReference) in
+                print(error)
+            }
             if(direction == .right){
                 Movie.getRecommended(page: 1, id: self.movies[index].id!) { (list) in
                     for m in list{
