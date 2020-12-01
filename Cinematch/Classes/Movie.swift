@@ -34,7 +34,7 @@ struct MovieFB: Equatable {
     var opinion: Opinion
 }
 struct FriendMovie {
-    var username: String
+    var user: User
     var opinion: Opinion
 }
 enum Opinion {
@@ -242,12 +242,12 @@ class Movie:Equatable{
     }
     static func checkFriendOpinion(id: Int, completion: @escaping(_ movieList: [FriendMovie]) -> ()){
         var friendOp: [FriendMovie] = []
-        getFriends { (friendsList) in
+        getFriendsUser { (friendsList) in
             for f in friendsList{
-                getMoviesForUser(username: f) { (movieList) in
+                getMoviesForUser(username: f.username!) { (movieList) in
                     let index = movieList.firstIndex(of: MovieFB(id: id, opinion: .like))
                     if(index != nil){
-                        friendOp.append(FriendMovie(username: f, opinion: movieList[index!].opinion))
+                        friendOp.append(FriendMovie(user: f, opinion: movieList[index!].opinion))
                     }
                     if(f == friendsList.last){
                         completion(friendOp)
