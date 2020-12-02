@@ -100,6 +100,7 @@ class Movie:Equatable{
         self.rating = String(movie.vote_average!)
         self.release = movie.release_date
         self.poster = movie.poster_path
+        self.recommended = ""
         
         //populate from the user/ other source
         self.actors = []
@@ -121,6 +122,7 @@ class Movie:Equatable{
                     curr.id = rec.id
                     curr.release = rec.release_date
                     curr.friends = []
+                    curr.recommended = ""
                     movieList.append(curr)
                 }
                 completion(movieList)
@@ -142,6 +144,7 @@ class Movie:Equatable{
                     curr.id = m.id
                     curr.release = m.release_date
                     curr.friends = []
+                    curr.recommended = ""
                     if(!CURRENT_USER.history.contains(curr)){
                         movieList.append(curr)
                     }
@@ -246,7 +249,6 @@ class Movie:Equatable{
                 Movie.getMovieFromFB(id: x.id, opinion: .none,recommended: x.user) { (movie) in
                     userMovies.append(movie)
                     if(userMovies.count == userQueue.count){
-                        Movie.getUserListsFromMovies(movieList: userMovies)
                         print("queue done")
                         completion(userMovies)
                     }
