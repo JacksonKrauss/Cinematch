@@ -78,6 +78,13 @@ class Movie:Equatable{
         if(direction == .right){
             movie.opinion = .like
             op = "l"
+            Movie.getRecommended(page: 1, id: movie.id!) { (list) in
+                for m in list{
+                    if(!CURRENT_USER.history.contains(m)){
+                        ref.child("queue").child(CURRENT_USER.username!).child(m.id!.description).setValue(CURRENT_USER.username!)
+                    }
+                }
+            }
         }
         else if(direction == .left){
             movie.opinion = .dislike
@@ -88,6 +95,9 @@ class Movie:Equatable{
             op = "w"
         }
         ref.child("movies").child(CURRENT_USER.username!).child(movie.id!.description).setValue(op!)
+        ref.child("queue").child(CURRENT_USER.username!).child(movie.id!.description).removeValue { (error: Error?, DatabaseReference) in
+            //print(error!)
+        }
         Movie.updateFromFB {
             completion()
         }
