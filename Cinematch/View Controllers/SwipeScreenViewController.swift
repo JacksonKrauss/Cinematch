@@ -50,9 +50,10 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
                         }
                     }
                 }
-                if(self.movies.isEmpty){
+                if(movieList.isEmpty){
                     Movie.getMovies(page: self.page) { (list) in
                         self.movies = list
+                        self.kolodaView.reloadData()
                     }
                 }
                 self.kolodaView.reloadData()
