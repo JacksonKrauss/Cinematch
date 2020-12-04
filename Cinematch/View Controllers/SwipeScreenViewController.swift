@@ -52,7 +52,8 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
                 }
                 if(movieList.isEmpty){
                     Movie.getMovies(page: self.page) { (list) in
-                        self.movies = list
+                        self.movies.append(contentsOf: list)
+                        self.page += 1
                         self.kolodaView.reloadData()
                     }
                 }
@@ -97,7 +98,6 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
 }
 extension SwipeScreenViewController: KolodaViewDelegate {
     func kolodaDidRunOutOfCards(_ koloda: KolodaView) {
-        page += 1
         loadMovieQueue()
     }
     
