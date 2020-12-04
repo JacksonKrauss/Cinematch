@@ -89,8 +89,7 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
         likeImage.backgroundColor = .clear
     }
     override func viewWillDisappear(_ animated: Bool) {
-        Movie.updateFromFB {
-        }
+
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "detailSegue"){

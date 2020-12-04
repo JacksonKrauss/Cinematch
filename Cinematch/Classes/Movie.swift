@@ -75,6 +75,10 @@ class Movie:Equatable{
     static func addToList(direction: SwipeResultDirection, movie: Movie, completion: @escaping() -> ()){
         let ref = Database.database().reference()
         var op:String?
+        CURRENT_USER.liked.remove(object: movie)
+        CURRENT_USER.disliked.remove(object: movie)
+        CURRENT_USER.watchlist.remove(object: movie)
+        CURRENT_USER.history.remove(object: movie)
         if(direction == .right){
             movie.opinion = .like
             op = "l"

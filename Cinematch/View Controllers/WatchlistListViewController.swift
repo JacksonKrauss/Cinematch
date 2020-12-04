@@ -10,13 +10,11 @@ import Koloda
 import TMDBSwift
 class WatchlistListViewController: UIViewController, UITableViewDelegate,UITableViewDataSource, SwipeDelegate, UISearchBarDelegate {
     func reload() {
-        Movie.updateFromFB { [self] in
-            filteredMovies = CURRENT_USER.watchlist
-            tableView.reloadData()
-            searchBar.showsCancelButton = false
-            searchBar.text = ""
-            searchBar.resignFirstResponder()
-        }
+        filteredMovies = CURRENT_USER.watchlist
+        tableView.reloadData()
+        searchBar.showsCancelButton = false
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
