@@ -33,14 +33,22 @@ struct MovieFB: Equatable {
     var id: Int
     var opinion: Opinion
 }
+struct QueueFB: Equatable {
+    static func == (lhs: QueueFB, rhs: QueueFB) -> Bool {
+        return lhs.id == rhs.id
+    }
+    var id: Int
+    var user: String
+}
 struct FriendMovie {
-    var username: String
+    var user: User
     var opinion: Opinion
 }
 enum Opinion {
     case like
     case dislike
     case watchlist
+    case none
 }
 struct Actor {
     var actorName: String?
@@ -61,6 +69,7 @@ class Movie:Equatable{
     var opinion: Opinion?
     var friends: [FriendMovie]?
     var duration:String?
+    var recommended: String?
     var posterImg: UIImage?
 
     static func addToList(direction: SwipeResultDirection, movie: Movie, completion: @escaping() -> ()){
@@ -69,6 +78,13 @@ class Movie:Equatable{
         if(direction == .right){
             movie.opinion = .like
             op = "l"
+            Movie.getRecommended(page: 1, id: movie.id!) { (list) in
+                for m in list{
+                    if(!CURRENT_USER.history.contains(m)){
+                        ref.child("queue").child(CURRENT_USER.username!).child(m.id!.description).setValue(CURRENT_USER.username!)
+                    }
+                }
+            }
         }
         else if(direction == .left){
             movie.opinion = .dislike
@@ -79,6 +95,9 @@ class Movie:Equatable{
             op = "w"
         }
         ref.child("movies").child(CURRENT_USER.username!).child(movie.id!.description).setValue(op!)
+        ref.child("queue").child(CURRENT_USER.username!).child(movie.id!.description).removeValue { (error: Error?, DatabaseReference) in
+            //print(error!)
+        }
         Movie.updateFromFB {
             completion()
         }
@@ -91,6 +110,7 @@ class Movie:Equatable{
         self.rating = String(movie.vote_average!)
         self.release = movie.release_date
         self.poster = movie.poster_path
+        self.recommended = ""
         
         //populate from the user/ other source
         self.actors = []
@@ -112,6 +132,7 @@ class Movie:Equatable{
                     curr.id = rec.id
                     curr.release = rec.release_date
                     curr.friends = []
+                    curr.recommended = ""
                     movieList.append(curr)
                 }
                 completion(movieList)
@@ -133,6 +154,7 @@ class Movie:Equatable{
                     curr.id = m.id
                     curr.release = m.release_date
                     curr.friends = []
+                    curr.recommended = ""
                     if(!CURRENT_USER.history.contains(curr)){
                         movieList.append(curr)
                     }
@@ -146,6 +168,18 @@ class Movie:Equatable{
                     completion(movieList)
                 }
             }
+        }
+    }
+    static func getQueueForUser(username: String, completion: @escaping(_ movieList: [QueueFB]) -> ()){
+        let ref = Database.database().reference()
+        var movieList:[QueueFB] = []
+        ref.child("queue").child(username).observeSingleEvent(of: .value) { (snapshot) in
+            for m in snapshot.children {
+                let movieData:DataSnapshot = m as! DataSnapshot
+                let movie: QueueFB = QueueFB(id: Int(movieData.key)!, user: movieData.value as! String)
+                movieList.append(movie)
+            }
+            completion(movieList)
         }
     }
     static func getMoviesForUser(username: String, completion: @escaping(_ movieList: [MovieFB]) -> ()){
@@ -170,8 +204,8 @@ class Movie:Equatable{
             completion(movieList)
         }
     }
-    static func getMovieFromFB(movieFB: MovieFB, completion: @escaping(_ movie: Movie) -> ()){
-        MovieMDB.movie(movieID: movieFB.id, language: "en"){
+    static func getMovieFromFB(id: Int, opinion: Opinion, recommended: String, completion: @escaping(_ movie: Movie) -> ()){
+        MovieMDB.movie(movieID: id, language: "en"){
               apiReturn, movie in
               if let movie = movie{
                 let curr = Movie()
@@ -182,7 +216,8 @@ class Movie:Equatable{
                 curr.id = movie.id
                 curr.release = movie.release_date
                 curr.friends = []
-                curr.opinion = movieFB.opinion
+                curr.opinion = opinion
+                curr.recommended = recommended
                 if(curr.poster == nil){
                     curr.posterImg = UIImage(named: "no-image")
                 }
@@ -217,6 +252,23 @@ class Movie:Equatable{
             CURRENT_USER.history.append(movie)
         }
     }
+    static func updateQueueFB(completion: @escaping(_ movieList: [Movie]) -> ()){
+        var userMovies: [Movie] = []
+        Movie.getQueueForUser(username: CURRENT_USER.username!) { (userQueue) in
+            for x in userQueue{
+                Movie.getMovieFromFB(id: x.id, opinion: .none,recommended: x.user) { (movie) in
+                    userMovies.append(movie)
+                    if(userMovies.count == userQueue.count){
+                        //print("queue done")
+                        completion(userMovies)
+                    }
+                }
+            }
+            if(userQueue.isEmpty){
+                completion(userMovies)
+            }
+        }
+    }
     static func updateFromFB(completion: @escaping() -> ()){
         var userMovies: [Movie] = []
         CURRENT_USER.watchlist = []
@@ -225,29 +277,29 @@ class Movie:Equatable{
         CURRENT_USER.history = []
         Movie.getMoviesForUser(username: CURRENT_USER.username!) { (userHist) in
             for x in userHist{
-                Movie.getMovieFromFB(movieFB: x) { (movie) in
+                Movie.getMovieFromFB(id: x.id, opinion: x.opinion,recommended: "") { (movie) in
                     userMovies.append(movie)
                     if(userMovies.count == userHist.count){
                         Movie.getUserListsFromMovies(movieList: userMovies)
-                        print("done")
+                        //print("done")
                         completion()
                     }
                 }
             }
             if(userHist.isEmpty){
-                print("no movies")
+                //print("no movies")
                 completion()
             }
         }
     }
     static func checkFriendOpinion(id: Int, completion: @escaping(_ movieList: [FriendMovie]) -> ()){
         var friendOp: [FriendMovie] = []
-        getFriends { (friendsList) in
+        getFriendsUser { (friendsList) in
             for f in friendsList{
-                getMoviesForUser(username: f) { (movieList) in
+                getMoviesForUser(username: f.username!) { (movieList) in
                     let index = movieList.firstIndex(of: MovieFB(id: id, opinion: .like))
                     if(index != nil){
-                        friendOp.append(FriendMovie(username: f, opinion: movieList[index!].opinion))
+                        friendOp.append(FriendMovie(user: f, opinion: movieList[index!].opinion))
                     }
                     if(f == friendsList.last){
                         completion(friendOp)

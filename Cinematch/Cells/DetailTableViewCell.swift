@@ -28,20 +28,19 @@ class DetailTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
         }
         else{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "friendOpCell", for: indexPath) as! FriendOpCollectionViewCell
-            cell.nameLabel.text = DetailTableViewCell.movieTable!.friends![indexPath.row].username
+            cell.nameLabel.text = DetailTableViewCell.movieTable!.friends![indexPath.row].user.username!
             switch DetailTableViewCell.movieTable!.friends![indexPath.row].opinion {
             case .like:
-                //cell.characterLabel.text = "Liked"
                 cell.opinionImageView.image = UIImage(systemName: "hand.thumbsup.fill")
                 cell.opinionImageView.tintColor = .systemGreen
             case .dislike:
-                //cell.characterLabel.text = "Disliked"
                 cell.opinionImageView.image = UIImage(systemName: "hand.thumbsdown.fill")
                 cell.opinionImageView.tintColor = .systemRed
             case .watchlist:
-                //cell.characterLabel.text = "Watchlist"
                 cell.opinionImageView.image = UIImage(systemName: "plus.app.fill")
                 cell.opinionImageView.tintColor = .systemBlue
+            case .none:
+                cell.opinionImageView.isHidden = true
             }
             return cell
         }
