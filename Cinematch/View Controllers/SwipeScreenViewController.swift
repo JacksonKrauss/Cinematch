@@ -64,6 +64,9 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
             likeImage.tintColor = UIColor.white
             separatorView.backgroundColor = UIColor.white
         }
+        watchlistImage.backgroundColor = .clear
+        dislikeImage.backgroundColor = .clear
+        likeImage.backgroundColor = .clear
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "detailSegue"){
