@@ -11,7 +11,7 @@ import FirebaseDatabase
 
 protocol updateProfile {
     func updateProfilePicture(image: UIImage)
-    func updateProfileTextFields(username: String, name: String, bio: String)
+    func updateProfileTextFields(name: String, bio: String)
     func updateProfileColors()
 }
 
@@ -104,8 +104,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         profilePicture.image = image
     }
     
-    func updateProfileTextFields(username: String, name: String, bio: String) {
-        usernameTextLabel.text = username
+    func updateProfileTextFields(name: String, bio: String) {
         fullNameTextLabel.text = name
         bioTextLabel.text = bio
     }

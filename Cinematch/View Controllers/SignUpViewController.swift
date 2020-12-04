@@ -26,6 +26,18 @@ class SignUpViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if #available(iOS 12, *) {     // iOS 12 & 13: Not the best solution, but it works.
+            confirmPasswordTextField.textContentType = .oneTimeCode
+            passwordTextField.textContentType = .oneTimeCode
+        } else {     // iOS 11: Disables the autofill accessory view.
+            emailTextField.textContentType = .init(rawValue: "")
+            confirmPasswordTextField.textContentType = .init(rawValue: "")
+            passwordTextField.textContentType = .init(rawValue: "")
+        }
+    }
+    
     @IBAction func signUpDidPress(_ sender: Any) {
         guard let name = nameTextField.text,
               let username = usernameTextField.text,
@@ -51,7 +63,6 @@ class SignUpViewController: UIViewController {
             } else if confirmPasswordTextField.text?.count == 0 {
                 errorLabel.text = "Confirm Password \(fieldStr)"
             }
-            
             if passwordTextField.text! != confirmPasswordTextField.text {
                 errorLabel.text = "Passwords do not match."
             }

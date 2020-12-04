@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="4Mz-jQ-PzZ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="4Mz-jQ-PzZ">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -1602,7 +1602,7 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="757" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hBu-DY-4hq">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="757" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hBu-DY-4hq">
                                         <rect key="frame" x="0.0" y="74.5" width="354" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -1612,7 +1612,7 @@
                                         <rect key="frame" x="0.0" y="105" width="354" height="34"/>
                                         <color key="backgroundColor" systemColor="systemGray5Color"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="759" text="Bio" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jEp-na-r7k">
                                         <rect key="frame" x="0.0" y="149" width="354" height="20.5"/>
@@ -1707,9 +1707,9 @@
                         <outlet property="bioTextField" destination="L5g-ED-bAj" id="pNt-ar-Zc0"/>
                         <outlet property="emailTextField" destination="gbl-Ds-eUw" id="Rjk-ah-ihD"/>
                         <outlet property="nameTextField" destination="j8g-X4-aNN" id="hAo-d3-HhI"/>
+                        <outlet property="passwordTextField" destination="jeW-LB-PvW" id="pHZ-8K-rIy"/>
                         <outlet property="privacySegControl" destination="Q5w-Ow-0pw" id="ID7-Nl-jAF"/>
                         <outlet property="profileImage" destination="byJ-fg-UvD" id="69b-aB-7kD"/>
-                        <outlet property="usernameTextField" destination="jeW-LB-PvW" id="5ic-TF-gip"/>
                         <segue destination="K95-b4-FcF" kind="unwind" identifier="unwindToStartView" unwindAction="prepareForUnwindWithSegue:" id="3X1-vu-Spe"/>
                     </connections>
                 </viewController>
@@ -2122,7 +2122,7 @@
         <segue reference="Rsf-4k-jvu"/>
         <segue reference="b2g-nQ-9BZ"/>
         <segue reference="tSa-yd-FV7"/>
-        <segue reference="Ugq-qH-Kja"/>
+        <segue reference="cEx-qP-MRH"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="121"/>
