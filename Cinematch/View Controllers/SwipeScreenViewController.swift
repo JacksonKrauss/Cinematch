@@ -172,7 +172,8 @@ extension SwipeScreenViewController: KolodaViewDataSource {
             }
             if(direction == .right){
                 Movie.getRecommended(page: 1, id: self.movies[index].id!) { (list) in
-                    for m in list{
+                    let prefix = list.prefix(4)
+                    for m in prefix{
                         if(!CURRENT_USER.history.contains(m)){
                             self.movies.append(m)
                             self.ref.child("queue").child(CURRENT_USER.username!).child(m.id!.description).setValue(CURRENT_USER.username!)

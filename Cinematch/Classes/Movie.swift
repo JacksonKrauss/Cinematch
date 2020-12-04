@@ -257,10 +257,15 @@ class Movie:Equatable{
         Movie.getQueueForUser(username: CURRENT_USER.username!) { (userQueue) in
             for x in userQueue{
                 Movie.getMovieFromFB(id: x.id, opinion: .none,recommended: x.user) { (movie) in
-                    userMovies.append(movie)
+                    if(movie.recommended != CURRENT_USER.username){
+                        userMovies.insert(movie, at: 0)
+                    }
+                    else{
+                        userMovies.append(movie)
+                    }
                     if(userMovies.count == userQueue.count){
-                        //print("queue done")
-                        completion(userMovies)
+                        let prefix = userMovies.prefix(10)
+                        completion(Array(prefix))
                     }
                 }
             }
