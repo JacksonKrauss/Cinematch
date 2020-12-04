@@ -84,7 +84,7 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
                 let friend:DataSnapshot = f as! DataSnapshot
                 if(friend.value as! Bool == true) {
                 
-                    self.ref.child("user_info").child(friend.key).observe(.value) { (snapshot) in
+                    self.ref.child("user_info").child(friend.key).observeSingleEvent(of: .value) { (snapshot) in
                         self.friendRequestData.append(User(snapshot, friend.key))
                         
                         self.friendListCollectionView.reloadData()

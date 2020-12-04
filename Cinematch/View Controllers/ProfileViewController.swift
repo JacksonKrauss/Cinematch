@@ -15,7 +15,7 @@ protocol updateProfile {
     func updateProfileColors()
 }
 
-class ProfileViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UISearchBarDelegate, SwipeDelegate, updateProfile {
+class ProfileViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UISearchBarDelegate, UICollectionViewDelegateFlowLayout, SwipeDelegate, updateProfile {
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
         Movie.addToList(direction: direction, movie: filteredMovies[index]){
             self.collectionView.reloadData()
@@ -47,6 +47,12 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var noMoviesView: UIView!
     @IBOutlet weak var noMoviesLabel: UILabel!
+    
+    private let itemsPerRow: CGFloat = 3
+    private let sectionInsets = UIEdgeInsets(top: 25.0,
+                                             left: 10.0,
+                                             bottom: 25.0,
+                                             right: 10.0)
     
     //    var likedMovies: [Movie]!
 //    var historyMovies: [Movie]!
@@ -220,6 +226,31 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                          layout collectionViewLayout: UICollectionViewLayout,
+                          sizeForItemAt indexPath: IndexPath) -> CGSize {
+        //2
+        let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
+        let availableWidth = view.frame.width - paddingSpace
+        let widthPerItem = availableWidth / itemsPerRow
+                
+        return CGSize(width: widthPerItem, height: 150)
+      }
+      
+      //3
+      func collectionView(_ collectionView: UICollectionView,
+                          layout collectionViewLayout: UICollectionViewLayout,
+                          insetForSectionAt section: Int) -> UIEdgeInsets {
+        return sectionInsets
+      }
+      
+      // 4
+      func collectionView(_ collectionView: UICollectionView,
+                          layout collectionViewLayout: UICollectionViewLayout,
+                          minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return sectionInsets.left
+      }
     
     @IBAction func movieViewSelected(_ sender: Any) {
         self.collectionView.reloadData()

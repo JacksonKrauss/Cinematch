@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import FirebaseDatabase
 
 class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
     // usersList replaced the default OTHER_USERS hardcoded data
     var usersList:[User] = []
+    var ref: DatabaseReference!
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filteredUsers = usersList.filter { (user: User) -> Bool in
@@ -71,17 +73,40 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
     var selectedUsers: [User]!
     var movie: Movie?
     @IBAction func sendButtonPressed(_ sender: Any) {
+        // update the database
+        for selectedUser in selectedUsers {
+            self.ref.child("queue").child(selectedUser.username!).child(String(self.movie!.id!)).setValue(CURRENT_USER.username)
+        }
         
+        self.dismiss(animated: true, completion: nil)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        ref = Database.database().reference()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.allowsMultipleSelection = true
         searchBar.delegate = self
         self.selectedUsers = []
         self.filteredUsers = usersList
+        
         // Do any additional setup after loading the view.
+        ref.child("friends").child(CURRENT_USER.username!).observe(.value) { (snapshot) in
+            self.usersList = []
+            for f in snapshot.children {
+                let friend:DataSnapshot = f as! DataSnapshot
+                if(friend.value as! Bool == true) {
+                    self.ref.child("user_info").child(friend.key).observeSingleEvent(of: .value) { (snapshot) in
+                        self.usersList.append(User(snapshot, friend.key))
+                        self.filteredUsers = self.usersList
+                        self.tableView.reloadData()
+                    }
+                }
+                self.tableView.reloadData()
+            }
+            self.tableView.reloadData()
+        }
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
