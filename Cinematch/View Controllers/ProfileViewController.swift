@@ -24,18 +24,20 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func reload() {
-        switch movieViewSegCtrl.selectedSegmentIndex {
-        case 0:
-            filteredMovies = CURRENT_USER.liked
-        case 1:
-            filteredMovies = CURRENT_USER.history
-        default:
-            break
+        Movie.updateFromFB { [self] in
+            switch movieViewSegCtrl.selectedSegmentIndex {
+            case 0:
+                filteredMovies = CURRENT_USER.liked
+            case 1:
+                filteredMovies = CURRENT_USER.history
+            default:
+                break
+            }
+            collectionView.reloadData()
+            searchBar.showsCancelButton = false
+            searchBar.text = ""
+            searchBar.resignFirstResponder()
         }
-        collectionView.reloadData()
-        searchBar.showsCancelButton = false
-        searchBar.text = ""
-        searchBar.resignFirstResponder()
     }
     
     @IBOutlet weak var profilePicture: UIImageView!

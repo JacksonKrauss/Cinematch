@@ -16,11 +16,13 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
                                              bottom: 25.0,
                                              right: 10.0)
     func reload() {
-        filteredMovies = CURRENT_USER.watchlist
-        collectionView.reloadData()
-        searchBar.showsCancelButton = false
-        searchBar.text = ""
-        searchBar.resignFirstResponder()
+        Movie.updateFromFB { [self] in
+            filteredMovies = CURRENT_USER.watchlist
+            collectionView.reloadData()
+            searchBar.showsCancelButton = false
+            searchBar.text = ""
+            searchBar.resignFirstResponder()
+        }
     }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filteredMovies = CURRENT_USER.watchlist.filter { (movie: Movie) -> Bool in

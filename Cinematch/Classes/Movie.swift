@@ -85,22 +85,26 @@ class Movie:Equatable{
                     }
                 }
             }
+            CURRENT_USER.liked.append(movie)
         }
         else if(direction == .left){
             movie.opinion = .dislike
             op = "d"
+            CURRENT_USER.disliked.append(movie)
         }
         else if(direction == .up){
             movie.opinion = .watchlist
             op = "w"
+            CURRENT_USER.watchlist.append(movie)
         }
         ref.child("movies").child(CURRENT_USER.username!).child(movie.id!.description).setValue(op!)
         ref.child("queue").child(CURRENT_USER.username!).child(movie.id!.description).removeValue { (error: Error?, DatabaseReference) in
             //print(error!)
         }
-        Movie.updateFromFB {
-            completion()
-        }
+        CURRENT_USER.history.append(movie)
+        //Movie.updateFromFB {
+        completion()
+        //}
     }
     
     func setFromMovie(movie: MovieMDB){
