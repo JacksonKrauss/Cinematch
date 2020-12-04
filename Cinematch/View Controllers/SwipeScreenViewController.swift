@@ -119,7 +119,7 @@ extension SwipeScreenViewController: KolodaViewDataSource {
     }
     func koloda(_ koloda: KolodaView, viewForCardAt index: Int) -> UIView {
         let imageView = UIImageView()
-        print(movies[index].title!)
+        //print(movies[index].title!)
         if(movies[index].posterImg == nil){
             if(movies[index].poster == nil){
                 imageView.backgroundColor = .white
