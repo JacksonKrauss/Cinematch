@@ -123,7 +123,8 @@ class Movie:Equatable{
         var movieList:[Movie] = []
         MovieMDB.recommendations(movieID: id, page: page, language: "en") { (ClientReturn, movies: [MovieMDB]?) in
             if let recs = movies{
-                for rec in recs{
+                let prefix = recs.prefix(4)
+                for rec in prefix{
                     let curr = Movie()
                     curr.title = rec.title
                     curr.description = rec.overview
