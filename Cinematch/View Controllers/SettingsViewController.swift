@@ -11,7 +11,7 @@ import Firebase
 class SettingsViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var nameTextField: UITextField!
-    @IBOutlet weak var usernameTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var bioTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var privacySegControl: UISegmentedControl!
@@ -27,7 +27,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         super.viewDidLoad()
         
         nameTextField.delegate = self
-        usernameTextField.delegate = self
+        passwordTextField.delegate = self
         bioTextField.delegate = self
         emailTextField.delegate = self
     }
@@ -46,8 +46,15 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
     override func viewWillAppear(_ animated: Bool) {
         // set the current user fields for this view controller
         super.viewWillAppear(animated)
+        
+        if #available(iOS 12, *) {     // iOS 12 & 13: Not the best solution, but it works.
+            passwordTextField.textContentType = .oneTimeCode
+        } else {     // iOS 11: Disables the autofill accessory view.
+            emailTextField.textContentType = .init(rawValue: "")
+            passwordTextField.textContentType = .init(rawValue: "")
+        }
+        
         nameTextField.text = CURRENT_USER.name
-        usernameTextField.text = CURRENT_USER.username
         bioTextField.text = CURRENT_USER.bio
         emailTextField.text = CURRENT_USER.email
                 
@@ -83,10 +90,9 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         guard let name = nameTextField.text,
-              let username = usernameTextField.text,
+              let password = passwordTextField.text,
               let bio = bioTextField.text,
               let email = emailTextField.text
-            
         else {
             return
         }
@@ -96,128 +102,75 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         
         let userRef = ref.child("user_info").child(CURRENT_USER.username!)
         
-        if username == CURRENT_USER.username {
-            // updated values do not include username
-            var updateUserValues: [String:String] = [:]
-            if name != CURRENT_USER.name {
-                updateUserValues.updateValue(name, forKey: "name")
-                CURRENT_USER.name = name
-            }
-            if bio != CURRENT_USER.bio {
-                updateUserValues.updateValue(bio, forKey: "bio")
-                CURRENT_USER.bio = bio
-            }
-            
-            var selectedPrivacy: UserPrivacy
-            switch privacyIndex {
-            case 0:
-                selectedPrivacy = .me
-                break
-            case 1:
-                selectedPrivacy = .friends
-                break
-            case 2:
-                selectedPrivacy = .everyone
-                break
-            default:
-                selectedPrivacy = .friends
-            }
-            if selectedPrivacy != CURRENT_USER.privacy {
-                CURRENT_USER.privacy = selectedPrivacy
-                updateUserValues.updateValue(privacyToString(privacy: selectedPrivacy), forKey: "privacy")
-            }
-            
-            var selectedVisual: VisualMode
-            switch visualIndex {
-            case 0:
-                selectedVisual = .light
-                break
-            case 1:
-                selectedVisual = .dark
-                break
-            default:
-                selectedVisual = .light
-            }
-            if selectedVisual != CURRENT_USER.visualMode {
-                updateUserValues.updateValue(visualToString(visualMode: selectedVisual), forKey: "visual_mode")
-                CURRENT_USER.visualMode = selectedVisual
-            }
-            
-            if email != CURRENT_USER.email {
-                
-                Auth.auth().currentUser?.updateEmail(to: email) { error in
-                    if error == nil {
-                        CURRENT_USER.email = email
-                        updateUserValues.updateValue(email, forKey: "email")
-                    } else {
-                        print(error)
-                    }
-                }
-            }
-            saveProfilePictureToStorage()
-            userRef.updateChildValues(updateUserValues)
-        } else {
-            // updated values do include username
-            // have to create new node in firebase database
-            var userValues:[String:String] = [:]
-            
-            userValues.updateValue(name, forKey: "name")
+        // updated values do not include username
+        var updateUserValues: [String:String] = [:]
+        if name != CURRENT_USER.name {
+            updateUserValues.updateValue(name, forKey: "name")
             CURRENT_USER.name = name
-            
-            userValues.updateValue(bio, forKey: "bio")
+        }
+        if bio != CURRENT_USER.bio {
+            updateUserValues.updateValue(bio, forKey: "bio")
             CURRENT_USER.bio = bio
-            
-            var selectedPrivacy: String
-            switch privacyIndex {
-            case 0:
-                selectedPrivacy = "me"
-                CURRENT_USER.privacy = .me
-                break
-            case 1:
-                selectedPrivacy = "friends"
-                CURRENT_USER.privacy = .friends
-                break
-            case 2:
-                selectedPrivacy = "everyone"
-                CURRENT_USER.privacy = .everyone
-                break
-            default:
-                selectedPrivacy = ""
-            }
-            
-            userValues.updateValue(selectedPrivacy, forKey: "privacy")
-            var selectedVisual: String
-            switch visualIndex {
-            case 0:
-                selectedVisual = "light"
-                CURRENT_USER.visualMode = .light
-                break
-            case 1:
-                selectedVisual = "dark"
-                CURRENT_USER.visualMode = .dark
-                break
-            default:
-                selectedVisual = ""
-            }
-            userValues.updateValue(selectedVisual, forKey: "visual_mode")
-            
-            if email != CURRENT_USER.email {
-                Auth.auth().currentUser?.updateEmail(to: email) { error in
+        }
+        
+        var selectedPrivacy: UserPrivacy
+        switch privacyIndex {
+        case 0:
+            selectedPrivacy = .me
+            break
+        case 1:
+            selectedPrivacy = .friends
+            break
+        case 2:
+            selectedPrivacy = .everyone
+            break
+        default:
+            selectedPrivacy = .friends
+        }
+        if selectedPrivacy != CURRENT_USER.privacy {
+            CURRENT_USER.privacy = selectedPrivacy
+            updateUserValues.updateValue(privacyToString(privacy: selectedPrivacy), forKey: "privacy")
+        }
+        
+        var selectedVisual: VisualMode
+        switch visualIndex {
+        case 0:
+            selectedVisual = .light
+            break
+        case 1:
+            selectedVisual = .dark
+            break
+        default:
+            selectedVisual = .light
+        }
+        if selectedVisual != CURRENT_USER.visualMode {
+            updateUserValues.updateValue(visualToString(visualMode: selectedVisual), forKey: "visual_mode")
+            CURRENT_USER.visualMode = selectedVisual
+        }
+        
+        if email != CURRENT_USER.email {
+            Auth.auth().currentUser?.updateEmail(to: email) { error in
+                if error == nil {
+                    CURRENT_USER.email = email
+                    updateUserValues.updateValue(email, forKey: "email")
+                } else {
                     print(error)
                 }
             }
-            userValues.updateValue(email, forKey: "email")
-            
-            userRef.removeValue()
-            
-            ref.child("user_info").child(username).setValue(userValues)
-            saveProfilePictureToStorage()
-            
-            CURRENT_USER.username = username
         }
         
+        if password.count != 0 {
+            Auth.auth().currentUser?.updatePassword(to: password) { error in
+                if error != nil {
+                    print(error)
+                }
+            }
+        }
+        saveProfilePictureToStorage()
+        userRef.updateChildValues(updateUserValues)
+        
         let otherVC = delegate as! updateProfile
-        otherVC.updateProfileTextFields(username: username, name: name, bio: bio)
+        otherVC.updateProfileTextFields(name: name, bio: bio)
         otherVC.updateProfileColors()
     }
     
@@ -294,7 +247,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         var countLimit = 10
         
         switch textField {
-        case usernameTextField:
+        case passwordTextField:
             countLimit = 20
             break
         case nameTextField:
@@ -310,7 +263,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
             break
         }
         
-        if textField == usernameTextField {
+        if textField == passwordTextField {
             countLimit = 20
         }
         
