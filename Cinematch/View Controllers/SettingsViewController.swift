@@ -8,7 +8,7 @@
 import UIKit
 import Firebase
 
-class SettingsViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class SettingsViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var usernameTextField: UITextField!
@@ -25,8 +25,11 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        nameTextField.delegate = self
+        usernameTextField.delegate = self
+        bioTextField.delegate = self
+        emailTextField.delegate = self
     }
     
     @IBAction func appearanceSelect(_ sender: Any) {
@@ -284,6 +287,36 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         // update profile picture in profile view
         let otherVC = delegate as! updateProfile
         otherVC.updateProfilePicture(image: CURRENT_USER.profilePicture!)
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+
+        var countLimit = 10
+        
+        switch textField {
+        case usernameTextField:
+            countLimit = 20
+            break
+        case nameTextField:
+            countLimit = 20
+            break
+        case bioTextField:
+            countLimit = 75
+            break
+        case emailTextField:
+            countLimit = 75
+            break
+        default:
+            break
+        }
+        
+        if textField == usernameTextField {
+            countLimit = 20
+        }
+        
+        let nsString = NSString(string: textField.text!)
+        let newText = nsString.replacingCharacters(in: range, with: string)
+        return  newText.count <= countLimit
     }
     
     @IBAction func logoutPressed(_ sender: Any) {

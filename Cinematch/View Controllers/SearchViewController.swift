@@ -230,6 +230,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
             let placeholderImage = UIImage(named: "image-placeholder")
             let path = "profile_pictures/\(currentPerson.username ?? "")"
             let reference = storageRef.child(path)
+            print("path", path)
             cell.profilePicImageView?.sd_setImage(with: reference, placeholderImage: placeholderImage)
             if (cell.profilePicImageView?.bounds.size.width)! > (cell.profilePicImageView?.bounds.size.height)! {
                 cell.profilePicImageView?.contentMode = .scaleAspectFit
@@ -281,8 +282,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
             let selectedUser = usersData[indexPath!.row]
             let destination = segue.destination as! FriendProfileViewController
             destination.user = selectedUser
-            //Get real user
-            //destination.user = selectedUser
         }
     }
     

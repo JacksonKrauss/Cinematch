@@ -159,6 +159,7 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     }
     
     func updatePrivacy() {
+        print("UPDATE PRIVACY")
         var display = false
         if (user.name == CURRENT_USER.name) {
             display = true
