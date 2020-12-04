@@ -27,7 +27,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         super.viewDidLoad()
         
         nameTextField.delegate = self
-        usernameTextField.delegate = self
+        passwordTextField.delegate = self
         bioTextField.delegate = self
         emailTextField.delegate = self
     }
@@ -247,7 +247,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         var countLimit = 10
         
         switch textField {
-        case usernameTextField:
+        case passwordTextField:
             countLimit = 20
             break
         case nameTextField:
@@ -263,7 +263,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
             break
         }
         
-        if textField == usernameTextField {
+        if textField == passwordTextField {
             countLimit = 20
         }
         
