@@ -35,11 +35,13 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
     @IBOutlet weak var dislikeImage: UIImageView!
     @IBOutlet weak var likeImage: UIImageView!
     @IBOutlet weak var separatorView: UIView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     var page = 1 //stores the current page of popular movies for the queue
     let ref = Database.database().reference()
     var movies: [Movie] = [] //movie queue
     //loads the queue from firebase and if the isnt a queue it gets popular movies
     func loadMovieQueue(){
+        activityIndicator.startAnimating()
         //pulls queue from firebase
         Movie.updateQueueFB { (movieList) in
             for x in movieList{
@@ -70,6 +72,10 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
         kolodaView.dataSource = self
         kolodaView.delegate = self
         TMDBConfig.apikey = "da04189f6c8bb1116ff3c217c908b776"
+        self.descriptionLabel.text = ""
+        self.titleLabel.text = ""
+        self.friendLabel.text = ""
+        self.starView.isHidden = true
         //pulls user's history from firebase and then creates the queue
         Movie.updateFromFB{
             self.loadMovieQueue()
@@ -85,15 +91,19 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
             dislikeImage.tintColor = darkModeTextOrHighlight
             likeImage.tintColor = darkModeTextOrHighlight
             separatorView.backgroundColor = darkModeTextOrHighlight
+            activityIndicator.color = darkModeTextOrHighlight
         } else {
             watchlistImage.tintColor = UIColor.white
             dislikeImage.tintColor = UIColor.white
             likeImage.tintColor = UIColor.white
             separatorView.backgroundColor = UIColor.white
+            activityIndicator.color = UIColor.white
         }
         watchlistImage.backgroundColor = .clear
         dislikeImage.backgroundColor = .clear
         likeImage.backgroundColor = .clear
+        activityIndicator.backgroundColor = .clear
+
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -138,16 +148,19 @@ extension SwipeScreenViewController: KolodaViewDataSource {
                 imageView.backgroundColor = .white
                 imageView.image = UIImage(named: "no-image")
                 self.movies[index].posterImg = UIImage(named: "no-image")
+                activityIndicator.stopAnimating()
             }
             else{
                 //load image from internet
                 let url = URL(string: "https://image.tmdb.org/t/p/original" + movies[index].poster!)!
+                activityIndicator.startAnimating()
                 DispatchQueue.global().async { [weak self] in
                     if let data = try? Data(contentsOf: url) {
                         if let image = UIImage(data: data) {
                             DispatchQueue.main.async {
                                 imageView.image = image
                                 self!.movies[index].posterImg = imageView.image
+                                self!.activityIndicator.stopAnimating()
                             }
                         }
                     }
@@ -157,6 +170,7 @@ extension SwipeScreenViewController: KolodaViewDataSource {
         else{
             //image has been previously loaded
             imageView.image = movies[index].posterImg!
+            activityIndicator.stopAnimating()
         }
         return imageView
     }
