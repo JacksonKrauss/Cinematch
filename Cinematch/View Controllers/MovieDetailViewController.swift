@@ -9,14 +9,16 @@ import UIKit
 import Koloda
 import TMDBSwift
 protocol SwipeDelegate {
+    //gets called when an opinion button is tapped
     func buttonTapped(direction: SwipeResultDirection, index: Int)
+    //gets called when the modal view disappears
     func reload()
 }
 class MovieDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 2
     }
-    
+    //actors and user opinion lists
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "detailCell", for: indexPath) as! DetailTableViewCell
         cell.index = indexPath.row
@@ -30,13 +32,7 @@ class MovieDetailViewController: UIViewController, UITableViewDelegate, UITableV
         return cell
 
     }
-    //not here anymore
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        let cell = cell as! ActorCollectionViewCell
-//        cell.backgroundColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.white : darkModeBackground
-//        cell.actorLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
-//        cell.characterLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
-//    }
+
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.backgroundColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.white : darkModeBackground
@@ -76,6 +72,7 @@ class MovieDetailViewController: UIViewController, UITableViewDelegate, UITableV
     }
     @IBAction func shareButton(_ sender: Any) {
     }
+    //opens trailer in safari
     @IBAction func trailerButton(_ sender: Any) {
         UIApplication.shared.open(URL(string: trailerLink!)!) { sucess in
         }
@@ -88,6 +85,7 @@ class MovieDetailViewController: UIViewController, UITableViewDelegate, UITableV
         self.tableView.allowsSelection = false
         self.tableView.separatorStyle = .none
     }
+    //sets up all the view elements
     override func viewWillAppear(_ animated: Bool) {
         self.titleLabel.text = self.movie?.title
         self.descriptionLabel.text = self.movie?.description
@@ -122,25 +120,32 @@ class MovieDetailViewController: UIViewController, UITableViewDelegate, UITableV
         }
         setColors(CURRENT_USER.visualMode, self.view)
         self.lineView.backgroundColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.black : UIColor.white
+        //pulls trailer from api
         MovieMDB.videos(movieID: movie!.id, language: "en"){
             apiReturn, videos in
             if let videos = videos{
                 for i in videos {
                     if(i.site == "YouTube" && i.type == "Trailer")
                     {
+                        //makes sure the video is playable and shows button
                         self.trailerLink = "https://www.youtube.com/watch?v=\(i.key!)"
                         self.trailerButtonOutlet.isHidden = false
                         break
                     }
+                    else{
+                        self.trailerButtonOutlet.isHidden = true
+                    }
                 }
             }
             if(videos!.isEmpty){
+                //if there is no videos it hides button
                 self.trailerButtonOutlet.isHidden = true
             }
         }
-        print(self.movie!.id!)
+        //checks how many of your friends like the movie
         Movie.checkFriendOpinion(id: movie!.id!) { (friendMovies) in
             self.movie!.friends = friendMovies
+            //filters opinions to only liked
             let moviesFB = friendMovies.filter({ (movie) -> Bool in
                 return movie.opinion == Opinion.like
             })
@@ -158,19 +163,19 @@ class MovieDetailViewController: UIViewController, UITableViewDelegate, UITableV
             }
         }
     }
+    //checks user's opinion and displays the correct button icons
     func setButtonImages(){
         likeButtonOutlet.setImage(UIImage(systemName: "hand.thumbsup"), for: .normal)
         downButtonOutlet.setImage(UIImage(systemName: "hand.thumbsdown"), for: .normal)
         watchlistButtonOutlet.setImage(UIImage(systemName: "plus.app"), for: .normal)
-        switch movie!.opinion {
-        case .like:
+        if(CURRENT_USER.liked.contains(movie!)){
             likeButtonOutlet.setImage(UIImage(systemName: "hand.thumbsup.fill"), for: .normal)
-        case .dislike:
+        }
+        else if(CURRENT_USER.disliked.contains(movie!)){
             downButtonOutlet.setImage(UIImage(systemName: "hand.thumbsdown.fill"), for: .normal)
-        case .watchlist:
+        }
+        else if(CURRENT_USER.watchlist.contains(movie!)){
             watchlistButtonOutlet.setImage(UIImage(systemName: "plus.app.fill"), for: .normal)
-        default:
-            break
         }
     }
     

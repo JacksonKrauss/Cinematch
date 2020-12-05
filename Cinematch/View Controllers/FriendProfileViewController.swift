@@ -19,6 +19,7 @@ enum FriendStatus {
 }
 
 class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource, SwipeDelegate {
+    //adds the movie to the correct list then reloads the view
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
         Movie.addToList(direction: direction, movie: userMoviesData[index]){
             self.collectionView.reloadData()

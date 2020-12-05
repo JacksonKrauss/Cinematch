@@ -16,6 +16,7 @@ protocol updateProfile {
 }
 
 class ProfileViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UISearchBarDelegate, UICollectionViewDelegateFlowLayout, SwipeDelegate, updateProfile {
+    //adds a movie to the correct list and reloads the collectionview
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
         Movie.addToList(direction: direction, movie: filteredMovies[index]){
             self.collectionView.reloadData()

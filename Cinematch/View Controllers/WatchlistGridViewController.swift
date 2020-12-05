@@ -15,6 +15,7 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
                                              left: 10.0,
                                              bottom: 25.0,
                                              right: 10.0)
+    //resets the search bar and reloads the view
     func reload() {
         filteredMovies = CURRENT_USER.watchlist
         collectionView.reloadData()
@@ -22,6 +23,7 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
         searchBar.text = ""
         searchBar.resignFirstResponder()
     }
+    //searched for the movie title and filters results
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filteredMovies = CURRENT_USER.watchlist.filter { (movie: Movie) -> Bool in
             return movie.title!.lowercased().contains(searchBar.text!.lowercased())
@@ -38,6 +40,7 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
             self.searchBar.showsCancelButton = true
     }
+    //cancel search resets data
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
             searchBar.showsCancelButton = false
             filteredMovies = CURRENT_USER.watchlist
@@ -46,6 +49,7 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
             searchBar.resignFirstResponder()
     }
     @IBOutlet weak var searchBar: UISearchBar!
+    //adds movie to list and reloads view
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
         Movie.addToList(direction: direction, movie: filteredMovies[index]) {
             self.collectionView.reloadData()
@@ -58,17 +62,20 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PosterCell", for: indexPath) as! PosterCollectionViewCell
+        //checks to make sure the movie has a poster
         if(filteredMovies[indexPath.row].posterImg == nil){
             if(filteredMovies[indexPath.row].poster == nil){
-//                cell.posterImageView.backgroundColor = .white
+                //no poster, use default image
                 cell.posterImageView.image = UIImage(named: "no-image")
                 filteredMovies[indexPath.row].posterImg = UIImage(named: "no-image")
             }
             else{
+                //load poster from internet
                 cell.posterImageView.load(url: URL(string: "https://image.tmdb.org/t/p/original" + filteredMovies[indexPath.row].poster!)!)
             }
         }
         else{
+            //poster has already been loaded previously
             cell.posterImageView.image = filteredMovies[indexPath.row].posterImg!
         }
         return cell
@@ -110,6 +117,7 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
         collectionView.delegate = self
         collectionView.dataSource = self
         searchBar.delegate = self
+        //hide navigation bar
         self.navigationController?.navigationBar.isHidden = true
         filteredMovies = CURRENT_USER.watchlist
     }
