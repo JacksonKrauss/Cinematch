@@ -40,31 +40,29 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
     var movies: [Movie] = [] //movie queue
     //loads the queue from firebase and if the isnt a queue it gets popular movies
     func loadMovieQueue(){
-        Movie.updateFromFB{
-            //pulls queue from firebase
-            Movie.updateQueueFB { (movieList) in
-                for x in movieList{
-                    //checks if the movie has already been seen
-                    if(!self.movies.contains(x) && !CURRENT_USER.history.contains(x)){
-                        self.movies.append(x)
-                    }
-                    else{
-                        //removes movie from queue in firebase if it has been seen
-                        self.ref.child("queue").child(CURRENT_USER.username!).child(x.id!.description).removeValue { (error: Error?, DatabaseReference) in
-                            //print(error!)
-                        }
+        //pulls queue from firebase
+        Movie.updateQueueFB { (movieList) in
+            for x in movieList{
+                //checks if the movie has already been seen
+                if(!self.movies.contains(x) && !CURRENT_USER.history.contains(x)){
+                    self.movies.append(x)
+                }
+                else{
+                    //removes movie from queue in firebase if it has been seen
+                    self.ref.child("queue").child(CURRENT_USER.username!).child(x.id!.description).removeValue { (error: Error?, DatabaseReference) in
+                        //print(error!)
                     }
                 }
-                if(movieList.isEmpty){
-                    //if there is no queue in firebase it loads from the popular movies
-                    Movie.getMovies(page: self.page) { (list) in
-                        self.movies.append(contentsOf: list)
-                        self.page += 1
-                        self.kolodaView.reloadData()
-                    }
-                }
-                self.kolodaView.reloadData()
             }
+            if(movieList.isEmpty){
+                //if there is no queue in firebase it loads from the popular movies
+                Movie.getMovies(page: self.page) { (list) in
+                    self.movies.append(contentsOf: list)
+                    self.page += 1
+                    self.kolodaView.reloadData()
+                }
+            }
+            self.kolodaView.reloadData()
         }
     }
     override func viewDidLoad() {
@@ -72,7 +70,10 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
         kolodaView.dataSource = self
         kolodaView.delegate = self
         TMDBConfig.apikey = "da04189f6c8bb1116ff3c217c908b776"
-        loadMovieQueue()
+        //pulls user's history from firebase and then creates the queue
+        Movie.updateFromFB{
+            self.loadMovieQueue()
+        }
         self.kolodaView.reloadData()
     }
     override func viewWillAppear(_ animated: Bool) {
