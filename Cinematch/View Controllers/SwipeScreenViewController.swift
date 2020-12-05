@@ -103,6 +103,7 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
         dislikeImage.backgroundColor = .clear
         likeImage.backgroundColor = .clear
         activityIndicator.backgroundColor = .clear
+        activityIndicator.style = .large
 
     }
 
@@ -153,6 +154,7 @@ extension SwipeScreenViewController: KolodaViewDataSource {
             else{
                 //load image from internet
                 let url = URL(string: "https://image.tmdb.org/t/p/original" + movies[index].poster!)!
+                
                 activityIndicator.startAnimating()
                 DispatchQueue.global().async { [weak self] in
                     if let data = try? Data(contentsOf: url) {

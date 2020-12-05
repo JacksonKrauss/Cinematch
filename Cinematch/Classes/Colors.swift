@@ -80,6 +80,11 @@ func setViewColor(_ visualMode:VisualMode, _ view:UIView) {
             setViewColor(visualMode, view)
         }
     }
+    else if let activityIndicator = view as? UIActivityIndicatorView {
+        activityIndicator.color = visualMode == VisualMode.light ? UIColor.white : darkModeTextOrHighlight
+        activityIndicator.backgroundColor = .clear
+        activityIndicator.style = .large
+    }
     else {
         view.backgroundColor = visualMode == VisualMode.light ? UIColor.white : darkModeBackground
         view.subviews.forEach { (view) in
