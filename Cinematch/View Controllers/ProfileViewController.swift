@@ -16,6 +16,7 @@ protocol updateProfile {
 }
 
 class ProfileViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UISearchBarDelegate, UICollectionViewDelegateFlowLayout, SwipeDelegate, updateProfile {
+    //adds a movie to the correct list and reloads the collectionview
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
         Movie.addToList(direction: direction, movie: filteredMovies[index]){
             self.collectionView.reloadData()
@@ -49,11 +50,10 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     @IBOutlet weak var noMoviesLabel: UILabel!
     
     private let itemsPerRow: CGFloat = 3
-    private let sectionInsets = UIEdgeInsets(top: 25.0,
+    private let sectionInsets = UIEdgeInsets(top: 10.0,
                                              left: 10.0,
-                                             bottom: 25.0,
+                                             bottom: 10.0,
                                              right: 10.0)
-    
     
     var filteredMovies: [Movie]!
     
@@ -105,6 +105,19 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     func updateProfileColors() {
         setColors(CURRENT_USER.visualMode, self.view)
+        switch CURRENT_USER.visualMode {
+        case .light:
+            self.tabBarController!.tabBar.barStyle = .default
+            //print(self.tabBarController!.tabBar.barStyle.rawValue)
+        case .dark:
+            self.tabBarController!.tabBar.barStyle = .black
+            //print(self.tabBarController!.tabBar.barStyle.rawValue)
+        }
+        //force reloads the tab bar
+        let tab = self.tabBarController!.tabBar
+        let sup = self.tabBarController!.tabBar.superview
+        tab.removeFromSuperview()
+        sup!.addSubview(tab)
         collectionView.reloadData()
     }
     
@@ -219,10 +232,10 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
                           layout collectionViewLayout: UICollectionViewLayout,
                           sizeForItemAt indexPath: IndexPath) -> CGSize {
         let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
-        let availableWidth = view.frame.width - paddingSpace
+        let availableWidth = collectionView.bounds.width - paddingSpace
         let widthPerItem = availableWidth / itemsPerRow
                 
-        return CGSize(width: widthPerItem, height: 150)
+        return CGSize(width: widthPerItem, height: 160)
       }
       
       func collectionView(_ collectionView: UICollectionView,

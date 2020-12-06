@@ -18,8 +18,8 @@ enum FriendStatus {
     case NotFriend
 }
 
-class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource, SwipeDelegate {
-    
+class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout, SwipeDelegate {
+    //adds the movie to the correct list then reloads the view
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
         Movie.addToList(direction: direction, movie: userMoviesData[index]){
             self.collectionView.reloadData()
@@ -46,6 +46,11 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     
     var privacy: UserPrivacy!
     var ref: DatabaseReference!
+    private let itemsPerRow: CGFloat = 3
+    private let sectionInsets = UIEdgeInsets(top: 10.0,
+                                             left: 10.0,
+                                             bottom: 10.0,
+                                             right: 10.0)
     
     
     override func viewDidLoad() {
@@ -75,6 +80,30 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
             
         }
     }
+    func collectionView(_ collectionView: UICollectionView,
+                          layout collectionViewLayout: UICollectionViewLayout,
+                          sizeForItemAt indexPath: IndexPath) -> CGSize {
+        //2
+        let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
+        let availableWidth = collectionView.bounds.width - paddingSpace
+        let widthPerItem = availableWidth / itemsPerRow
+                
+        return CGSize(width: widthPerItem, height: 160)
+      }
+      
+      //3
+      func collectionView(_ collectionView: UICollectionView,
+                          layout collectionViewLayout: UICollectionViewLayout,
+                          insetForSectionAt section: Int) -> UIEdgeInsets {
+        return sectionInsets
+      }
+      
+      // 4
+      func collectionView(_ collectionView: UICollectionView,
+                          layout collectionViewLayout: UICollectionViewLayout,
+                          minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return sectionInsets.left
+      }
     
     override func viewWillAppear(_ animated: Bool) {
         ref.child("friends").child(CURRENT_USER.username!).child(user.username!).observeSingleEvent(of: .value) { (snapshot) in

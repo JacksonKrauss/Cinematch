@@ -16,6 +16,7 @@ enum UserPrivacy {
     case friends
     case everyone
 }
+//returns a list of friend user objects for the current user for the movie detail page
 func getFriendsUser(completion: @escaping(_ friends: [User]) -> ()){
     let ref = Database.database().reference()
     var friendListData:[User] = []
@@ -23,6 +24,7 @@ func getFriendsUser(completion: @escaping(_ friends: [User]) -> ()){
         ref.child("user_info").observeSingleEvent(of: .value, with: { (snapshot) in
             for userSnap in snapshot.children.allObjects as! [DataSnapshot] {
                 let user = User(userSnap, userSnap.key)
+                //checks to make sure the friend is not private
                 if(friendList.contains(userSnap.key) && user.privacy != .me){
                     friendListData.append(user)
                 }
@@ -31,6 +33,7 @@ func getFriendsUser(completion: @escaping(_ friends: [User]) -> ()){
         })
     }
 }
+//returns a list of friends usernames for the current user
 func getFriends(completion: @escaping(_ friendList: [String]) -> ()){
     let ref = Database.database().reference()
     var friendListData:[String] = []
@@ -94,6 +97,7 @@ func stringToVisual(visualMode: String) -> VisualMode {
 }
 
 class User: Equatable {
+//allows you to check if two users are equal
     static func == (lhs: User, rhs: User) -> Bool {
         return lhs.email == rhs.email
     }

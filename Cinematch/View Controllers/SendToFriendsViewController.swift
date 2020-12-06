@@ -14,6 +14,7 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
     var usersList:[User] = []
     var ref: DatabaseReference!
     
+    //search bar searches based on username or name
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filteredUsers = usersList.filter { (user: User) -> Bool in
             return (user.name!.lowercased().contains(searchBar.text!.lowercased()) || user.username!.lowercased().contains(searchBar.text!.lowercased()))

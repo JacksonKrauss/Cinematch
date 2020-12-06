@@ -14,9 +14,11 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
     }
     
     func buttonTapped(direction: SwipeResultDirection, index:Int) {
+        //swipes card away
         if(index==kolodaView.currentCardIndex){
             self.kolodaView.swipe(direction)
         }
+        //just adds movie to list without swiping
         else{
             Movie.addToList(direction: direction, movie: movies[index]){
                 
@@ -33,31 +35,36 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
     @IBOutlet weak var dislikeImage: UIImageView!
     @IBOutlet weak var likeImage: UIImageView!
     @IBOutlet weak var separatorView: UIView!
-    var page = 1
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    var page = 1 //stores the current page of popular movies for the queue
     let ref = Database.database().reference()
-    var movies: [Movie] = []
+    var movies: [Movie] = [] //movie queue
+    //loads the queue from firebase and if the isnt a queue it gets popular movies
     func loadMovieQueue(){
-        Movie.updateFromFB{
-            Movie.updateQueueFB { (movieList) in
-                for x in movieList{
-                    if(!self.movies.contains(x) && !CURRENT_USER.history.contains(x)){
-                        self.movies.append(x)
-                    }
-                    else{
-                        self.ref.child("queue").child(CURRENT_USER.username!).child(x.id!.description).removeValue { (error: Error?, DatabaseReference) in
-                            print(error!)
-                        }
+        activityIndicator.startAnimating()
+        //pulls queue from firebase
+        Movie.updateQueueFB { (movieList) in
+            for x in movieList{
+                //checks if the movie has already been seen
+                if(!self.movies.contains(x) && !CURRENT_USER.history.contains(x)){
+                    self.movies.append(x)
+                }
+                else{
+                    //removes movie from queue in firebase if it has been seen
+                    self.ref.child("queue").child(CURRENT_USER.username!).child(x.id!.description).removeValue { (error: Error?, DatabaseReference) in
+                        //print(error!)
                     }
                 }
-                if(movieList.isEmpty){
-                    Movie.getMovies(page: self.page) { (list) in
-                        self.movies.append(contentsOf: list)
-                        self.page += 1
-                        self.kolodaView.reloadData()
-                    }
-                }
-                self.kolodaView.reloadData()
             }
+            if(movieList.isEmpty){
+                //if there is no queue in firebase it loads from the popular movies
+                Movie.getMovies(page: self.page) { (list) in
+                    self.movies.append(contentsOf: list)
+                    self.page += 1
+                    self.kolodaView.reloadData()
+                }
+            }
+            self.kolodaView.reloadData()
         }
     }
     override func viewDidLoad() {
@@ -65,7 +72,14 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
         kolodaView.dataSource = self
         kolodaView.delegate = self
         TMDBConfig.apikey = "da04189f6c8bb1116ff3c217c908b776"
-        loadMovieQueue()
+        self.descriptionLabel.text = ""
+        self.titleLabel.text = ""
+        self.friendLabel.text = ""
+        self.starView.isHidden = true
+        //pulls user's history from firebase and then creates the queue
+        Movie.updateFromFB{
+            self.loadMovieQueue()
+        }
         self.kolodaView.reloadData()
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -77,16 +91,22 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
             dislikeImage.tintColor = darkModeTextOrHighlight
             likeImage.tintColor = darkModeTextOrHighlight
             separatorView.backgroundColor = darkModeTextOrHighlight
+            activityIndicator.color = darkModeTextOrHighlight
         } else {
             watchlistImage.tintColor = UIColor.white
             dislikeImage.tintColor = UIColor.white
             likeImage.tintColor = UIColor.white
             separatorView.backgroundColor = UIColor.white
+            activityIndicator.color = UIColor.white
         }
         watchlistImage.backgroundColor = .clear
         dislikeImage.backgroundColor = .clear
         likeImage.backgroundColor = .clear
+        activityIndicator.backgroundColor = .clear
+        activityIndicator.style = .large
+
     }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "detailSegue"){
             let index:Int = sender as! Int
@@ -98,6 +118,7 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
         }
     }
 }
+//swiping functionality
 extension SwipeScreenViewController: KolodaViewDelegate {
     func kolodaDidRunOutOfCards(_ koloda: KolodaView) {
         loadMovieQueue()
@@ -119,22 +140,29 @@ extension SwipeScreenViewController: KolodaViewDataSource {
     func koloda(_ koloda: KolodaView, allowedDirectionsForIndex index: Int) -> [SwipeResultDirection] {
         return [SwipeResultDirection.left,SwipeResultDirection.right,SwipeResultDirection.up]
     }
+    //queue of posters, loads images
     func koloda(_ koloda: KolodaView, viewForCardAt index: Int) -> UIView {
         let imageView = UIImageView()
         if(movies[index].posterImg == nil){
             if(movies[index].poster == nil){
+                //no image, load default image
                 imageView.backgroundColor = .white
                 imageView.image = UIImage(named: "no-image")
                 self.movies[index].posterImg = UIImage(named: "no-image")
+                activityIndicator.stopAnimating()
             }
             else{
+                //load image from internet
                 let url = URL(string: "https://image.tmdb.org/t/p/original" + movies[index].poster!)!
+                
+                activityIndicator.startAnimating()
                 DispatchQueue.global().async { [weak self] in
                     if let data = try? Data(contentsOf: url) {
                         if let image = UIImage(data: data) {
                             DispatchQueue.main.async {
                                 imageView.image = image
                                 self!.movies[index].posterImg = imageView.image
+                                self!.activityIndicator.stopAnimating()
                             }
                         }
                     }
@@ -142,10 +170,13 @@ extension SwipeScreenViewController: KolodaViewDataSource {
             }
         }
         else{
+            //image has been previously loaded
             imageView.image = movies[index].posterImg!
+            activityIndicator.stopAnimating()
         }
         return imageView
     }
+    //shows view for each movie
     func koloda(_ koloda: KolodaView, didShowCardAt index: Int) {
         self.descriptionLabel.text = movies[index].release
         self.titleLabel.text = movies[index].title
@@ -163,30 +194,25 @@ extension SwipeScreenViewController: KolodaViewDataSource {
     func koloda(_ koloda: KolodaView, viewForCardOverlayAt index: Int) -> OverlayView? {
         return OverlayView()
     }
+    //called when user swipes on a movie
     func koloda(_ koloda: KolodaView, didSwipeCardAt index: Int, in direction: SwipeResultDirection) {
+        //adds movie to the correct list based on swipe direction, if its right it adds similar movies to queue
         Movie.addToList(direction: direction, movie: movies[index]){
+            //removes movie from queue
             self.ref.child("queue").child(CURRENT_USER.username!).child(self.movies[index].id!.description).removeValue { (error: Error?, DatabaseReference) in
                 //print(error!)
             }
-            if(direction == .right){
-                Movie.getRecommended(page: 1, id: self.movies[index].id!) { (list) in
-                    for m in list{
-                        if(!CURRENT_USER.history.contains(m)){
-                            self.movies.append(m)
-                            self.ref.child("queue").child(CURRENT_USER.username!).child(m.id!.description).setValue(CURRENT_USER.username!)
-                        }
-                    }
-                    koloda.reloadData()
-                }
-            }
         }
+        //if you reach final card
         if(index == movies.endIndex-1){
             self.descriptionLabel.text = ""
             self.titleLabel.text = ""
             self.friendLabel.text = ""
+            self.starView.isHidden = true
         }
     }
 }
+//loads image from internet
 extension UIImageView {
     func load(url: URL) {
         DispatchQueue.global().async { [weak self] in
