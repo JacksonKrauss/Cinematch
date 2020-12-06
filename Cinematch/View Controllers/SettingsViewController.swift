@@ -23,7 +23,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
     
     var delegate: UIViewController!
     
-    //
+    // set up for character limits in text fields and rounding of profile image
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -51,13 +51,17 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         // set the current user fields for this view controller
         super.viewWillAppear(animated)
         
-        if #available(iOS 12, *) {     // iOS 12 & 13: Not the best solution, but it works.
+        // error of textfield freezing and not allowing any user input solved
+        // with following code block
+        if #available(iOS 12, *) {
             passwordTextField.textContentType = .oneTimeCode
         } else {     // iOS 11: Disables the autofill accessory view.
             emailTextField.textContentType = .init(rawValue: "")
             passwordTextField.textContentType = .init(rawValue: "")
         }
         
+        // set all of the settings fields to user's current settings
+        // EXCEPT the password
         nameTextField.text = CURRENT_USER.name
         bioTextField.text = CURRENT_USER.bio
         emailTextField.text = CURRENT_USER.email
@@ -86,8 +90,8 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         profileImage.image = CURRENT_USER.profilePicture
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    // save all the fields in firebase and update them (if needed) when the user exits out of the view
+    func saveAllFields() {
         guard let name = nameTextField.text,
               let password = passwordTextField.text,
               let bio = bioTextField.text,
@@ -101,7 +105,6 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         
         let userRef = ref.child("user_info").child(CURRENT_USER.username!)
         
-        // updated values do not include username
         var updateUserValues: [String:String] = [:]
         if name != CURRENT_USER.name {
             updateUserValues.updateValue(name, forKey: "name")
@@ -159,6 +162,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
             }
         }
         
+        // only update the password if there is a new value entered in the textfield
         if password.count != 0 {
             Auth.auth().currentUser?.updatePassword(to: password) { error in
                 if error != nil {
@@ -170,8 +174,15 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         userRef.updateChildValues(updateUserValues)
         
         let otherVC = delegate as! updateProfile
-        otherVC.updateProfileTextFields(name: name, bio: bio)
+        otherVC.updateProfileTextFields(name: nameTextField.text!, bio: bioTextField.text!)
         otherVC.updateProfileColors()
+    }
+    
+    // let the user save all fields when they swipe out
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        saveAllFields()
     }
     
     // user wants to edit profile picture with photos from photo library
@@ -214,7 +225,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
                 switch err {
                 case .objectNotFound:
                     print("Correct error returned")
-                    break
+                    return
                 default:
                     print("Uh oh, some other error returned")
                     return
@@ -237,6 +248,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         otherVC.updateProfilePicture(image: CURRENT_USER.profilePicture!)
     }
     
+    // limit the amount of characters allowed for text fields
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 
         var countLimit = 10
@@ -267,31 +279,10 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         return  newText.count <= countLimit
     }
     
+    // save all the fields on logout and also logout the user
+    // goes back to login or signup screen
     @IBAction func logoutPressed(_ sender: Any) {
-        CURRENT_USER = User(name: "defaultName",
-                            username: "defaultUsername",
-                            bio: "defaultBio",
-                            email: "defaultEmail@email.com",
-                            privacy: UserPrivacy.everyone,
-                            visualMode: VisualMode.light,
-                            profilePicture: UIImage(named: "Popcorn Logo")!,
-                            liked: [],
-                            disliked: [],
-                            watchlist: [],
-                            history: [])
-        
-        guard let password = passwordTextField.text
-        else {
-            return
-        }
-        
-        if password.count != 0 {
-            Auth.auth().currentUser?.updatePassword(to: password) { error in
-                if error != nil {
-                    print(error)
-                }
-            }
-        }
+        saveAllFields()
         
         do {
             try Auth.auth().signOut()
