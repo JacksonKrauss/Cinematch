@@ -41,7 +41,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
         searchTableView.dataSource = self
         searchTableView.delegate = self
         searchBar.delegate = self
-        //searchTableView.rowHeight = 166
         searchTypeSegCtrl.selectedSegmentIndex = startPeople == true ? 1 : 0
         setSize()
     }
@@ -53,11 +52,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     }
     
     @IBAction func filterSelected(_ sender: Any) {
-        // table view needs to be updated
         searchTableView.reloadData()
-        
         search()
-        
         setSize()
     }
     
@@ -78,7 +74,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     func loadMovies() {
                                 
         TMDBConfig.apikey = "da04189f6c8bb1116ff3c217c908b776"
-            
+          
+        //find movies in DB from user given currentQuery
         SearchMDB.movie(query: currentQuery, language: "en", page: page, includeAdult: true, year: nil, primaryReleaseYear: nil, completion: { [self]
             data, movies in
             if (movies?.count == 0) {
@@ -94,7 +91,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     }
     
     func loadUsers() {
-            
+        
+        //get users from firebase
         ref.child("user_info").observe(.value) {snapshot in
             self.usersData = []
             for userSnap in snapshot.children.allObjects as! [DataSnapshot] {
@@ -109,6 +107,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
                     if name.lowercased().contains(query) ||
                         username.lowercased().contains(query)
                     {
+                        //append user if query is matched
                         self.usersData.append(user)
                     }
                 }
@@ -122,6 +121,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     }
     
     func search() {
+        //reset data
         moviesData = []
         usersData = []
         page = 1
@@ -166,6 +166,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     // populate the table view with data depending on the filter
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch searchTypeSegCtrl.selectedSegmentIndex {
+        
         //MOVIE CELL
         case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as! MovieSearchTableViewCell
@@ -222,9 +223,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
             }
                     
             return cell
+            
         //PERSON CELL
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: "PersonCell", for: indexPath) as! PeopleSearchTableViewCell
+            
             //user data
             let currentPerson = usersData[indexPath.row]
             cell.nameLabel?.text = currentPerson.name
@@ -235,7 +238,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
             let placeholderImage = UIImage(named: "image-placeholder")
             let path = "profile_pictures/\(currentPerson.username ?? "")"
             let reference = storageRef.child(path)
-            print("path", path)
+            
             cell.profilePicImageView?.sd_setImage(with: reference, placeholderImage: placeholderImage)
             if (cell.profilePicImageView?.bounds.size.width)! > (cell.profilePicImageView?.bounds.size.height)! {
                 cell.profilePicImageView?.contentMode = .scaleAspectFit
@@ -252,6 +255,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         tableView.separatorColor = CURRENT_USER.visualMode == VisualMode.light ? darkModeTextOrHighlight : UIColor.white
         switch searchTypeSegCtrl.selectedSegmentIndex {
+        
         //MOVIE CELL
         case 0:
             let cell = cell as! MovieSearchTableViewCell
@@ -259,6 +263,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
             cell.moviePosterImageView.backgroundColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.white : darkModeBackground
             cell.movieTitleLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
             cell.movieReleaseLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
+        //PERSON CELL
         case 1:
             let cell = cell as! PeopleSearchTableViewCell
             cell.backgroundColor = UIColor.clear
@@ -274,7 +279,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
             if let detailViewController = segue.destination as? MovieDetailViewController{
                 let index = searchTableView.indexPathForSelectedRow?.row
                 
-                //get the movie in form
+                //get movie object from movieData
                 let movie = Movie()
                 movie.setFromMovie(movie:  moviesData[index!])
                 detailViewController.delegate = self
