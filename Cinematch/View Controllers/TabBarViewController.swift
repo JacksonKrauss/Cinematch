@@ -11,11 +11,13 @@ class TabBarViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        switch CURRENT_USER.visualMode {
+        case .light:
+            self.tabBar.barStyle = .default
+        case .dark:
+            self.tabBar.barStyle = .black
+        }
         // Do any additional setup after loading the view.
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        setColors(CURRENT_USER.visualMode, self.view)
     }
     
 

@@ -119,9 +119,15 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         switch CURRENT_USER.visualMode {
         case .light:
             self.tabBarController!.tabBar.barStyle = .default
+            //print(self.tabBarController!.tabBar.barStyle.rawValue)
         case .dark:
             self.tabBarController!.tabBar.barStyle = .black
+            //print(self.tabBarController!.tabBar.barStyle.rawValue)
         }
+        let tab = self.tabBarController!.tabBar
+        let sup = self.tabBarController!.tabBar.superview
+        tab.removeFromSuperview()
+        sup!.addSubview(tab)
         collectionView.reloadData()
     }
     
