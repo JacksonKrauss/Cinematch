@@ -151,8 +151,9 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         if email != CURRENT_USER.email {
             Auth.auth().currentUser?.updateEmail(to: email) { error in
                 if error == nil {
-                    CURRENT_USER.email = email
                     updateUserValues.updateValue(email, forKey: "email")
+                    CURRENT_USER.email = email
+                    userRef.updateChildValues(updateUserValues)
                 } else {
                     print(error)
                 }

@@ -159,7 +159,6 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     }
     
     func updatePrivacy() {
-        print("UPDATE PRIVACY")
         var display = false
         if (user.name == CURRENT_USER.name) {
             display = true
@@ -258,10 +257,8 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
             if let value = requestValue {
                 if !(value is NSNull) {
                     if value as! Bool == true {
-                        print("i requested")
                         self.requested()
                     } else if value as! Bool == false {
-                        print("i did not request")
                         self.notFriend()
                     } else {
                         print("Invalid state reached when fetching friend request boolean!")
@@ -284,10 +281,8 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
             if let value = requestValue {
                 if !(value is NSNull) {
                     if value as! Bool == true {
-                        print("they requested")
                         self.requestedMe()
                     } else if value as! Bool == false {
-                        print("they did not request")
                         if self.userFriendStatus != FriendStatus.Requested {
                             self.notFriend()
                         }
@@ -295,7 +290,6 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
                         print("Invalid state reached when fetching friend request boolean!")
                     }
                 } else {
-                    print("they did not request")
                     if self.userFriendStatus != FriendStatus.Requested {
                         self.notFriend()
                     }

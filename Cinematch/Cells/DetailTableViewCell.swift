@@ -77,8 +77,6 @@ class DetailTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
                     DetailTableViewCell.movieTable!.friends = friendMovies
                     self.collectionView.delegate = self
                     self.collectionView.dataSource = self
-                    print(DetailTableViewCell.movieTable!.actors.count)
-                    print(DetailTableViewCell.movieTable!.friends!.count)
                 }
             }
         }
