@@ -237,12 +237,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
             let reference = storageRef.child(path)
             print("path", path)
             cell.profilePicImageView?.sd_setImage(with: reference, placeholderImage: placeholderImage)
-            if (cell.profilePicImageView?.bounds.size.width)! > (cell.profilePicImageView?.bounds.size.height)! {
-                cell.profilePicImageView?.contentMode = .scaleAspectFit
-            } else {
-                cell.profilePicImageView?.contentMode = .scaleAspectFill
-            }
-            cell.profilePicImageView.layer.cornerRadius = cell.profilePicImageView.frame.height / 2
+            
+            Util.makeImageCircular(cell.profilePicImageView)
+            
             return cell
         default:
             return UITableViewCell()

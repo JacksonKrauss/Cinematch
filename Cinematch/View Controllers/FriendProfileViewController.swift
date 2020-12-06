@@ -14,18 +14,16 @@ import Koloda
 enum FriendStatus {
     case Friend
     case Requested
-    case RequestedMe  // pressing "friend" should accept friend request
+    case RequestedMe
     case NotFriend
 }
 
 class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource, SwipeDelegate {
+    
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
         Movie.addToList(direction: direction, movie: userMoviesData[index]){
             self.collectionView.reloadData()
         }
-    }
-    
-    func reload() {
     }
     
     @IBOutlet weak var profilePicture: UIImageView!
@@ -56,8 +54,7 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        profilePicture.layer.cornerRadius = profilePicture.frame.width / 2
-        assert(profilePicture.frame.width == profilePicture.frame.height)
+        Util.makeImageCircular(profilePicture)
         
         ref = Database.database().reference()
     }
@@ -98,11 +95,6 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         privacy = user.privacy
         
         loadProfilePicture()
-        if self.profilePicture.frame.width > self.profilePicture.frame.height {
-            self.profilePicture.contentMode = .scaleAspectFit
-        } else {
-            self.profilePicture.contentMode = .scaleAspectFill
-        }
         
         ref.child("movies").child(user.username!).observeSingleEvent(of: .value, with: { (snapshot) in
             Movie.getMoviesForUser(username: self.user.username!) { (moviesFBList) in
@@ -337,7 +329,10 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
             }
             
         }
-
-        
+    }
+    
+    // This method is because of the protocol SwipeDelegate
+    // We don't want to do anything on reload
+    func reload() {
     }
 }

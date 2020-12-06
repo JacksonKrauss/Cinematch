@@ -20,7 +20,7 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
     
     var friendRequestData:[User] = []
     let FRIEND_REQUEST_CELL_IDENTIFIER = "friendRequestViewCell"
-    
+        
     private let itemsPerRow: CGFloat = 4
     private let sectionInsets = UIEdgeInsets(top: 25.0,
                                              left: 10.0,
@@ -55,6 +55,8 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
         numFriendsLabel.text = "You have " + String(friendListData.count) + " friend" + friendsPlural
     }
     
+    // Fetch friends and friend requests for the current user
+    // from firebase
     func fetchFriends(_ username:String) {
         ref.child("user_info").child(username).observeSingleEvent(of: .value) { (snapshot) in
             self.currentUser = User(snapshot, username)
@@ -96,13 +98,14 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
         
     }
     
+    // Add Friend Request Header to Collection View
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
              let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SectionHeader
             sectionHeader.label.text = (indexPath.section == 1) ? "Requests" : ""
             sectionHeader.label.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
              return sectionHeader
-        } else { //No footer in this case but can add option for that
+        } else {
              return UICollectionReusableView()
         }
     }
@@ -114,7 +117,6 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
     func collectionView(_ collectionView: UICollectionView,
                           layout collectionViewLayout: UICollectionViewLayout,
                           sizeForItemAt indexPath: IndexPath) -> CGSize {
-        //2
         let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
         let availableWidth = view.frame.width - paddingSpace
         let widthPerItem = availableWidth / itemsPerRow
@@ -122,14 +124,12 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
         return (indexPath.section == 0) ? CGSize(width: widthPerItem, height: 110) : CGSize(width: widthPerItem, height: 150)
       }
       
-      //3
       func collectionView(_ collectionView: UICollectionView,
                           layout collectionViewLayout: UICollectionViewLayout,
                           insetForSectionAt section: Int) -> UIEdgeInsets {
         return sectionInsets
       }
       
-      // 4
       func collectionView(_ collectionView: UICollectionView,
                           layout collectionViewLayout: UICollectionViewLayout,
                           minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -137,6 +137,7 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
       }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
+        // Hide friend requests section if user has none
         return friendRequestData.isEmpty ? 1 : 2
     }
     
@@ -145,27 +146,32 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        // Friends List
         if indexPath.section == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FRIEND_LIST_CELL_IDENTIFIER, for: indexPath) as! FriendListViewCell;
             let cellData = friendListData[indexPath.row]
             
             cell.nameLabel.text = cellData.name
             cell.profilePicture.image = cellData.profilePicture
-            cell.profilePicture.layer.cornerRadius = 78.5 / 2 // fix
             cell.positionInList = indexPath.row
+            
+            Util.makeImageCircular(cell.profilePicture)
             
             cell.loadProfilePicture("profile_pictures/" + cellData.username!)
             
             return cell;
         }
+        
+        // Friend Request List
         if indexPath.section == 1 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier:FRIEND_REQUEST_CELL_IDENTIFIER, for:indexPath) as! FriendRequestViewCell
             let cellData = friendRequestData[indexPath.row]
 
             cell.nameLabel.text = cellData.name
             cell.profilePicture.image = cellData.profilePicture
-            cell.profilePicture.layer.cornerRadius = 78.5 / 2 // fix
             cell.positionInList = indexPath.row
+            
+            Util.makeImageCircular(cell.profilePicture)
             
             cell.loadProfilePicture("profile_pictures/" + cellData.username!)
             cell.currentUser = self.currentUser
@@ -173,15 +179,19 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
 
             return cell
         }
+        
         print("Error: Unexpected state reached in FriendsListViewController!")
         return UICollectionViewCell()
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        // Friends
         if indexPath.section == 0 {
             let cell = cell as! FriendListViewCell
             cell.nameLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
         }
+        
+        // Friend Requests
         if indexPath.section == 1 {
             let cell = cell as! FriendRequestViewCell
             cell.nameLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
@@ -214,6 +224,7 @@ class FriendsListViewController: UIViewController,UICollectionViewDelegate,UICol
 
 }
 
+// Friend Request Section Header
 class SectionHeader: UICollectionReusableView {
      var label: UILabel = {
          let label: UILabel = UILabel()
@@ -230,7 +241,7 @@ class SectionHeader: UICollectionReusableView {
 
          label.translatesAutoresizingMaskIntoConstraints = false
          label.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-         label.leftAnchor.constraint(equalTo: self.leftAnchor/*, constant: 20*/).isActive = true
+         label.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
          label.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
     }
 

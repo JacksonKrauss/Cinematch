@@ -29,21 +29,28 @@ class FriendRequestViewCell: UICollectionViewCell {
         
         addFriend.isUserInteractionEnabled = true
         rejectFriend.isUserInteractionEnabled = true
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(gestureRecognizer:)))
-        addFriend.addGestureRecognizer(tapRecognizer)
+        let addFriendTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(addFriend(gestureRecognizer:)))
+        addFriend.addGestureRecognizer(addFriendTapRecognizer)
         
-        let removeTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTappedRemove(gestureRecognizer:)))
+        let removeFriendTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(removeFriend(gestureRecognizer:)))
         
-        rejectFriend.addGestureRecognizer(removeTapRecognizer)
+        rejectFriend.addGestureRecognizer(removeFriendTapRecognizer)
     }
     
-    @objc func imageTapped(gestureRecognizer: UITapGestureRecognizer) {
+    // User hit the checkmark to add this friend
+    @objc func addFriend(gestureRecognizer: UITapGestureRecognizer) {
+        // remove request by setting value to false
         self.ref.child("friend_request").child((currentUser?.username!)!).child((friendRequestUser?.username)!).setValue(false)
+        
+        // make current user a friend of the requesting user
         self.ref.child("friends").child((currentUser?.username!)!).child((friendRequestUser?.username)!).setValue(true)
+        // make requesting user a friend of the requesting user
         self.ref.child("friends").child((friendRequestUser?.username)!).child((currentUser?.username!)!).setValue(true)
     }
     
-    @objc func imageTappedRemove(gestureRecognizer: UITapGestureRecognizer) {
+    // User hit the X to remove this friend request
+    @objc func removeFriend(gestureRecognizer: UITapGestureRecognizer) {
+        // remove request by setting value to false
         self.ref.child("friend_request").child((currentUser?.username!)!).child((friendRequestUser?.username)!).setValue(false)
     }
     
@@ -61,11 +68,5 @@ class FriendRequestViewCell: UICollectionViewCell {
 
         // Load the image using SDWebImage
         profilePicture.sd_setImage(with: reference, placeholderImage: placeholderImage)
-        
-        if self.profilePicture.frame.width > self.profilePicture.frame.height {
-            self.profilePicture.contentMode = .scaleAspectFit
-        } else {
-            self.profilePicture.contentMode = .scaleAspectFill
-        }
     }
 }
