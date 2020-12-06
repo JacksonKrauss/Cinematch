@@ -196,23 +196,11 @@ extension SwipeScreenViewController: KolodaViewDataSource {
     }
     //called when user swipes on a movie
     func koloda(_ koloda: KolodaView, didSwipeCardAt index: Int, in direction: SwipeResultDirection) {
-        //adds movie to the correct list based on swipe direction
+        //adds movie to the correct list based on swipe direction, if its right it adds similar movies to queue
         Movie.addToList(direction: direction, movie: movies[index]){
             //removes movie from queue
             self.ref.child("queue").child(CURRENT_USER.username!).child(self.movies[index].id!.description).removeValue { (error: Error?, DatabaseReference) in
                 //print(error!)
-            }
-            if(direction == .right){
-                //Recommendation engine, when the user swipes right it adds similar movies
-                Movie.getRecommended(page: 1, id: self.movies[index].id!) { (list) in
-                    for m in list{
-                        if(!CURRENT_USER.history.contains(m)){
-                            self.movies.append(m)
-                            self.ref.child("queue").child(CURRENT_USER.username!).child(m.id!.description).setValue(CURRENT_USER.username!)
-                        }
-                    }
-                    koloda.reloadData()
-                }
             }
         }
         //if you reach final card
@@ -220,6 +208,7 @@ extension SwipeScreenViewController: KolodaViewDataSource {
             self.descriptionLabel.text = ""
             self.titleLabel.text = ""
             self.friendLabel.text = ""
+            self.starView.isHidden = true
         }
     }
 }
