@@ -1076,10 +1076,10 @@
             </objects>
             <point key="canvasLocation" x="2671.0144927536235" y="-2211.1607142857142"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Tab Bar View Controller-->
         <scene sceneID="gwf-f8-EZ1">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" id="OCb-ec-3HP" sceneMemberID="viewController">
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" id="OCb-ec-3HP" customClass="TabBarViewController" customModule="Cinematch" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="s9p-Vs-LSC"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
@@ -1367,15 +1367,15 @@
             <objects>
                 <viewController id="jhO-IG-dP9" customClass="SearchViewController" customModule="Cinematch" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gDn-FI-rK3">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <searchBar contentMode="redraw" text="" placeholder="Search for People or Movies" translatesAutoresizingMaskIntoConstraints="NO" id="fx1-k9-O52">
-                                <rect key="frame" x="10" y="30" width="394" height="56"/>
+                                <rect key="frame" x="10" y="74" width="394" height="56"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartQuotesType="no"/>
                             </searchBar>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ITV-cl-s1x">
-                                <rect key="frame" x="20" y="96" width="374" height="32"/>
+                                <rect key="frame" x="20" y="140" width="374" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="31" id="2oK-Di-V2w"/>
                                 </constraints>
@@ -1388,7 +1388,7 @@
                                 </connections>
                             </segmentedControl>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="prd-tO-lig">
-                                <rect key="frame" x="0.0" y="137" width="414" height="676"/>
+                                <rect key="frame" x="0.0" y="181" width="414" height="686"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MovieCell" rowHeight="166" id="QR2-C0-ks5" customClass="MovieSearchTableViewCell" customModule="Cinematch" customModuleProvider="target">
@@ -2120,7 +2120,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="Rsf-4k-jvu"/>
-        <segue reference="b2g-nQ-9BZ"/>
+        <segue reference="BhN-fk-W34"/>
         <segue reference="tSa-yd-FV7"/>
         <segue reference="cEx-qP-MRH"/>
     </inferredMetricsTieBreakers>
