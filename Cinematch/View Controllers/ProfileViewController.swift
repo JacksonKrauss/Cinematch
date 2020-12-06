@@ -70,6 +70,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         currentUser = CURRENT_USER
+        movieViewSegCtrl.selectedSegmentIndex = 0
         collectionView.reloadData()
         renderViews()
         setColors(CURRENT_USER.visualMode, self.view)
