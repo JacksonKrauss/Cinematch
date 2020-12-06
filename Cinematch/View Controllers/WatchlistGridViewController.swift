@@ -11,9 +11,9 @@ import Koloda
 class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, SwipeDelegate, UISearchBarDelegate, UICollectionViewDelegateFlowLayout{
     
     private let itemsPerRow: CGFloat = 3
-    private let sectionInsets = UIEdgeInsets(top: 25.0,
+    private let sectionInsets = UIEdgeInsets(top: 10.0,
                                              left: 10.0,
-                                             bottom: 25.0,
+                                             bottom: 10.0,
                                              right: 10.0)
     //resets the search bar and reloads the view
     func reload() {
@@ -89,10 +89,10 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
                           sizeForItemAt indexPath: IndexPath) -> CGSize {
         //2
         let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
-        let availableWidth = view.frame.width - paddingSpace
+        let availableWidth = collectionView.bounds.width - paddingSpace
         let widthPerItem = availableWidth / itemsPerRow
                 
-        return CGSize(width: widthPerItem, height: 150)
+        return CGSize(width: widthPerItem, height: 160)
       }
       
       //3
