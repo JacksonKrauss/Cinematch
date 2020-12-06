@@ -23,6 +23,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
     
     var delegate: UIViewController!
     
+    //
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,6 +35,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         Util.makeImageCircular(profileImage)
     }
     
+    // dynamically change the appearance of the view controller depending on chosen colors
     @IBAction func appearanceSelect(_ sender: Any) {
         switch appearanceSegControl.selectedSegmentIndex {
         case 0:
@@ -277,6 +279,20 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
                             disliked: [],
                             watchlist: [],
                             history: [])
+        
+        guard let password = passwordTextField.text
+        else {
+            return
+        }
+        
+        if password.count != 0 {
+            Auth.auth().currentUser?.updatePassword(to: password) { error in
+                if error != nil {
+                    print(error)
+                }
+            }
+        }
+        
         do {
             try Auth.auth().signOut()
         } catch let signOutError as NSError {
