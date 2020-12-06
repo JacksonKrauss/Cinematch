@@ -113,6 +113,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
             self.tabBarController!.tabBar.barStyle = .black
             //print(self.tabBarController!.tabBar.barStyle.rawValue)
         }
+        //force reloads the tab bar
         let tab = self.tabBarController!.tabBar
         let sup = self.tabBarController!.tabBar.superview
         tab.removeFromSuperview()
