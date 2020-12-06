@@ -1821,29 +1821,23 @@
                                 <rect key="frame" x="0.0" y="278" width="414" height="120"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="iqO-Zk-bFC">
-                                        <rect key="frame" x="27.5" y="35" width="359" height="51"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yab-09-z1j">
-                                                <rect key="frame" x="0.0" y="0.0" width="359" height="20.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" systemColor="systemGrayColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Go head to the swipe screen to add some here!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZNL-RO-o9f">
-                                                <rect key="frame" x="0.0" y="30.5" width="359" height="20.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" systemColor="systemGrayColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yab-09-z1j">
+                                        <rect key="frame" x="10" y="35" width="394" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" systemColor="systemGrayColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Go head to the swipe screen to add some here!" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZNL-RO-o9f">
+                                        <rect key="frame" x="10" y="60.5" width="394" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" systemColor="systemGrayColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="iqO-Zk-bFC" firstAttribute="top" secondItem="DN6-w7-tpE" secondAttribute="top" constant="35" id="YXE-M7-PFB"/>
-                                    <constraint firstItem="iqO-Zk-bFC" firstAttribute="centerX" secondItem="DN6-w7-tpE" secondAttribute="centerX" id="txz-Ct-pJc"/>
-                                    <constraint firstAttribute="bottom" secondItem="iqO-Zk-bFC" secondAttribute="bottom" constant="34" id="y1U-7J-WQp"/>
+                                    <constraint firstItem="ZNL-RO-o9f" firstAttribute="top" secondItem="Yab-09-z1j" secondAttribute="bottom" constant="5" id="7r1-f3-NrJ"/>
+                                    <constraint firstItem="Yab-09-z1j" firstAttribute="top" secondItem="DN6-w7-tpE" secondAttribute="top" constant="35" id="s0V-l5-KDE"/>
                                 </constraints>
                             </view>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="3ar-Y3-Tvr">
@@ -1879,19 +1873,25 @@
                         <viewLayoutGuide key="safeArea" id="PSU-gM-Nj8"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="PSU-gM-Nj8" firstAttribute="trailing" secondItem="Yab-09-z1j" secondAttribute="trailing" constant="10" id="26B-fn-3Hi"/>
                             <constraint firstItem="mn8-wm-YuU" firstAttribute="leading" secondItem="PSU-gM-Nj8" secondAttribute="leading" constant="20" id="2v4-QR-H85"/>
                             <constraint firstItem="gGk-Yw-Dv8" firstAttribute="leading" secondItem="PSU-gM-Nj8" secondAttribute="leading" id="6df-sF-oh3"/>
+                            <constraint firstItem="ZNL-RO-o9f" firstAttribute="centerX" secondItem="PSU-gM-Nj8" secondAttribute="centerX" id="Aqi-qy-yIa"/>
                             <constraint firstItem="sO7-qv-0El" firstAttribute="top" secondItem="PSU-gM-Nj8" secondAttribute="top" constant="10" id="Bp7-fJ-wfl"/>
                             <constraint firstItem="gGk-Yw-Dv8" firstAttribute="trailing" secondItem="PSU-gM-Nj8" secondAttribute="trailing" id="CXv-Xw-FuW"/>
                             <constraint firstItem="gGk-Yw-Dv8" firstAttribute="top" secondItem="psu-Ad-pXg" secondAttribute="bottom" id="GLy-7f-Grv"/>
+                            <constraint firstItem="Yab-09-z1j" firstAttribute="centerX" secondItem="PSU-gM-Nj8" secondAttribute="centerX" id="HQA-BH-jQo"/>
                             <constraint firstItem="PSU-gM-Nj8" firstAttribute="trailing" secondItem="sO7-qv-0El" secondAttribute="trailing" constant="20" id="IxH-8y-Rfo"/>
                             <constraint firstItem="6dx-J2-rOX" firstAttribute="leading" secondItem="mn8-wm-YuU" secondAttribute="trailing" constant="10" id="P98-3l-Niv"/>
                             <constraint firstItem="PSU-gM-Nj8" firstAttribute="trailing" secondItem="6dx-J2-rOX" secondAttribute="trailing" constant="30" id="S1s-AK-yXG"/>
                             <constraint firstItem="3ar-Y3-Tvr" firstAttribute="trailing" secondItem="PSU-gM-Nj8" secondAttribute="trailing" constant="-20" id="VNs-2H-NqU"/>
                             <constraint firstItem="3ar-Y3-Tvr" firstAttribute="top" secondItem="mn8-wm-YuU" secondAttribute="bottom" constant="20" id="YeM-Uq-VSl"/>
+                            <constraint firstItem="PSU-gM-Nj8" firstAttribute="trailing" secondItem="ZNL-RO-o9f" secondAttribute="trailing" constant="10" id="aKX-1F-tEJ"/>
                             <constraint firstItem="PSU-gM-Nj8" firstAttribute="bottom" secondItem="gGk-Yw-Dv8" secondAttribute="bottom" id="aaK-fP-jfu"/>
+                            <constraint firstItem="ZNL-RO-o9f" firstAttribute="leading" secondItem="PSU-gM-Nj8" secondAttribute="leading" constant="10" id="bGK-zG-QmS"/>
                             <constraint firstItem="3ar-Y3-Tvr" firstAttribute="leading" secondItem="PSU-gM-Nj8" secondAttribute="leading" constant="20" id="dXP-i0-Ozb"/>
                             <constraint firstItem="6dx-J2-rOX" firstAttribute="top" secondItem="mn8-wm-YuU" secondAttribute="top" id="mEP-q6-5uv"/>
+                            <constraint firstItem="Yab-09-z1j" firstAttribute="leading" secondItem="PSU-gM-Nj8" secondAttribute="leading" constant="10" id="ob2-lD-7OR"/>
                             <constraint firstItem="psu-Ad-pXg" firstAttribute="top" secondItem="3ar-Y3-Tvr" secondAttribute="bottom" constant="20" id="rmV-9G-7YS"/>
                         </constraints>
                     </view>
@@ -2118,7 +2118,7 @@
         <segue reference="RCU-C9-hhH"/>
         <segue reference="BhN-fk-W34"/>
         <segue reference="tSa-yd-FV7"/>
-        <segue reference="yGY-WE-pLS"/>
+        <segue reference="cEx-qP-MRH"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="121"/>
