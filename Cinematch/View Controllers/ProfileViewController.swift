@@ -115,13 +115,13 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func updateProfileColors() {
+        setColors(CURRENT_USER.visualMode, self.view)
         switch CURRENT_USER.visualMode {
         case .light:
             self.tabBarController!.tabBar.barStyle = .default
-        default:
+        case .dark:
             self.tabBarController!.tabBar.barStyle = .black
         }
-        setColors(CURRENT_USER.visualMode, self.view)
         collectionView.reloadData()
     }
     
