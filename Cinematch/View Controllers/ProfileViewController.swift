@@ -54,17 +54,12 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
                                              bottom: 25.0,
                                              right: 10.0)
     
-    //    var likedMovies: [Movie]!
-//    var historyMovies: [Movie]!
+    
     var filteredMovies: [Movie]!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         currentUser = CURRENT_USER
-        usernameTextLabel.text = currentUser.username
-        fullNameTextLabel.text = currentUser.name
-        bioTextLabel.text = currentUser.bio
-        profilePicture.image = currentUser.profilePicture
-        profilePicture.layer.cornerRadius = 100 / 2 // fix
         
         searchBar.delegate = self
         
@@ -74,17 +69,10 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     var currentUser: User!
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        currentUser = CURRENT_USER // kind of weird, but for some reason default sarab info will show up if this line is not here - figure out later
+        currentUser = CURRENT_USER
         collectionView.reloadData()
         renderViews()
         setColors(CURRENT_USER.visualMode, self.view)
-        
-        // make the profile picture fit in the circle
-        if profilePicture.frame.width > profilePicture.frame.height {
-            profilePicture.contentMode = .scaleToFill
-        } else {
-            profilePicture.contentMode = .scaleAspectFill
-        }
         
         filteredMovies = CURRENT_USER.liked
         if filteredMovies.count == 0 {
@@ -102,7 +90,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         fullNameTextLabel.text = currentUser.name
         bioTextLabel.text = currentUser.bio
         profilePicture.image = currentUser.profilePicture
-        profilePicture.layer.cornerRadius = 100 / 2 // fix
+        Util.makeImageCircular(profilePicture)
     }
     
     // function to update profile settings from settings view
@@ -230,7 +218,6 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     func collectionView(_ collectionView: UICollectionView,
                           layout collectionViewLayout: UICollectionViewLayout,
                           sizeForItemAt indexPath: IndexPath) -> CGSize {
-        //2
         let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
         let availableWidth = view.frame.width - paddingSpace
         let widthPerItem = availableWidth / itemsPerRow
@@ -238,14 +225,12 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         return CGSize(width: widthPerItem, height: 150)
       }
       
-      //3
       func collectionView(_ collectionView: UICollectionView,
                           layout collectionViewLayout: UICollectionViewLayout,
                           insetForSectionAt section: Int) -> UIEdgeInsets {
         return sectionInsets
       }
       
-      // 4
       func collectionView(_ collectionView: UICollectionView,
                           layout collectionViewLayout: UICollectionViewLayout,
                           minimumLineSpacingForSectionAt section: Int) -> CGFloat {

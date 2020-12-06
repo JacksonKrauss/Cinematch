@@ -30,6 +30,8 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         passwordTextField.delegate = self
         bioTextField.delegate = self
         emailTextField.delegate = self
+        
+        Util.makeImageCircular(profileImage)
     }
     
     @IBAction func appearanceSelect(_ sender: Any) {
@@ -80,11 +82,6 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         }
         
         profileImage.image = CURRENT_USER.profilePicture
-        if self.profileImage.frame.width > self.profileImage.frame.height {
-            self.profileImage.contentMode = .scaleAspectFit
-        } else {
-            self.profileImage.contentMode = .scaleAspectFill
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -191,11 +188,6 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
 
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             self.profileImage.image = image
-            if self.profileImage.frame.width > self.profileImage.frame.height {
-                self.profileImage.contentMode = .scaleAspectFit
-            } else {
-                self.profileImage.contentMode = .scaleAspectFill
-            }
         }
         
         self.dismiss(animated: true, completion: nil)
