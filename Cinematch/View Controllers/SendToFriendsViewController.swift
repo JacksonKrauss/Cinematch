@@ -14,6 +14,7 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
     var usersList:[User] = []
     var ref: DatabaseReference!
     
+    //search bar searches based on username or name
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filteredUsers = usersList.filter { (user: User) -> Bool in
             return (user.name!.lowercased().contains(searchBar.text!.lowercased()) || user.username!.lowercased().contains(searchBar.text!.lowercased()))
@@ -46,6 +47,7 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
         cell.nameLabel.text = filteredUsers[indexPath.row].name
         cell.userLabel.text = filteredUsers[indexPath.row].username
         cell.profilePicView.image = filteredUsers[indexPath.row].profilePicture
+        cell.loadProfilePicture("profile_pictures/" + filteredUsers[indexPath.row].username!)
         if(selectedUsers.contains(filteredUsers[indexPath.row])){
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         }
@@ -89,7 +91,7 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
         self.selectedUsers = []
         self.filteredUsers = usersList
         
-        // Do any additional setup after loading the view.
+        
         ref.child("friends").child(CURRENT_USER.username!).observe(.value) { (snapshot) in
             self.usersList = []
             for f in snapshot.children {

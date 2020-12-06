@@ -24,11 +24,5 @@ class FriendListViewCell: UICollectionViewCell {
         let placeholderImage = UIImage(named: "image-placeholder")
 
         profilePicture.sd_setImage(with: reference, placeholderImage: placeholderImage)
-        
-        if self.profilePicture.frame.width > self.profilePicture.frame.height {
-            self.profilePicture.contentMode = .scaleAspectFit
-        } else {
-            self.profilePicture.contentMode = .scaleAspectFill
-        }
     }
 }

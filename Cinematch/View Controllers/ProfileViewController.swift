@@ -16,6 +16,7 @@ protocol updateProfile {
 }
 
 class ProfileViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UISearchBarDelegate, UICollectionViewDelegateFlowLayout, SwipeDelegate, updateProfile {
+    //adds a movie to the correct list and reloads the collectionview
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
         Movie.addToList(direction: direction, movie: filteredMovies[index]){
             self.collectionView.reloadData()
@@ -49,22 +50,16 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     @IBOutlet weak var noMoviesLabel: UILabel!
     
     private let itemsPerRow: CGFloat = 3
-    private let sectionInsets = UIEdgeInsets(top: 25.0,
+    private let sectionInsets = UIEdgeInsets(top: 10.0,
                                              left: 10.0,
-                                             bottom: 25.0,
+                                             bottom: 10.0,
                                              right: 10.0)
     
-    //    var likedMovies: [Movie]!
-//    var historyMovies: [Movie]!
     var filteredMovies: [Movie]!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         currentUser = CURRENT_USER
-        usernameTextLabel.text = currentUser.username
-        fullNameTextLabel.text = currentUser.name
-        bioTextLabel.text = currentUser.bio
-        profilePicture.image = currentUser.profilePicture
-        profilePicture.layer.cornerRadius = 100 / 2 // fix
         
         searchBar.delegate = self
         
@@ -74,17 +69,10 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     var currentUser: User!
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        currentUser = CURRENT_USER // kind of weird, but for some reason default sarab info will show up if this line is not here - figure out later
+        currentUser = CURRENT_USER
         collectionView.reloadData()
         renderViews()
         setColors(CURRENT_USER.visualMode, self.view)
-        
-        // make the profile picture fit in the circle
-        if profilePicture.frame.width > profilePicture.frame.height {
-            profilePicture.contentMode = .scaleToFill
-        } else {
-            profilePicture.contentMode = .scaleAspectFill
-        }
         
         filteredMovies = CURRENT_USER.liked
         if filteredMovies.count == 0 {
@@ -102,7 +90,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         fullNameTextLabel.text = currentUser.name
         bioTextLabel.text = currentUser.bio
         profilePicture.image = currentUser.profilePicture
-        profilePicture.layer.cornerRadius = 100 / 2 // fix
+        Util.makeImageCircular(profilePicture)
     }
     
     // function to update profile settings from settings view
@@ -117,6 +105,19 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     func updateProfileColors() {
         setColors(CURRENT_USER.visualMode, self.view)
+        switch CURRENT_USER.visualMode {
+        case .light:
+            self.tabBarController!.tabBar.barStyle = .default
+            //print(self.tabBarController!.tabBar.barStyle.rawValue)
+        case .dark:
+            self.tabBarController!.tabBar.barStyle = .black
+            //print(self.tabBarController!.tabBar.barStyle.rawValue)
+        }
+        //force reloads the tab bar
+        let tab = self.tabBarController!.tabBar
+        let sup = self.tabBarController!.tabBar.superview
+        tab.removeFromSuperview()
+        sup!.addSubview(tab)
         collectionView.reloadData()
     }
     
@@ -230,22 +231,19 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     func collectionView(_ collectionView: UICollectionView,
                           layout collectionViewLayout: UICollectionViewLayout,
                           sizeForItemAt indexPath: IndexPath) -> CGSize {
-        //2
         let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
-        let availableWidth = view.frame.width - paddingSpace
+        let availableWidth = collectionView.bounds.width - paddingSpace
         let widthPerItem = availableWidth / itemsPerRow
                 
-        return CGSize(width: widthPerItem, height: 150)
+        return CGSize(width: widthPerItem, height: 160)
       }
       
-      //3
       func collectionView(_ collectionView: UICollectionView,
                           layout collectionViewLayout: UICollectionViewLayout,
                           insetForSectionAt section: Int) -> UIEdgeInsets {
         return sectionInsets
       }
       
-      // 4
       func collectionView(_ collectionView: UICollectionView,
                           layout collectionViewLayout: UICollectionViewLayout,
                           minimumLineSpacingForSectionAt section: Int) -> CGFloat {

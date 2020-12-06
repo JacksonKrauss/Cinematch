@@ -8,8 +8,10 @@
 import UIKit
 import TMDBSwift
 class DetailTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource {
+    //two sections of the colelction view, actora and friends
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if(index! == 0){
+            //prevents duplicate actors
             return DetailTableViewCell.movieTable!.actors.count/2
         }
         else{
@@ -19,13 +21,14 @@ class DetailTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
+        //actors list
         if(index! == 0){
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "actorCell", for: indexPath) as! ActorCollectionViewCell
             cell.actorLabel.text = DetailTableViewCell.movieTable!.actors[indexPath.row].actorName
             cell.characterLabel.text = DetailTableViewCell.movieTable!.actors[indexPath.row].characterName
             return cell
         }
+        //friends list with opinions
         else{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "friendOpCell", for: indexPath) as! FriendOpCollectionViewCell
             cell.nameLabel.text = DetailTableViewCell.movieTable!.friends![indexPath.row].user.username!
@@ -67,12 +70,14 @@ class DetailTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        //pulls list of actors from the API
         MovieMDB.credits(movieID: DetailTableViewCell.movieTable!.id){
             apiReturn, credits in
             if let credits = credits{
                 for cast in credits.cast{
                     DetailTableViewCell.movieTable!.actors.append(Actor(actorName: cast.name, characterName: cast.character))
                 }
+                //pulls friends opinions of the current movie from firebase
                 Movie.checkFriendOpinion(id: DetailTableViewCell.movieTable!.id!) { (friendMovies) in
                     DetailTableViewCell.movieTable!.friends = friendMovies
                     self.collectionView.delegate = self
