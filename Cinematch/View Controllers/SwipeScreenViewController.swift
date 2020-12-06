@@ -183,7 +183,7 @@ extension SwipeScreenViewController: KolodaViewDataSource {
         if(!movies[index].recommended!.isEmpty && movies[index].recommended! != CURRENT_USER.username!){
             self.friendLabel.isHidden = false
             self.starView.isHidden = false
-            self.friendLabel.text = "\(movies[index].recommended!) Recommended this movie!"
+            self.friendLabel.text = "\(movies[index].recommended!) recommended this movie!"
         }
         else{
             self.friendLabel.isHidden = true

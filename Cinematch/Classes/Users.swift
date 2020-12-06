@@ -8,6 +8,8 @@
 //import Foundation
 import UIKit
 import FirebaseDatabase
+import FirebaseStorage
+import FirebaseUI
 
 enum UserPrivacy {
     case me
@@ -94,8 +96,8 @@ func stringToVisual(visualMode: String) -> VisualMode {
     }
 }
 
-struct User: Equatable {
-    //allows you to check if two users are equal
+class User: Equatable {
+//allows you to check if two users are equal
     static func == (lhs: User, rhs: User) -> Bool {
         return lhs.email == rhs.email
     }
@@ -141,6 +143,20 @@ struct User: Equatable {
         self.bio = dataDictionary["bio"] as? String
         self.visualMode = stringToVisual(visualMode: (dataDictionary["visual_mode"] as? String)!)
         self.profilePicture = UIImage(named: "image-placeholder") // placeholder needed before image set manually
+        
+//        // now set image manually
+//        let reference = storageRef.child("profile_pictures/" + username)
+//                
+//        // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
+//        reference.getData(maxSize: 1 * 1024 * 1024) { data, error in
+//          if let error = error {
+//            print("there was an error getting the profile pic")
+//          } else {
+//            self.profilePicture = UIImage(data: data!)
+//            print("replaced profile pic with new UIImage")
+//          }
+//        }
+        
     }
     
     // no getters/setters, directly read/update vars instead
@@ -148,3 +164,8 @@ struct User: Equatable {
 
 // global, holds the logged-in user object
 var CURRENT_USER = User()
+
+let storage = Storage.storage()
+
+let storageRef = storage.reference()
+

@@ -47,6 +47,7 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
         cell.nameLabel.text = filteredUsers[indexPath.row].name
         cell.userLabel.text = filteredUsers[indexPath.row].username
         cell.profilePicView.image = filteredUsers[indexPath.row].profilePicture
+        cell.loadProfilePicture("profile_pictures/" + filteredUsers[indexPath.row].username!)
         if(selectedUsers.contains(filteredUsers[indexPath.row])){
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         }
@@ -54,11 +55,9 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedUsers?.append(filteredUsers[indexPath.row])
-        print("added")
     }
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         selectedUsers?.remove(object: filteredUsers[indexPath.row])
-        print("removed")
     }
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         tableView.separatorColor = CURRENT_USER.visualMode == VisualMode.light ? darkModeTextOrHighlight : UIColor.white
@@ -92,7 +91,7 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
         self.selectedUsers = []
         self.filteredUsers = usersList
         
-        // Do any additional setup after loading the view.
+        
         ref.child("friends").child(CURRENT_USER.username!).observe(.value) { (snapshot) in
             self.usersList = []
             for f in snapshot.children {

@@ -14,7 +14,7 @@ import Koloda
 enum FriendStatus {
     case Friend
     case Requested
-    case RequestedMe  // pressing "friend" should accept friend request
+    case RequestedMe
     case NotFriend
 }
 
@@ -24,9 +24,6 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         Movie.addToList(direction: direction, movie: userMoviesData[index]){
             self.collectionView.reloadData()
         }
-    }
-    
-    func reload() {
     }
     
     @IBOutlet weak var profilePicture: UIImageView!
@@ -62,8 +59,7 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        profilePicture.layer.cornerRadius = profilePicture.frame.width / 2
-        assert(profilePicture.frame.width == profilePicture.frame.height)
+        Util.makeImageCircular(profilePicture)
         
         ref = Database.database().reference()
     }
@@ -128,11 +124,6 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         privacy = user.privacy
         
         loadProfilePicture()
-        if self.profilePicture.frame.width > self.profilePicture.frame.height {
-            self.profilePicture.contentMode = .scaleAspectFit
-        } else {
-            self.profilePicture.contentMode = .scaleAspectFill
-        }
         
         ref.child("movies").child(user.username!).observeSingleEvent(of: .value, with: { (snapshot) in
             Movie.getMoviesForUser(username: self.user.username!) { (moviesFBList) in
@@ -189,7 +180,6 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     }
     
     func updatePrivacy() {
-        print("UPDATE PRIVACY")
         var display = false
         if (user.name == CURRENT_USER.name) {
             display = true
@@ -288,10 +278,8 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
             if let value = requestValue {
                 if !(value is NSNull) {
                     if value as! Bool == true {
-                        print("i requested")
                         self.requested()
                     } else if value as! Bool == false {
-                        print("i did not request")
                         self.notFriend()
                     } else {
                         print("Invalid state reached when fetching friend request boolean!")
@@ -314,10 +302,8 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
             if let value = requestValue {
                 if !(value is NSNull) {
                     if value as! Bool == true {
-                        print("they requested")
                         self.requestedMe()
                     } else if value as! Bool == false {
-                        print("they did not request")
                         if self.userFriendStatus != FriendStatus.Requested {
                             self.notFriend()
                         }
@@ -325,7 +311,6 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
                         print("Invalid state reached when fetching friend request boolean!")
                     }
                 } else {
-                    print("they did not request")
                     if self.userFriendStatus != FriendStatus.Requested {
                         self.notFriend()
                     }
@@ -373,7 +358,10 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
             }
             
         }
-
-        
+    }
+    
+    // This method is because of the protocol SwipeDelegate
+    // We don't want to do anything on reload
+    func reload() {
     }
 }

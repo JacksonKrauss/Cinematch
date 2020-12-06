@@ -41,8 +41,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
         searchTableView.dataSource = self
         searchTableView.delegate = self
         searchBar.delegate = self
-        searchTableView.rowHeight = 166
+        //searchTableView.rowHeight = 166
         searchTypeSegCtrl.selectedSegmentIndex = startPeople == true ? 1 : 0
+        setSize()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,6 +58,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
         
         search()
         
+        setSize()
+    }
+    
+    func setSize(){
         switch searchTypeSegCtrl.selectedSegmentIndex {
             case 0:
                 searchTableView.rowHeight = 166
@@ -232,12 +237,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
             let reference = storageRef.child(path)
             print("path", path)
             cell.profilePicImageView?.sd_setImage(with: reference, placeholderImage: placeholderImage)
-            if (cell.profilePicImageView?.bounds.size.width)! > (cell.profilePicImageView?.bounds.size.height)! {
-                cell.profilePicImageView?.contentMode = .scaleAspectFit
-            } else {
-                cell.profilePicImageView?.contentMode = .scaleAspectFill
-            }
-            cell.profilePicImageView.layer.cornerRadius = cell.profilePicImageView.frame.height / 2
+            
+            Util.makeImageCircular(cell.profilePicImageView)
+            
             return cell
         default:
             return UITableViewCell()

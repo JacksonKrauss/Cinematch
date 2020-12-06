@@ -142,6 +142,7 @@ class MovieDetailViewController: UIViewController, UITableViewDelegate, UITableV
                 self.trailerButtonOutlet.isHidden = true
             }
         }
+
         //checks how many of your friends like the movie
         Movie.checkFriendOpinion(id: movie!.id!) { (friendMovies) in
             self.movie!.friends = friendMovies

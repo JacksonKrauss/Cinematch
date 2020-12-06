@@ -117,15 +117,6 @@ class WatchlistListViewController: UIViewController, UITableViewDelegate,UITable
         searchBar.resignFirstResponder()
     }
     
-    @IBAction func switchToList(_ sender: Any) {
-        print("switched to list")
-        //segue
-    }
-    
-    @IBAction func switchToGrid(_ sender: Any) {
-        print("switched to grid")
-        //segue
-    }
     // code to enable tapping on the background to remove software keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
