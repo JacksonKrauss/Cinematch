@@ -138,7 +138,7 @@ class MovieDetailViewController: UIViewController, UITableViewDelegate, UITableV
                 self.trailerButtonOutlet.isHidden = true
             }
         }
-        print(self.movie!.id!)
+
         Movie.checkFriendOpinion(id: movie!.id!) { (friendMovies) in
             self.movie!.friends = friendMovies
             let moviesFB = friendMovies.filter({ (movie) -> Bool in

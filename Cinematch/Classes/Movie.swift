@@ -259,7 +259,6 @@ class Movie:Equatable{
                 Movie.getMovieFromFB(id: x.id, opinion: .none,recommended: x.user) { (movie) in
                     userMovies.append(movie)
                     if(userMovies.count == userQueue.count){
-                        //print("queue done")
                         completion(userMovies)
                     }
                 }
@@ -281,13 +280,11 @@ class Movie:Equatable{
                     userMovies.append(movie)
                     if(userMovies.count == userHist.count){
                         Movie.getUserListsFromMovies(movieList: userMovies)
-                        //print("done")
                         completion()
                     }
                 }
             }
             if(userHist.isEmpty){
-                //print("no movies")
                 completion()
             }
         }

@@ -204,7 +204,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
                 cell.historyView.image = UIImage(systemName: "plus.app.fill")
                 cell.historyView.tintColor = .systemBlue
             default:
-                print("No opinion")
+                break
             }
         default:
             break

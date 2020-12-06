@@ -41,8 +41,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
         searchTableView.dataSource = self
         searchTableView.delegate = self
         searchBar.delegate = self
-        searchTableView.rowHeight = 166
+        //searchTableView.rowHeight = 166
         searchTypeSegCtrl.selectedSegmentIndex = startPeople == true ? 1 : 0
+        setSize()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,6 +58,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
         
         search()
         
+        setSize()
+    }
+    
+    func setSize(){
         switch searchTypeSegCtrl.selectedSegmentIndex {
             case 0:
                 searchTableView.rowHeight = 166

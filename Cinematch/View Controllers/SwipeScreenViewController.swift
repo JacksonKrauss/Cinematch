@@ -41,12 +41,11 @@ class SwipeScreenViewController: UIViewController,SwipeDelegate {
             Movie.updateQueueFB { (movieList) in
                 for x in movieList{
                     if(!self.movies.contains(x) && !CURRENT_USER.history.contains(x)){
-                        //print("adding \(x.title!) to queue")
                         self.movies.append(x)
                     }
                     else{
                         self.ref.child("queue").child(CURRENT_USER.username!).child(x.id!.description).removeValue { (error: Error?, DatabaseReference) in
-                            //print(error!)
+                            print(error!)
                         }
                     }
                 }
@@ -122,7 +121,6 @@ extension SwipeScreenViewController: KolodaViewDataSource {
     }
     func koloda(_ koloda: KolodaView, viewForCardAt index: Int) -> UIView {
         let imageView = UIImageView()
-        //print(movies[index].title!)
         if(movies[index].posterImg == nil){
             if(movies[index].poster == nil){
                 imageView.backgroundColor = .white
@@ -154,7 +152,7 @@ extension SwipeScreenViewController: KolodaViewDataSource {
         if(!movies[index].recommended!.isEmpty && movies[index].recommended! != CURRENT_USER.username!){
             self.friendLabel.isHidden = false
             self.starView.isHidden = false
-            self.friendLabel.text = "\(movies[index].recommended!) Recommended this movie!"
+            self.friendLabel.text = "\(movies[index].recommended!) recommended this movie!"
         }
         else{
             self.friendLabel.isHidden = true

@@ -53,11 +53,9 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedUsers?.append(filteredUsers[indexPath.row])
-        print("added")
     }
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         selectedUsers?.remove(object: filteredUsers[indexPath.row])
-        print("removed")
     }
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         tableView.separatorColor = CURRENT_USER.visualMode == VisualMode.light ? darkModeTextOrHighlight : UIColor.white
