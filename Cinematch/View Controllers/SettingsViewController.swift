@@ -163,14 +163,16 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         }
         
         // only update the password if there is a new value entered in the textfield
-        if password.count != 0 {
+        if password.count >= 6 {
             Auth.auth().currentUser?.updatePassword(to: password) { error in
                 if error != nil {
                     print(error)
                 }
             }
         }
-        saveProfilePictureToStorage()
+        if(profileImage.image != UIImage(named: "image-placeholder")){
+            saveProfilePictureToStorage()
+        }
         userRef.updateChildValues(updateUserValues)
         
         let otherVC = delegate as! updateProfile
