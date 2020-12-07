@@ -20,10 +20,9 @@ enum FriendStatus {
 
 class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout, SwipeDelegate {
     
-    //adds the movie to the correct list then reloads the view
+    //adds the movie to the correct list
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
         Movie.addToList(direction: direction, movie: userMoviesData[index]){
-            self.collectionView.reloadData()
         }
     }
     
@@ -350,6 +349,7 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
             let index:Int = sender as! Int
             if let detailViewController = segue.destination as? MovieDetailViewController{
                 detailViewController.delegate = self
+                userMoviesData[index].opinion = nil
                 detailViewController.movie = userMoviesData[index]
                 detailViewController.currentIndex = index
             }
