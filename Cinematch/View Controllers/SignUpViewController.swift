@@ -23,7 +23,6 @@ class SignUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // get list of used usernames and check client-side
         // to be secure, this needs to be checked server-side
         ref.child("user_info").observe(.value) { (snapshot) in
@@ -36,8 +35,10 @@ class SignUpViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        // needed due to bug when typing in passwords, field locks up with autofill and
+        // a strong password error pops up
         super.viewWillAppear(animated)
-        if #available(iOS 12, *) {     // iOS 12 & 13: Not the best solution, but it works.
+        if #available(iOS 12, *) {
             confirmPasswordTextField.textContentType = .oneTimeCode
             passwordTextField.textContentType = .oneTimeCode
         } else {     // iOS 11: Disables the autofill accessory view.
@@ -48,6 +49,7 @@ class SignUpViewController: UIViewController {
     }
     
     @IBAction func signUpDidPress(_ sender: Any) {
+        // check if the fields have something in them and pass requirements
         guard let name = nameTextField.text,
               let username = usernameTextField.text,
               let email = emailTextField.text,

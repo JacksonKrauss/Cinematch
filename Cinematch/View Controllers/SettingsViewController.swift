@@ -175,6 +175,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
         }
         userRef.updateChildValues(updateUserValues)
         
+        // update the profile page as well 
         let otherVC = delegate as! updateProfile
         otherVC.updateProfileTextFields(name: nameTextField.text!, bio: bioTextField.text!)
         otherVC.updateProfileColors()
