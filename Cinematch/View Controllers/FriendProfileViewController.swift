@@ -266,8 +266,21 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier:FRIEND_PROFILE_CELL_IDENTIFIER, for:indexPath) as! FriendProfileViewCell
-        let cellData = userMoviesData[indexPath.row]
-        cell.moviePoster.load(url: URL(string: "https://image.tmdb.org/t/p/original" + (cellData.poster!))!)
+        if(userMoviesData[indexPath.row].posterImg == nil){
+            if(userMoviesData[indexPath.row].poster == nil){
+                //no poster, use default image
+                cell.moviePoster.image = UIImage(named: "image-placeholder")
+                userMoviesData[indexPath.row].posterImg = UIImage(named: "image-placeholder")
+            }
+            else{
+                //load poster from internet
+                cell.moviePoster.load(url: URL(string: "https://image.tmdb.org/t/p/original" + userMoviesData[indexPath.row].poster!)!)
+            }
+        }
+        else{
+            //poster has already been loaded previously
+            cell.moviePoster.image = userMoviesData[indexPath.row].posterImg!
+        }
         
         return cell
     }
