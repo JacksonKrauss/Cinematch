@@ -16,14 +16,12 @@ class SendToFriendTableViewCell: UITableViewCell {
     @IBOutlet weak var userLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
         Util.makeImageCircular(profilePicView)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         accessoryType = selected ? .checkmark : .none
-        // Configure the view for the selected state
     }
     
     func loadProfilePicture(_ picturePath:String) {

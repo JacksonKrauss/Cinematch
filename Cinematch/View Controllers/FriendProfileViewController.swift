@@ -19,6 +19,7 @@ enum FriendStatus {
 }
 
 class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout, SwipeDelegate {
+    
     //adds the movie to the correct list then reloads the view
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
         Movie.addToList(direction: direction, movie: userMoviesData[index]){
@@ -81,31 +82,29 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
         }
     }
     func collectionView(_ collectionView: UICollectionView,
-                          layout collectionViewLayout: UICollectionViewLayout,
-                          sizeForItemAt indexPath: IndexPath) -> CGSize {
-        //2
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
         let availableWidth = collectionView.bounds.width - paddingSpace
         let widthPerItem = availableWidth / itemsPerRow
-                
+        
         return CGSize(width: widthPerItem, height: 160)
-      }
-      
-      //3
-      func collectionView(_ collectionView: UICollectionView,
-                          layout collectionViewLayout: UICollectionViewLayout,
-                          insetForSectionAt section: Int) -> UIEdgeInsets {
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
         return sectionInsets
-      }
-      
-      // 4
-      func collectionView(_ collectionView: UICollectionView,
-                          layout collectionViewLayout: UICollectionViewLayout,
-                          minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return sectionInsets.left
-      }
+    }
     
     override func viewWillAppear(_ animated: Bool) {
+        // Check the current friend value and update state accordingly
         ref.child("friends").child(CURRENT_USER.username!).child(user.username!).observeSingleEvent(of: .value) { (snapshot) in
             let friendValue = snapshot.value
             if let value = friendValue {
@@ -117,14 +116,15 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
             }
         }
         
+        // Update the view with this friend's basic information
         usernameTextLabel.text = user.username
         fullNameTextLabel.text = user.name
         bioTextLabel.text = user.bio
         userMoviesData = user.liked
         privacy = user.privacy
-        
         loadProfilePicture()
         
+        // Get this user's liked movies from firebase
         ref.child("movies").child(user.username!).observeSingleEvent(of: .value, with: { (snapshot) in
             Movie.getMoviesForUser(username: self.user.username!) { (moviesFBList) in
                 let moviesFB = moviesFBList.filter({ (movie) -> Bool in
@@ -146,127 +146,11 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
             self.friendStatusButton.backgroundColor = UIColor.white
         }
         
-        // hide action button if this is your profile page
+        // Special case: hide action button if this is your profile page
         if user == CURRENT_USER {
             friendStatusButton.isHidden = true
         } else {
             friendStatusButton.isHidden = false
-        }
-    }
-    
-    func friend() {
-        self.friendStatusButton.setTitle("Unfriend", for: .normal)
-        self.userFriendStatus = FriendStatus.Friend
-        updatePrivacy()
-        self.queryFriendInformation()
-    }
-    
-    func requested() {
-        self.friendStatusButton.setTitle("Cancel Request", for: .normal)
-        self.userFriendStatus = FriendStatus.Requested
-        updatePrivacy()
-    }
-    
-    func requestedMe() {
-        self.friendStatusButton.setTitle("Accept Request", for: .normal)
-        self.userFriendStatus = FriendStatus.RequestedMe
-        updatePrivacy()
-    }
-    
-    func notFriend() {
-        self.friendStatusButton.setTitle("Friend", for: .normal)
-        self.userFriendStatus = FriendStatus.NotFriend
-        updatePrivacy()
-    }
-    
-    func updatePrivacy() {
-        var display = false
-        if (user.name == CURRENT_USER.name) {
-            display = true
-        } else if (privacy == UserPrivacy.everyone){
-            display = true
-        } else if (privacy == UserPrivacy.friends && userFriendStatus == FriendStatus.Friend){
-            display = true
-        }
-    
-        if (display) {
-            privateView.isHidden = true
-            collectionView.isHidden = false
-        } else {
-            privateView.isHidden = false
-            collectionView.isHidden = true
-        }
-    }
-    
-    func loadProfilePicture() {
-        // Get a reference to the storage service using the default Firebase App
-        let storage = Storage.storage()
-
-        // Create a storage reference from our storage service
-        let storageRef = storage.reference()
-        // Reference to an image file in Firebase Storage
-        let reference = storageRef.child("profile_pictures/" + user.username!)
-
-        // Placeholder image
-        let placeholderImage = UIImage(named: "image-placeholder")
-
-        // Load the image using SDWebImage
-        profilePicture.sd_setImage(with: reference, placeholderImage: placeholderImage)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return userMoviesData.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier:FRIEND_PROFILE_CELL_IDENTIFIER, for:indexPath) as! FriendProfileViewCell
-        let cellData = userMoviesData[indexPath.row]
-        cell.moviePoster.load(url: URL(string: "https://image.tmdb.org/t/p/original" + (cellData.poster!))!)
-        
-        return cell
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "friendMovieDetail", sender: indexPath.row)
-    }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "friendMovieDetail"{
-            let index:Int = sender as! Int
-            if let detailViewController = segue.destination as? MovieDetailViewController{
-                detailViewController.delegate = self
-                detailViewController.movie = userMoviesData[index]
-                detailViewController.currentIndex = index
-            }
-        }
-    }
-    
-    func queryFriendInformation() {
-        // first check if they are confirmed friends
-        ref.child("friends").child(CURRENT_USER.username!).child(user.username!).observeSingleEvent(of: .value) { (snapshot) in
-            let friendValue = snapshot.value
-            if let value = friendValue {
-                if !(value is NSNull) {
-                    if value as! Bool == true {
-                        self.friend()
-                    } else if value as! Bool == false {
-                        self.queryRequestInformation()
-                    } else {
-                        print("Invalid state reached when fetching friend boolean!")
-                    }
-                } else {
-                    self.queryRequestInformation()
-                }
-            }
         }
     }
     
@@ -318,7 +202,97 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
             }
         }
     }
-
+    
+    // State updater methods
+    
+    func friend() {
+        self.friendStatusButton.setTitle("Unfriend", for: .normal)
+        self.userFriendStatus = FriendStatus.Friend
+        updatePrivacy()
+        self.queryFriendInformation()
+    }
+    
+    func requested() {
+        self.friendStatusButton.setTitle("Cancel Request", for: .normal)
+        self.userFriendStatus = FriendStatus.Requested
+        updatePrivacy()
+    }
+    
+    func requestedMe() {
+        self.friendStatusButton.setTitle("Accept Request", for: .normal)
+        self.userFriendStatus = FriendStatus.RequestedMe
+        updatePrivacy()
+    }
+    
+    func notFriend() {
+        self.friendStatusButton.setTitle("Friend", for: .normal)
+        self.userFriendStatus = FriendStatus.NotFriend
+        updatePrivacy()
+    }
+    
+    func updatePrivacy() {
+        var display = false
+        if (user.name == CURRENT_USER.name) {
+            display = true
+        } else if (privacy == UserPrivacy.everyone){
+            display = true
+        } else if (privacy == UserPrivacy.friends && userFriendStatus == FriendStatus.Friend){
+            display = true
+        }
+        
+        if (display) {
+            privateView.isHidden = true
+            collectionView.isHidden = false
+        } else {
+            privateView.isHidden = false
+            collectionView.isHidden = true
+        }
+    }
+    
+    func loadProfilePicture() {
+        let storage = Storage.storage()
+        let storageRef = storage.reference()
+        
+        let reference = storageRef.child("profile_pictures/" + user.username!)
+        
+        // Placeholder image
+        let placeholderImage = UIImage(named: "image-placeholder")
+        
+        profilePicture.sd_setImage(with: reference, placeholderImage: placeholderImage)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return userMoviesData.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier:FRIEND_PROFILE_CELL_IDENTIFIER, for:indexPath) as! FriendProfileViewCell
+        let cellData = userMoviesData[indexPath.row]
+        cell.moviePoster.load(url: URL(string: "https://image.tmdb.org/t/p/original" + (cellData.poster!))!)
+        
+        return cell
+    }
+    
+    func queryFriendInformation() {
+        // first check if they are confirmed friends
+        ref.child("friends").child(CURRENT_USER.username!).child(user.username!).observeSingleEvent(of: .value) { (snapshot) in
+            let friendValue = snapshot.value
+            if let value = friendValue {
+                if !(value is NSNull) {
+                    if value as! Bool == true {
+                        self.friend()
+                    } else if value as! Bool == false {
+                        self.queryRequestInformation()
+                    } else {
+                        print("Invalid state reached when fetching friend boolean!")
+                    }
+                } else {
+                    self.queryRequestInformation()
+                }
+            }
+        }
+    }
+    
     @IBAction func changeFriendStatus(_ sender: Any) {
         // add to friend requests
         var currentUser:User? = nil
@@ -363,5 +337,22 @@ class FriendProfileViewController: UIViewController,UICollectionViewDelegate,UIC
     // This method is because of the protocol SwipeDelegate
     // We don't want to do anything on reload
     func reload() {
+    }
+    
+    /*
+     // MARK: - Navigation
+     */
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "friendMovieDetail", sender: indexPath.row)
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "friendMovieDetail"{
+            let index:Int = sender as! Int
+            if let detailViewController = segue.destination as? MovieDetailViewController{
+                detailViewController.delegate = self
+                detailViewController.movie = userMoviesData[index]
+                detailViewController.currentIndex = index
+            }
+        }
     }
 }
