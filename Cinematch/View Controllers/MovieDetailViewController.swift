@@ -169,13 +169,14 @@ class MovieDetailViewController: UIViewController, UITableViewDelegate, UITableV
         likeButtonOutlet.setImage(UIImage(systemName: "hand.thumbsup"), for: .normal)
         downButtonOutlet.setImage(UIImage(systemName: "hand.thumbsdown"), for: .normal)
         watchlistButtonOutlet.setImage(UIImage(systemName: "plus.app"), for: .normal)
-        if(CURRENT_USER.liked.contains(movie!)){
+        
+        if(CURRENT_USER.liked.contains(movie!) || movie!.opinion == .like){
             likeButtonOutlet.setImage(UIImage(systemName: "hand.thumbsup.fill"), for: .normal)
         }
-        else if(CURRENT_USER.disliked.contains(movie!)){
+        else if(CURRENT_USER.disliked.contains(movie!) || movie!.opinion == .dislike){
             downButtonOutlet.setImage(UIImage(systemName: "hand.thumbsdown.fill"), for: .normal)
         }
-        else if(CURRENT_USER.watchlist.contains(movie!)){
+        else if(CURRENT_USER.watchlist.contains(movie!) || movie!.opinion == .watchlist){
             watchlistButtonOutlet.setImage(UIImage(systemName: "plus.app.fill"), for: .normal)
         }
     }
