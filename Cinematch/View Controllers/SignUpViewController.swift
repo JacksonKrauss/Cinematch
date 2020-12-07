@@ -58,8 +58,8 @@ class SignUpViewController: UIViewController {
               name.count > 0,
               username.count > 0,
               email.count > 0,
-              password.count > 0,
-              confirmedPassword.count > 0,
+              password.count >= 6,
+              confirmedPassword.count >= 6,
               password == confirmedPassword,
               !allUsernames.contains(username)
         else {
@@ -74,6 +74,11 @@ class SignUpViewController: UIViewController {
                 errorLabel.text = "Password \(fieldStr)"
             } else if confirmPasswordTextField.text?.count == 0 {
                 errorLabel.text = "Confirm Password \(fieldStr)"
+            }
+            else if passwordTextField.text?.count ?? 0 < 6 {
+                errorLabel.text = "Password needs 6 or more characters"
+            } else if confirmPasswordTextField.text?.count ?? 0 < 6 {
+                errorLabel.text = "Confirm Password needs 6 or more characters"
             }
             if passwordTextField.text! != confirmPasswordTextField.text {
                 errorLabel.text = "Passwords do not match."

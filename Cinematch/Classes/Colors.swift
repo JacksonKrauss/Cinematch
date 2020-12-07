@@ -83,12 +83,6 @@ func setViewColor(_ visualMode:VisualMode, _ view:UIView) {
         activityIndicator.backgroundColor = .clear
         activityIndicator.style = .large
     }
-    else if let tabBar = view as? UITabBar {
-        
-    }
-    else if let tabBarItem = view as? UITabBarItem {
-        
-    }
     else {
         view.backgroundColor = visualMode == VisualMode.light ? UIColor.white : darkModeBackground
         view.subviews.forEach { (view) in
