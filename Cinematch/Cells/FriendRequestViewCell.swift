@@ -17,7 +17,6 @@ class FriendRequestViewCell: UICollectionViewCell {
     @IBOutlet weak var rejectFriend: UIImageView!
     
     var positionInList = 0
-    
     var currentUser:User? = nil
     var friendRequestUser:User? = nil
     var ref: DatabaseReference!

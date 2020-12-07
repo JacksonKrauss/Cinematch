@@ -98,8 +98,8 @@ class MovieDetailViewController: UIViewController, UITableViewDelegate, UITableV
         if(movie!.posterImg == nil){
             if(movie!.poster == nil){
                 self.posterView.backgroundColor = .white
-                self.posterView.image = UIImage(named: "no-image")
-                movie!.posterImg = UIImage(named: "no-image")
+                self.posterView.image = UIImage(named: "image-placeholder")
+                movie!.posterImg = UIImage(named: "image-placeholder")
             }
             else{
                 let url = URL(string: "https://image.tmdb.org/t/p/original" + movie!.poster!)!

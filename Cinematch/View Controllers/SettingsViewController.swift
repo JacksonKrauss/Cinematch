@@ -20,7 +20,7 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
     
     let ref = Database.database().reference()
     let storageRef = Storage.storage().reference()
-    
+    let placeholder = UIImage(named: "image-placeholder")
     var delegate: UIViewController!
     
     // set up for character limits in text fields and rounding of profile image
@@ -214,41 +214,48 @@ class SettingsViewController: UIViewController, UIImagePickerControllerDelegate,
     func saveProfilePictureToStorage() {
         CURRENT_USER.profilePicture = profileImage.image
         
-        // if the profile picture already exists, delete it
-        let profileRef = storageRef.child("profile_pictures/" + CURRENT_USER.username!)
-        profileRef.delete() {
-            error in
-            if let error = error {
-                guard let errorCode = (error as NSError?)?.code else {
-                    return
-                }
-                guard let err = StorageErrorCode(rawValue: errorCode) else {
-                    return
-                }
-                switch err {
-                case .objectNotFound:
-                    print("Correct error returned")
-                    return
-                default:
-                    print("Uh oh, some other error returned")
-                    return
-                }
-            }
-        }
-        
         // upload the new profile picture (resized smaller if needed) to firebase storage
-        if let uploadData = profileImage.image!.resized(toWidth: 200.0)?.pngData() {
-            profileRef.putData(uploadData, metadata: nil) {
-                metadata, error in
-                if error != nil {
-                    print(error)
+        let profileData: NSData = profileImage.image!.pngData()! as NSData
+        let placeholderData: NSData = placeholder!.pngData()! as NSData
+        
+        if (!profileData.isEqual(placeholderData)){
+
+            // if the profile picture already exists, delete it
+            let profileRef = storageRef.child("profile_pictures/" + CURRENT_USER.username!)
+            profileRef.delete() {
+                error in
+                if let error = error {
+                    guard let errorCode = (error as NSError?)?.code else {
+                        return
+                    }
+                    guard let err = StorageErrorCode(rawValue: errorCode) else {
+                        return
+                    }
+                    switch err {
+                    case .objectNotFound:
+                        break
+                    default:
+                        print("Uh oh, some other error returned")
+                        return
+                    }
                 }
             }
+            
+            if let uploadData = profileImage.image!.resized(toWidth: 200.0)?.pngData() {
+                profileRef.putData(uploadData, metadata: nil) {
+                    metadata, error in
+                    if error != nil {
+                        print(error)
+                    }
+                }
+            }
+            
+            // update profile picture in profile view
+            let otherVC = delegate as! updateProfile
+            otherVC.updateProfilePicture(image: CURRENT_USER.profilePicture!)
+
         }
         
-        // update profile picture in profile view
-        let otherVC = delegate as! updateProfile
-        otherVC.updateProfilePicture(image: CURRENT_USER.profilePicture!)
     }
     
     // limit the amount of characters allowed for text fields

@@ -13,6 +13,7 @@ var darkModeBackground = UIColor(named: "DarkModeBackground")
 var darkModeTextOrHighlight = UIColor(named: "DarkModeTextOrHighlight")
 var textFieldBackground = UIColor(named: "TextFieldBackground")
 
+//set to either light or dark mode
 func setColors(_ visualMode:VisualMode, _ view:UIView) {
     view.backgroundColor = visualMode == VisualMode.light ? UIColor.white : darkModeBackground
     view.subviews.forEach { (view) in
@@ -20,6 +21,7 @@ func setColors(_ visualMode:VisualMode, _ view:UIView) {
     }
 }
 
+//set specific colors for each UI element
 func setViewColor(_ visualMode:VisualMode, _ view:UIView) {
     if let label = view as? UILabel {
         if (label.textColor!.isEqual(UIColor.white) || label.textColor!.isEqual(UIColor.label)) {
@@ -62,7 +64,6 @@ func setViewColor(_ visualMode:VisualMode, _ view:UIView) {
     }
     else if let tableView = view as? UITableView {
         tableView.backgroundColor = visualMode == VisualMode.light ? UIColor.white : darkModeBackground
-//        tableView.separatorColor = visualMode == VisualMode.light ? darkModeTextOrHighlight : UIColor.white
         tableView.subviews.forEach { (view) in
             setViewColor(visualMode, view)
         }
