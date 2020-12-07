@@ -45,18 +45,21 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
         setSize()
     }
     
+    // clears data and sets to light or dark mode
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         searchTableView.reloadData()
         setColors(CURRENT_USER.visualMode, self.view)
     }
     
+    // does search functionality for the search query
     @IBAction func filterSelected(_ sender: Any) {
         searchTableView.reloadData()
         search()
         setSize()
     }
     
+    // sets size of the rows in the table
     func setSize(){
         switch searchTypeSegCtrl.selectedSegmentIndex {
             case 0:
@@ -71,6 +74,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
         }
     }
     
+    // grabs movies from MDB
     func loadMovies() {
                                 
         TMDBConfig.apikey = "da04189f6c8bb1116ff3c217c908b776"
@@ -120,6 +124,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
        search()
     }
     
+    // resets data and either loads movies or users in
     func search() {
         //reset data
         moviesData = []
