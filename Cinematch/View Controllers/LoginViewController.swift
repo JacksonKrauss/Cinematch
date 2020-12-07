@@ -22,6 +22,7 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func loginDidPress(_ sender: Any) {
+        // check the text fields meet certain requirements
         guard let username = usernameTextField.text,
               let password = passwordTextField.text,
               username.count > 0,
@@ -35,6 +36,7 @@ class LoginViewController: UIViewController {
             return
         }
         
+        // see if the user with provided username exists
         ref.child("user_info").child(username).observeSingleEvent(of: .value, with: {
             snapshot in
             if !snapshot.exists() {
@@ -49,6 +51,7 @@ class LoginViewController: UIViewController {
                         // current user is one associated with this username
                         CURRENT_USER = User(snapshot, username)
                         
+                        // attempt to get the user's profile picture
                         let pfpRef = Storage.storage().reference(withPath: "profile_pictures/\(username)")
                         pfpRef.getData(maxSize: 1024 * 1024) { (data, error) in
                             if error != nil {
@@ -65,6 +68,7 @@ class LoginViewController: UIViewController {
                         }
                         self.performSegue(withIdentifier: "loginSegue", sender: nil)
                     } else {
+                        // login credentials were bad
                         self.errorLabel.text = "An error occured while attempting to log in."
                     }
                 }

@@ -19,16 +19,26 @@ class SignUpViewController: UIViewController {
     
     // the reference for the Firebase Database
     let ref = Database.database().reference()
+    var allUsernames:Set<String> = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        // get list of used usernames and check client-side
+        // to be secure, this needs to be checked server-side
+        ref.child("user_info").observe(.value) { (snapshot) in
+            self.allUsernames.removeAll()
+            for user in snapshot.children {
+                let userSnapshot:DataSnapshot = user as! DataSnapshot
+                self.allUsernames.insert(userSnapshot.key)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        // needed due to bug when typing in passwords, field locks up with autofill and
+        // a strong password error pops up
         super.viewWillAppear(animated)
-        if #available(iOS 12, *) {     // iOS 12 & 13: Not the best solution, but it works.
+        if #available(iOS 12, *) {
             confirmPasswordTextField.textContentType = .oneTimeCode
             passwordTextField.textContentType = .oneTimeCode
         } else {     // iOS 11: Disables the autofill accessory view.
@@ -39,6 +49,7 @@ class SignUpViewController: UIViewController {
     }
     
     @IBAction func signUpDidPress(_ sender: Any) {
+        // check if the fields have something in them and pass requirements
         guard let name = nameTextField.text,
               let username = usernameTextField.text,
               let email = emailTextField.text,
@@ -49,9 +60,10 @@ class SignUpViewController: UIViewController {
               email.count > 0,
               password.count > 0,
               confirmedPassword.count > 0,
-              password == confirmedPassword
+              password == confirmedPassword,
+              !allUsernames.contains(username)
         else {
-            var fieldStr = "field is empty."
+            let fieldStr = "field is empty."
             if nameTextField.text?.count == 0 {
                 errorLabel.text = "Name \(fieldStr)"
             } else if usernameTextField.text?.count == 0 {
@@ -65,6 +77,9 @@ class SignUpViewController: UIViewController {
             }
             if passwordTextField.text! != confirmPasswordTextField.text {
                 errorLabel.text = "Passwords do not match."
+            }
+            if allUsernames.contains(usernameTextField.text!) {
+                errorLabel.text = "Username already in use!"
             }
             return
         }

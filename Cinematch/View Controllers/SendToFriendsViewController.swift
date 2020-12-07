@@ -29,14 +29,14 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
         searchBar.resignFirstResponder()
     }
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-            self.searchBar.showsCancelButton = true
+        self.searchBar.showsCancelButton = true
     }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-            searchBar.showsCancelButton = false
-            filteredUsers = usersList
-            tableView.reloadData()
-            searchBar.text = ""
-            searchBar.resignFirstResponder()
+        searchBar.showsCancelButton = false
+        filteredUsers = usersList
+        tableView.reloadData()
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filteredUsers.count
@@ -44,10 +44,12 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell") as! SendToFriendTableViewCell
+        
         cell.nameLabel.text = filteredUsers[indexPath.row].name
         cell.userLabel.text = filteredUsers[indexPath.row].username
         cell.profilePicView.image = filteredUsers[indexPath.row].profilePicture
         cell.loadProfilePicture("profile_pictures/" + filteredUsers[indexPath.row].username!)
+        
         if(selectedUsers.contains(filteredUsers[indexPath.row])){
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         }
@@ -62,11 +64,12 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         tableView.separatorColor = CURRENT_USER.visualMode == VisualMode.light ? darkModeTextOrHighlight : UIColor.white
         let cell = cell as! SendToFriendTableViewCell
+        
         cell.backgroundColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.white : darkModeBackground
         cell.nameLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
         cell.userLabel.textColor = CURRENT_USER.visualMode == VisualMode.light ? UIColor.label : UIColor.white
     }
-
+    
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     var filteredUsers: [User]!
@@ -91,7 +94,7 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
         self.selectedUsers = []
         self.filteredUsers = usersList
         
-        
+        // Get this user's friends to initially populate friends table
         ref.child("friends").child(CURRENT_USER.username!).observe(.value) { (snapshot) in
             self.usersList = []
             for f in snapshot.children {
@@ -112,7 +115,7 @@ class SendToFriendsViewController: UIViewController, UITableViewDelegate, UITabl
         super.viewWillAppear(animated)
         setColors(CURRENT_USER.visualMode, self.view)
     }
-
+    
     // code to enable tapping on the background to remove software keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)

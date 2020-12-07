@@ -8,7 +8,7 @@
 import UIKit
 import TMDBSwift
 class DetailTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource {
-    //two sections of the colelction view, actora and friends
+    //two sections of the colelction view, actors and friends
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if(index! == 0){
             //prevents duplicate actors
@@ -50,6 +50,7 @@ class DetailTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
         
     }
     
+    // set the colors of the cells depending on visual mode
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if (index! == 0) {
             let actorCell = cell as! ActorCollectionViewCell
