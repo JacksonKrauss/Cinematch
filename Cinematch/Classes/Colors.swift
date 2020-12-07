@@ -99,7 +99,9 @@ func setSegmentedControlColors(_ segmentedCtrl:UISegmentedControl, backgroundCol
         segmentedCtrl.setTitleTextAttributes(titleTextAttributes, for: .selected)
 }
 
+// uicolor extensions to use elsewhere in this project
 extension UIColor {
+    // inverts a uicolor to exact opposite
     func inverse () -> UIColor {
         var r:CGFloat = 0.0;
         var g:CGFloat = 0.0;
@@ -112,6 +114,7 @@ extension UIColor {
         return .black // Return a default colour
     }
     
+    // checks if two uicolors are equal when converted to cgcolor
     func isEqualWithConversion(_ color: UIColor) -> Bool {
             guard let space = self.cgColor.colorSpace
                 else { return false }
