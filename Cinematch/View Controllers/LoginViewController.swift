@@ -53,7 +53,7 @@ class LoginViewController: UIViewController {
                         pfpRef.getData(maxSize: 1024 * 1024) { (data, error) in
                             if error != nil {
                                 // error in getting profile picture
-                                CURRENT_USER.profilePicture = UIImage(named: "Popcorn Logo")!
+                                CURRENT_USER.profilePicture = UIImage(named: "image-placeholder")!
                             } else {
                                 if let image = UIImage(data: data!) {
                                     // profile picture exists

@@ -16,6 +16,7 @@ protocol updateProfile {
 }
 
 class ProfileViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UISearchBarDelegate, UICollectionViewDelegateFlowLayout, SwipeDelegate, updateProfile {
+    
     //adds a movie to the correct list and reloads the collectionview
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
         Movie.addToList(direction: direction, movie: filteredMovies[index]){
@@ -49,32 +50,29 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     @IBOutlet weak var noMoviesView: UIView!
     @IBOutlet weak var noMoviesLabel: UILabel!
     
+    var currentUser: User!
+    var filteredMovies: [Movie]!
     private let itemsPerRow: CGFloat = 3
     private let sectionInsets = UIEdgeInsets(top: 10.0,
                                              left: 10.0,
                                              bottom: 10.0,
                                              right: 10.0)
     
-    var filteredMovies: [Movie]!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        currentUser = CURRENT_USER
-        
         searchBar.delegate = self
-        
         collectionView.delegate = self
         collectionView.dataSource = self
     }
-    var currentUser: User!
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         currentUser = CURRENT_USER
         collectionView.reloadData()
         renderViews()
         setColors(CURRENT_USER.visualMode, self.view)
-        
         filteredMovies = CURRENT_USER.liked
+        //display message if there are no liked movies
         if filteredMovies.count == 0 {
             collectionView.isHidden = true
             noMoviesView.isHidden = false
@@ -85,6 +83,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
     }
     
+    //sets up users profile information
     func renderViews() {
         usernameTextLabel.text = currentUser.username
         fullNameTextLabel.text = currentUser.name
@@ -98,20 +97,20 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         profilePicture.image = image
     }
     
+    // updates profile settings from settings view
     func updateProfileTextFields(name: String, bio: String) {
         fullNameTextLabel.text = name
         bioTextLabel.text = bio
     }
     
+    // updates dark mode settings from settings view
     func updateProfileColors() {
         setColors(CURRENT_USER.visualMode, self.view)
         switch CURRENT_USER.visualMode {
         case .light:
             self.tabBarController!.tabBar.barStyle = .default
-            //print(self.tabBarController!.tabBar.barStyle.rawValue)
         case .dark:
             self.tabBarController!.tabBar.barStyle = .black
-            //print(self.tabBarController!.tabBar.barStyle.rawValue)
         }
         //force reloads the tab bar
         let tab = self.tabBarController!.tabBar
@@ -136,8 +135,10 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
     }
 
+    //show either liked movies or the history view
     @IBAction func selectCollection(_ sender: Any) {
         switch movieViewSegCtrl.selectedSegmentIndex {
+        //liked movies
         case 0:
             if CURRENT_USER.liked.count == 0 {
                 collectionView.isHidden = true
@@ -156,6 +157,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
                     
                 }
             }
+        //user history
         case 1:
             if CURRENT_USER.history.count == 0 {
                 collectionView.isHidden = true
@@ -189,8 +191,10 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier:"profileCollectionViewCell", for:indexPath) as! ProfileCollectionViewCell
         switch movieViewSegCtrl.selectedSegmentIndex {
+        //liked movies
         case 0:
             cell.historyView.isHidden = true
+        //all movie history - opinions on movies should be shown
         case 1:
             cell.historyView.isHidden = false
             cell.historyView.backgroundColor = .none
@@ -211,11 +215,12 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
             break
         }
         
+        //add images
         if(filteredMovies[indexPath.row].posterImg == nil){
             if(filteredMovies[indexPath.row].poster == nil){
                 cell.moviePoster.backgroundColor = .white
-                cell.moviePoster.image = UIImage(named: "no-image")
-                filteredMovies[indexPath.row].posterImg = UIImage(named: "no-image")
+                cell.moviePoster.image = UIImage(named: "image-placeholder")
+                filteredMovies[indexPath.row].posterImg = UIImage(named: "image-placeholder")
             }
             else{
                 cell.moviePoster.load(url: URL(string: "https://image.tmdb.org/t/p/original" + filteredMovies[indexPath.row].poster!)!)
@@ -236,19 +241,19 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         let widthPerItem = availableWidth / itemsPerRow
                 
         return CGSize(width: widthPerItem, height: 160)
-      }
+    }
       
-      func collectionView(_ collectionView: UICollectionView,
+    func collectionView(_ collectionView: UICollectionView,
                           layout collectionViewLayout: UICollectionViewLayout,
                           insetForSectionAt section: Int) -> UIEdgeInsets {
         return sectionInsets
-      }
+    }
       
-      func collectionView(_ collectionView: UICollectionView,
+    func collectionView(_ collectionView: UICollectionView,
                           layout collectionViewLayout: UICollectionViewLayout,
                           minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return sectionInsets.left
-      }
+    }
     
     @IBAction func movieViewSelected(_ sender: Any) {
         self.collectionView.reloadData()
@@ -259,7 +264,9 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         self.view.endEditing(true)
     }
     
+    //filters through the movie data when there is search text
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        // no search query
         if (searchText.isEmpty) {
             switch movieViewSegCtrl.selectedSegmentIndex {
             case 0:
@@ -269,13 +276,16 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
             default:
                 break
             }
+        // populated search query
         } else {
             switch movieViewSegCtrl.selectedSegmentIndex {
+            //filters through liked movie data
             case 0:
                 filteredMovies = CURRENT_USER.liked.filter { (movie: Movie) -> Bool in
                     return (movie.title!.lowercased().contains(searchBar.text!.lowercased()))
                     
                 }
+            //filters through history data
             case 1:
                 filteredMovies = CURRENT_USER.history.filter { (movie: Movie) -> Bool in
                     return (movie.title!.lowercased().contains(searchBar.text!.lowercased()))

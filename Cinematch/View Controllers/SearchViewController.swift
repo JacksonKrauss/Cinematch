@@ -213,7 +213,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
                     }
                 //No poster
                 } else {
-                    cell.moviePosterImageView.image = UIImage(named: "no-image")
+                    cell.moviePosterImageView.image = UIImage(named: "image-placeholder")
                 }
             }
             
@@ -238,9 +238,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UISearchBar
             let placeholderImage = UIImage(named: "image-placeholder")
             let path = "profile_pictures/\(currentPerson.username ?? "")"
             let reference = storageRef.child(path)
-            
+            //either set image to reference from storage or to placeholder
             cell.profilePicImageView?.sd_setImage(with: reference, placeholderImage: placeholderImage)
-            
             Util.makeImageCircular(cell.profilePicImageView)
             
             return cell

@@ -90,7 +90,7 @@ class SignUpViewController: UIViewController {
                                     email: email,
                                     privacy: UserPrivacy.friends,
                                     visualMode: VisualMode.light,
-                                    profilePicture: UIImage(named: "Popcorn Logo")!,
+                                    profilePicture: UIImage(named: "image-placeholder")!,
                                     liked:[],
                                     disliked: [],
                                     watchlist: [],

@@ -54,8 +54,8 @@ class WatchlistListViewController: UIViewController, UITableViewDelegate,UITable
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell") as! WatchlistTableViewCell
         if(filteredMovies[indexPath.row].posterImg == nil){
             if(filteredMovies[indexPath.row].poster == nil){
-                cell.posterView.image = UIImage(named: "no-image")
-                filteredMovies[indexPath.row].posterImg = UIImage(named: "no-image")
+                cell.posterView.image = UIImage(named: "image-placeholder")
+                filteredMovies[indexPath.row].posterImg = UIImage(named: "image-placeholder")
             }
             else{
                 cell.posterView.load(url: URL(string: "https://image.tmdb.org/t/p/original" + filteredMovies[indexPath.row].poster!)!)

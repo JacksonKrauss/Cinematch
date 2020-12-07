@@ -248,7 +248,7 @@ class Movie:Equatable{
                 //checks to see if the movie has a poster
                 if(curr.poster == nil){
                     //default image
-                    curr.posterImg = UIImage(named: "no-image")
+                    curr.posterImg = UIImage(named: "image-placeholder")
                 }
                 else{
                     //downloads the poster of the movie

@@ -10,11 +10,42 @@ import TMDBSwift
 import Koloda
 class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, SwipeDelegate, UISearchBarDelegate, UICollectionViewDelegateFlowLayout{
     
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var collectionButton: UIButton!
+    var filteredMovies:[Movie]!
     private let itemsPerRow: CGFloat = 3
     private let sectionInsets = UIEdgeInsets(top: 10.0,
                                              left: 10.0,
                                              bottom: 10.0,
                                              right: 10.0)
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        searchBar.delegate = self
+        //hide navigation bar
+        self.navigationController?.navigationBar.isHidden = true
+        filteredMovies = CURRENT_USER.watchlist
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        filteredMovies = CURRENT_USER.watchlist
+        collectionView.reloadData()
+        setColors(CURRENT_USER.visualMode, self.view)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        collectionView.reloadData()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        searchBar.showsCancelButton = false
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
+    }
+
     //resets the search bar and reloads the view
     func reload() {
         filteredMovies = CURRENT_USER.watchlist
@@ -23,6 +54,7 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
         searchBar.text = ""
         searchBar.resignFirstResponder()
     }
+    
     //searched for the movie title and filters results
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filteredMovies = CURRENT_USER.watchlist.filter { (movie: Movie) -> Bool in
@@ -33,13 +65,16 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
         }
         collectionView.reloadData()
     }
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = false
         searchBar.resignFirstResponder()
     }
+    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
             self.searchBar.showsCancelButton = true
     }
+    
     //cancel search resets data
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
             searchBar.showsCancelButton = false
@@ -48,7 +83,7 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
             searchBar.text = ""
             searchBar.resignFirstResponder()
     }
-    @IBOutlet weak var searchBar: UISearchBar!
+    
     //adds movie to list and reloads view
     func buttonTapped(direction: SwipeResultDirection, index: Int) {
         Movie.addToList(direction: direction, movie: filteredMovies[index]) {
@@ -66,8 +101,8 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
         if(filteredMovies[indexPath.row].posterImg == nil){
             if(filteredMovies[indexPath.row].poster == nil){
                 //no poster, use default image
-                cell.posterImageView.image = UIImage(named: "no-image")
-                filteredMovies[indexPath.row].posterImg = UIImage(named: "no-image")
+                cell.posterImageView.image = UIImage(named: "image-placeholder")
+                filteredMovies[indexPath.row].posterImg = UIImage(named: "image-placeholder")
             }
             else{
                 //load poster from internet
@@ -95,53 +130,24 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
         return CGSize(width: widthPerItem, height: 160)
       }
       
-      //3
-      func collectionView(_ collectionView: UICollectionView,
+    //3
+    func collectionView(_ collectionView: UICollectionView,
                           layout collectionViewLayout: UICollectionViewLayout,
                           insetForSectionAt section: Int) -> UIEdgeInsets {
         return sectionInsets
-      }
+    }
       
-      // 4
-      func collectionView(_ collectionView: UICollectionView,
+    // 4
+    func collectionView(_ collectionView: UICollectionView,
                           layout collectionViewLayout: UICollectionViewLayout,
                           minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return sectionInsets.left
-      }
+    }
     
-    @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var collectionButton: UIButton!
-    var filteredMovies:[Movie]!
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        searchBar.delegate = self
-        //hide navigation bar
-        self.navigationController?.navigationBar.isHidden = true
-        filteredMovies = CURRENT_USER.watchlist
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        filteredMovies = CURRENT_USER.watchlist
-        collectionView.reloadData()
-        setColors(CURRENT_USER.visualMode, self.view)
-    }
-    override func viewDidAppear(_ animated: Bool) {
-        collectionView.reloadData()
-    }
-    override func viewWillDisappear(_ animated: Bool) {
-        searchBar.showsCancelButton = false
-        searchBar.text = ""
-        searchBar.resignFirstResponder()
-    }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         performSegue(withIdentifier: "detailSegue", sender: indexPath.row)
     }
-    @IBAction func listButton(_ sender: Any) {
-        if let navController = self.navigationController {
-            navController.popViewController(animated: false)
-        }
-    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "detailSegue"){
             let index:Int = sender as! Int
@@ -152,6 +158,13 @@ class WatchlistGridViewController: UIViewController, UICollectionViewDelegate, U
             }
         }
     }
+    
+    @IBAction func listButton(_ sender: Any) {
+        if let navController = self.navigationController {
+            navController.popViewController(animated: false)
+        }
+    }
+    
     // code to enable tapping on the background to remove software keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)

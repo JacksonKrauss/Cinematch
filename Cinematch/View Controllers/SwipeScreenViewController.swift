@@ -147,8 +147,8 @@ extension SwipeScreenViewController: KolodaViewDataSource {
             if(movies[index].poster == nil){
                 //no image, load default image
                 imageView.backgroundColor = .white
-                imageView.image = UIImage(named: "no-image")
-                self.movies[index].posterImg = UIImage(named: "no-image")
+                imageView.image = UIImage(named: "image-placeholder")
+                self.movies[index].posterImg = UIImage(named: "image-placeholder")
                 activityIndicator.stopAnimating()
             }
             else{
